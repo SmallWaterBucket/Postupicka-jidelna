@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hodnocení jídelny</title>
+  <link rel="icon" href="/favicon.ico">
+  <style>
+    .day{
+        display:flex;
+        flex-direction: column;
+        flex-grow: 1;
+        flex-shrink: 1;
+        flex-wrap: wrap;
+        align-items: center;
+        width: 100%;
+    }
+    .food{
+        display:flex;
+        justify-content: space-evenly;
+        align-items: center;
+        padding: 10px;
+        flex-direction: column;
+    }
+    .not_navbar {
+        display:flex;
+        flex-grow:1;
+        align-items: center;
+        flex-direction: column;
+    }
+    .image{
+        display:flex;
+        flex-shrink: 1;
+        flex-grow: 1;
+    }
+    .jidelnicek{
+        display:flex;
+        flex-grow:1;
+        align-items: center;
+        flex-direction: column;
+        gap: 50px
+        width: 100%;
+
+    }
+    .foods {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: flex-start;
+        flex-wrap:wrap;
+        width: 100%;
+        max-width: 1200px;   /* limits stretching on large screens */
+    }
+
+
+  </style>
+
+</head>
+<body>
+    {% include "navbar.html" %}
+    <div class = "not_navbar">
+    <h1><u>Jídla z jídelny Gymnázia Postupická</u></h1>
+    <p>Taky jste si někdy objednávali jídlo, a i když jste si vygooglili jak má vypadat, bylo to něco úplně <b>jiného?</b></p>
+    <p>Tak tato stránka vám přinese řešení. Na této stránce můžete <b>publikovat fotky jídel z jídelny</b> a dávat jakému koliv jídlu <b>hodnocení</b>.</p>
+    <form action="{{ url_for('hello_world') }}" method="post">
+        <label for="food_name_label">Hledat jídlo:</label>
+        <input type="text" id="food_name" name="food_name" placeholder="jídlo">
+        <button type="submit">Hledat</button>
+    </form>
+        <div class = "jidelnicek">
+        {% for day,foods in data %}
+            <div class = "day">
+                <h2>{{day}}</h2>
+                <div class = "foods">
+                {% for food,image in foods %}
+                    <div class = "food">
+                        <p>{{food}}</p>
+                        <a href="{{ image }}"><img class="image" src="{{ image }}" height="200" alt="{{ food }}"></a>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

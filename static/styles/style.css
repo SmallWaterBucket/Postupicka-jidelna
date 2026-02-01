@@ -1,0 +1,28 @@
+{
+    display: flex;
+    background: #101012;
+}
+
+.rating-css div{
+    color: #ffe400;
+    font-size: 30px;
+    font-family: sans-serif;
+    font-weight: 800;
+    text-align: center;
+}
+.rating-css input{
+    display: none;
+}
+.rating-css input + label{
+    font-size: 60px;
+    text-shadow: 1px 1px 0 #8f8420;
+    cursor: pointer;
+    transition: all .2s;
+}
+.rating-css input:checked + label ~ label{
+    color: #838383;
+    text-shadow: 2px 2px 0 #b08f2f;
+}
+.rating-css label:active{
+    transform: scale(0.8);
+}

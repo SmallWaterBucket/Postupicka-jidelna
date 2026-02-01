@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hledat jídlo</title>
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+    {% include "navbar.html" %}
+    <form action="{{ url_for('search', food=food) }}" method="post">
+        <label for="food_name_label">Hledat jídlo:</label>
+        <p><input type="text" id="food_name" name="food_name" placeholder="jídlo" value={{food}}></p>
+        <button type="submit">Hledat</button>
+    </form>
+    <h1><u>Výsledky pro "{{food}}":</u></h1>
+    {% for answer in answers %}
+        <a href="/get_food/{{answer}}">
+            <p>{{answer.replace('_',' ')}}</p>
+        </a>
+    {% endfor %}
+    <p>Není tady to co hledáte? <a href="/add_food">Přidejte ho</a></p>
+</body>
+</html>

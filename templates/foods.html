@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Všechny jídla</title></title>
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+    {% include "navbar.html" %}
+    <h1><u>Všechny jídla, která byla nahrána na tuto stránku:</u></h1>
+    {% for food in foods %}
+        <a href="/get_food/{{food}}">
+            <p>{{food.replace('_',' ')}}</p>
+        </a>
+    {% endfor %}
+    <p>Není tady to co hledáte? <a href="/add_food">Přidejte ho</a></p>
+</body>
+</html>

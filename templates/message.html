@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{title}}</title>
+  <link rel="icon" href="/favicon.ico">
+  <style>
+    body {
+        display:flex;
+        align-items: center;
+        flex-direction: column;
+    img {object-fit: contain;}
+  </style>
+</head>
+<body>
+    {% include "navbar.html" %}
+    <h1><u>{{message}}</u></h1>
+    <a href="{{link}}">{{link_text}}</a>
+    <p>{{submessage}}</p>
+    <img class = "image" src="{{img}}" height = "600">
+</body>
+</html>

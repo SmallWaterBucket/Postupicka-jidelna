@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Montserrat:500');
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .navbar{
+            position: sticky;
+            top: 0;
+        }
+
+        main {
+            margin: 0 20px;
+        }
+
+        /* Logo */
+        .logo {
+            width: 100px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        /* Navbar container */
+        .navbar ul {
+            display: flex;
+            align-items: stretch;
+            background-color: rgb(50,61,127);
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navbar items */
+        .navbar li {
+            flex: 1;
+            display: flex;
+        }
+        /* Navbar links */
+        .navbar a {
+            color: white;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        /* Hover state */
+        .navbar a:hover {
+            background-color: rgb(63,78,158);
+        }
+        li a {
+            transition: all 0.3s ease 0s;
+        }
+        .navbar li:first-child a:hover {
+            background-color: transparent;
+            scale: 1.15;
+        }
+        </style>
+    </head>
+    <body>
+        <nav class = "navbar">
+            <ul>
+                <li><a href="/"><img class="logo" src="/static/images/3rd_logo.jpeg"> </li></a>
+                <li><a href="/about">O nás</a></li>
+                <li><a href="/foods">Seznam jídel</a></li>
+                <li><a href="/add_food">Přidat jídlo</a></li>
+                <li><a href="/contacts">Kontakty</div></a></li>
+            </ul>
+        </nav>
+    </body>
+</html>

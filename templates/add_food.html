@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hodnocení jídelny</title>
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+{% include "navbar.html" %}
+<form action="{{ url_for('add_food') }}" method="post" enctype="multipart/form-data">
+    <label for="food_name">Food name:</label>
+    <p>
+        <input type="text" id="food_name" name="food_name" placeholder="Food name" list="foodList">
+        <datalist id="foodList">
+            {% for food,images in foods %}
+                <option value="{{food}}">
+            {% endfor %}
+        </datalist>
+    </p>
+
+    <input type="file" name="file">
+    <p><button type="submit">Submit</button></p>
+</form>
+</body>
