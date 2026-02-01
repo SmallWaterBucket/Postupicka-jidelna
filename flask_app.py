@@ -95,7 +95,7 @@ def get_db():
         db = MySQLdb.connect(
         host="jidelna.mysql.eu.pythonanywhere-services.com",
         user="jidelna",
-        passwd="efuio2Sd3Nj2",
+        passwd="efuio2Sd3Nj2", #toto heslo uz bylo zmeneno, takze to nebude fungovat
         database="jidelna$default"
         )
     return db
