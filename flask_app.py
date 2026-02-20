@@ -249,7 +249,7 @@ def get_new_food(food_id):
 
 @app.route('/debug')
 def debug():
-    return render_template("main.html",data=scrape())
+    return "Github connected, hopefully"
 
 
 def scrape():
