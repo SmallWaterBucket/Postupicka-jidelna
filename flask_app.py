@@ -8,13 +8,13 @@ import random
 
 app = Flask(__name__)
 
-UPLOAD_FOLDER = '/home/jidelna/mysite/static/images'
+UPLOAD_FOLDER = '/home/jidelna/photos'
 app.config['ALLOWED_EXTENSIONS'] = ['.jpg', '.jpeg', '.png']
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 4*1024 * 1024 #4MB
 
 @app.route('/', methods =["GET", "POST"])
-def hello_world():
+def Main():
     db = get_db()
     mycursor = db.cursor()
 
@@ -26,25 +26,25 @@ def hello_world():
     #    new_data.append((item,image_url))
     return render_template("main.html", data = data)
 
-def get_image(food_name):
-    db = get_db()
-    cursor = db.cursor()
-    cursor.execute(f"SELECT * FROM Main WHERE NAME = %s;", (food_name,))
-    result = cursor.fetchone()
-    if not result:
-        return "static/images/WhatsApp_Image_2026-01-16_at_19.21.37.jpeg" #"/static/images/Food_not_found.png"   #"/static/images/rohlik_1.jpg"
-    id, name, path, average = result
-
-    filename = path.split('/')[-1]
-    image_url = url_for('static', filename=f'images/{filename}')
-    return image_url
+#def get_image(food_name):
+#    db = get_db()
+#    cursor = db.cursor()
+#    cursor.execute(f"SELECT * FROM Main WHERE NAME = %s;", (food_name,))
+#    result = cursor.fetchone()
+#    if not result:
+#        return "static/images/WhatsApp_Image_2026-01-16_at_19.21.37.jpeg" #"/static/images/Food_not_found.png"   #"/static/images/rohlik_1.jpg"
+#    id, name, path, average = result
+#
+#    filename = path.split('/')[-1]
+#    image_url = url_for('static', filename=f'images/{filename}')
+#    return image_url
 
 @app.route("/message/<message>")
 def get_message(message):
     submessage = ""
     link = ""
     link_text = ""
-    img = url_for('static', filename="images/Employment-Job-Application-791x1024-3681536362.png")
+    img = "/image/Employment-Job-Application-791x1024-3681536362.png"
 
     match message:
         case "Food not found":
@@ -55,11 +55,11 @@ def get_message(message):
         case "Food submitted":
             message="Děkujeme za to že jste přidali jídlo."
             submessage = " Zkontrolujeme ho do jednoho týdne a přidáme ho."
-            img = url_for('static', filename=f'images/Added_food.jpeg')
+            img = "/image/Added_food.jpeg"
         case "File too big":
             message="Soubor příliš velký"
             submessage = f"Soubor, který jste přidali je větší než náš {int(app.config['MAX_CONTENT_LENGTH']) / (1024*1024)} MB limit."
-            img = url_for('static', filename=f'images/File_too_big.jpeg')
+            img = "/image/File_too_big.jpeg"
         case _:
             submessage = "How did you even find this?"
             message = "Go get a job."
@@ -136,9 +136,25 @@ def get_food(food_name):
 
     # Extract just the filename if you stored full paths
     filename = path.split('/')[-1]
-    image_url = url_for('static', filename=f'images/{filename}')
-    favicon = url_for('static', filename="icon.png")
+    image_url = f"/image/{filename}"     #url_for(path)#'static', filename=f'images/{filename}')
+    #favicon = url_for('static', filename="icon.png")
     return render_template("a.html", image=image_url, name=name, rating=str(average))
+
+@app.route("/image/<filename>")
+def get_image_page(filename):
+    return send_from_directory(UPLOAD_FOLDER, filename)
+
+def get_image(image):
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute(f"SELECT * FROM Main WHERE NAME = %s;", (image,))
+    result = cursor.fetchone()
+    if not result:
+        return "/image/WhatsApp_Image_2026-01-16_at_19.21.37.jpeg"
+    id, name, path, average = result
+    filename = path.split('/')[-1]
+    image_url = f"/image/{filename}"
+    return image_url
 
 
 @app.errorhandler(413)
