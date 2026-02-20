@@ -22,22 +22,7 @@ def Main():
         food = request.form.get("food_name")
         return redirect(f"/search/{food}")
     data=scrape()
-    #for item in data:
-    #    new_data.append((item,image_url))
     return render_template("main.html", data = data)
-
-#def get_image(food_name):
-#    db = get_db()
-#    cursor = db.cursor()
-#    cursor.execute(f"SELECT * FROM Main WHERE NAME = %s;", (food_name,))
-#    result = cursor.fetchone()
-#    if not result:
-#        return "static/images/WhatsApp_Image_2026-01-16_at_19.21.37.jpeg" #"/static/images/Food_not_found.png"   #"/static/images/rohlik_1.jpg"
-#    id, name, path, average = result
-#
-#    filename = path.split('/')[-1]
-#    image_url = url_for('static', filename=f'images/{filename}')
-#    return image_url
 
 @app.route("/message/<message>")
 def get_message(message):
@@ -110,20 +95,17 @@ def close_db(exception):
 @app.route('/get_food/<food_name>', methods = ["GET", "POST"])
 def get_food(food_name):
     db = get_db()
-    #mycursor = db.cursor()
     food_name = food_name.replace('_', ' ')
     cursor = db.cursor()
     cursor.execute(f"SELECT * FROM Main WHERE NAME = %s;", (food_name,))
-    #return str(cursor.fetchone())
     result = cursor.fetchone()
+
     if not result:
         return get_message("Food not found")
 
-    # Example assuming (id, name, path, average)
     id, name, path, average = result
     average=float(average)
     if request.method == "POST":
-        #return request.form.get("rating")
         new_rating = request.form.get("rating")
         cursor.execute("insert into Ratings (foodid,rating) values (%s,%s)", (id,new_rating))
         db.commit()
@@ -134,10 +116,7 @@ def get_food(food_name):
         average = str(ret[0][0])
         db.commit()
 
-    # Extract just the filename if you stored full paths
-    filename = path.split('/')[-1]
-    image_url = f"/image/{filename}"     #url_for(path)#'static', filename=f'images/{filename}')
-    #favicon = url_for('static', filename="icon.png")
+    image_url = get_image(food_name)
     return render_template("a.html", image=image_url, name=name, rating=str(average))
 
 @app.route("/image/<filename>")
@@ -188,7 +167,7 @@ def add_food():
             cursor = db.cursor()
             cursor.execute("insert into New (name,path,rating) values (%s,%s,%s)", (FoodName, os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(filename)), rating))
             db.commit()
-            return get_message("Food submitted")#f"You submitted food \"{FoodName}\", the admin will review your submission in the future (Usually max one week)"
+            return get_message("Food submitted")
         else:
             return "Upload failed, image required!!!"
     foods = scrape()
@@ -222,15 +201,13 @@ def get_new_food(food_id):
     cursor = db.cursor()
     cursor.execute("SELECT * FROM New WHERE id = %s;", (food_id,))
     result = cursor.fetchone()
+
     if not result:
         return "Not found"
-
-    # Example assuming (id, name, path, average)
+    
     id, name, path, average = result
 
-    # Extract just the filename if you stored full paths
-    filename = path.split('/')[-1]
-    image_url = url_for('static', filename=f'images/{filename}')
+    image_url = get_image(name)
     message = ""
     if request.method == "POST":
         EnteredPassword = request.form.get("password")
@@ -247,6 +224,7 @@ def get_new_food(food_id):
             message = "Incorrect password"
     return render_template("accept_deny.html", image=image_url, name=name, rating=average, message=message, food_id=food_id)
 
+
 @app.route('/debug')
 def debug():
     return "Github connected, hopefully"
@@ -262,7 +240,6 @@ def scrape():
     data = [] # foods from Hlavni canteen, not modrany
 
     for day in days:
-        #data.append(day.find_all("div", class_ = "jidelnicekTop semibold")[0].text.strip())
         date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].text.strip()
 
         foods = []
@@ -277,9 +254,6 @@ def scrape():
                         food = food[16:food.index("(") - 1]
                     else:
                         food = food[16:len(food) - 1]
-                    #return repr(food)
-
-                    #food = food.replace(", čaj, šťáva, ovoce, salát", "") nefacha ;(
 
                     # Generovany chatem GPT{
                     food = re.sub(r"[,\s\xa0]*čaj.*$", "", food, flags=re.IGNORECASE) # odstrani vse po ", caj"
