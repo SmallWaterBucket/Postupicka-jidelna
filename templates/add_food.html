@@ -3,21 +3,36 @@
 <head>
   <title>Hodnocení jídelny</title>
   <link rel="icon" href="/favicon.ico">
+  <style>
+    .not_navbar{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .datalist {
+        border: 1px solid black;
+        margin-left: 20%;
+        margin-right: 20%;
+        top: 0;
+    }
+  </style>
 </head>
 <body>
-{% include "navbar.html" %}
-<form action="{{ url_for('add_food') }}" method="post" enctype="multipart/form-data">
-    <label for="food_name">Food name:</label>
-    <p>
-        <input type="text" id="food_name" name="food_name" placeholder="Food name" list="foodList">
-        <datalist id="foodList">
-            {% for food,images in foods %}
-                <option value="{{food}}">
-            {% endfor %}
-        </datalist>
-    </p>
+    {% include "navbar.html" %}
+    <div class="not_navbar">
+        <form action="{{ url_for('add_food') }}" method="post" enctype="multipart/form-data">
+            <label for="food_name">Food name:</label>
+            <p>
+                <input type="text" id="food_name" name="food_name" placeholder="Food name" list="foodList">
+                <datalist class="datalist" id="foodList">
+                    {% for food,images in foods %}
+                        <option value="{{food}}">
+                    {% endfor %}
+                </datalist>
+            </p>
 
-    <input type="file" name="file">
-    <p><button type="submit">Submit</button></p>
-</form>
+            <input type="file" name="file">
+            <p><button type="submit">Submit</button></p>
+        </form>
+    </div>
 </body>

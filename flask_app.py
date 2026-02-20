@@ -1,7 +1,9 @@
-from flask import Flask, render_template,url_for, request, redirect, flash, send_from_directory
+from flask import Flask, render_template,url_for, request, redirect, flash, send_from_directory, g
+import os.path
 import os,requests, unicodedata, MySQLdb,re
 from werkzeug.utils import secure_filename
 from bs4 import BeautifulSoup
+import random
 
 
 app = Flask(__name__)
@@ -88,23 +90,27 @@ def search(food):
     return render_template("search.html", food=food, answers=ret)
 
 def get_db():
-    try:
-        db.ping(reconnect=True)
-    except:
-        # Reconnect
-        db = MySQLdb.connect(
-        host="jidelna.mysql.eu.pythonanywhere-services.com",
-        user="jidelna",
-        passwd="efuio2Sd3Nj2", #toto heslo uz bylo zmeneno, takze to nebude fungovat
-        database="jidelna$default"
+    if 'db' not in g:
+        password = open("/home/jidelna/password_db.txt",'r').read()
+        g.db = MySQLdb.connect(
+            host="jidelna.mysql.eu.pythonanywhere-services.com",
+            user="jidelna",
+            passwd=password,
+            database="jidelna$default"
         )
-    return db
+    return g.db
+
+@app.teardown_appcontext
+def close_db(exception):
+    db = g.pop('db', None)
+    if db is not None:
+        db.close()
 
 
 @app.route('/get_food/<food_name>', methods = ["GET", "POST"])
 def get_food(food_name):
     db = get_db()
-    mycursor = db.cursor()
+    #mycursor = db.cursor()
     food_name = food_name.replace('_', ' ')
     cursor = db.cursor()
     cursor.execute(f"SELECT * FROM Main WHERE NAME = %s;", (food_name,))
@@ -148,12 +154,18 @@ def add_food():
         file = request.files["file"]
         if file:
             extension = os.path.splitext(file.filename)[1]
+            filename = secure_filename(file.filename)
             if extension not in app.config['ALLOWED_EXTENSIONS']:
                 return 'The uploaded file is not an image.'
-
+            if os.path.isfile(f"/home/jidelna/mysite/static/images/{file.filename}"):
+                rnd = random.randrange(0, 100000)
+                filename = f"{rnd}{extension}"
+                while os.path.isfile(filename):
+                    rnd = random.randrange(0, 100000)
+                    filename = f"{rnd}{extension}"
             FoodName = request.form.get("food_name")
             rating = -1
-            filename = secure_filename(file.filename)
+
             file.save(os.path.join(
                 app.config['UPLOAD_FOLDER'],
                 secure_filename(filename)))
@@ -182,18 +194,17 @@ def list_new_foods():
     ret = ""
     for item in result:
         food = item[1]
-        food = food.replace(' ', '_')
-        ret+=f"<p><a href=/new_food/{food}>{food}</p>"
+        id = item[0]
+        ret+=f"<p><a href=/new_food/{id}>{food}</p>"
     return ret
 
-@app.route('/new_food/<food_name>', methods=["GET", "POST"])
-def get_new_food(food_name):
+@app.route('/new_food/<food_id>', methods=["GET", "POST"])
+def get_new_food(food_id):
     db = get_db()
-    food_name = food_name.replace('_',' ')
-    f = open("/home/jidelna/mysite/password.txt",'r')
+    f = open("/home/jidelna/password_admin.txt",'r')
     password = f.read()
     cursor = db.cursor()
-    cursor.execute("SELECT * FROM New WHERE name = %s;", (food_name,))
+    cursor.execute("SELECT * FROM New WHERE id = %s;", (food_id,))
     result = cursor.fetchone()
     if not result:
         return "Not found"
@@ -218,7 +229,7 @@ def get_new_food(food_name):
             return f"Action successful"
         else:
             message = "Incorrect password"
-    return render_template("accept_deny.html", image=image_url, name=name, rating=average, message=message)
+    return render_template("accept_deny.html", image=image_url, name=name, rating=average, message=message, food_id=food_id)
 
 @app.route('/debug')
 def debug():
@@ -284,8 +295,8 @@ def all_foods():
 
 @app.route('/about')
 def about():
-    return "Nothing here yet."
+    return render_template("About.html")
 
 @app.route('/contacts')
 def contacts():
-    return "<a href=\"mailto:syzonenko.semen@postupicka.cz\">syzonenko.semen@postupicka.cz</a>"
+    return render_template("Contacts.html")

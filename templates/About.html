@@ -1,0 +1,155 @@
+<head>
+    <title>
+        O nás
+    </title>
+    <style>
+        @font-face {
+            font-family: 'Aurach';
+            src: url("/static/fonts/AurachHeavy.ttf") format('truetype');
+        }
+
+
+        @font-face {
+            font-family: 'Book-Antiqua';
+            src: url("/static/fonts/Book-Antiqua.ttf.ttf") format('truetype');
+        }
+
+        h1{
+            font-family: 'Aurach';
+            font-size: 3.5vw;
+            text-align: center;
+        }
+        h2{
+            font-family: 'Aurach';
+            font-size: 2.5vw;
+            text-align: center;
+        }
+        h3{
+            font-size: 1.5vw;
+        }
+
+        p{
+            font-family: 'Book-Antiqua';
+            font-size: 1.5vw;
+        }
+
+        li.list{
+            font-size: 1.5vw;
+        }
+
+        .not_navbar{
+            color: rgb(50,61,127);
+            display:flex;
+            flex-direction: column;
+        }
+        img {object-fit: contain;}
+
+        .person{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+        }
+        .center{
+            text-align: center;
+        }
+        .grid-container{
+            margin-left: 20px;
+            display:grid;
+            grid-template-columns: 1fr 1fr;
+
+        }
+        .image{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+
+    </style>
+</head>
+<body>
+    {% include "navbar.html" %}
+    <div class="not_navbar">
+        <h1>
+            <u>O nás</u>
+        </h1>
+        <h3>
+            Obsah:
+        </h3>
+        <ol>
+            <li class="list"><a href = "#AboutPage">Co je tohle za stránku</a></li>
+            <li class="list"><a href = "#Functionalities">Co se tady dá dělat</a></li>
+            <li class="list"><a href = "#Authors">Kdo na tom dělá</a></li>
+        </ol>
+
+        <div id = "AboutPage">
+            <h2>
+                <u>Co je tohle za stránku?</u>
+            </h2>
+            <p>Nevíte, jak nějaké jídlo vypadá? Z vlastní zkušenosti nevěříte Googlu? Tady to všechno uvidíte – i s hodnocením!</p>
+            <p>Chtěli bychom upřesnit, že nechceme nijak naší jídelnu zesměšnit nebo urazit. Všichni máme radi naši jídelnu, jen je někdy těžké pochopit co bude k obědu podle názvu jídla.</p>
+            <p>Proto jsme stvořili tuto stránku, aby bylo jasnější jak jaké jídlo vypadá. A jak ho hodnotí jiní studenti.</p>
+        </div>
+
+        <div id = "Functionalities">
+            <h2>
+                <u>Co se tady dá dělat?</u>
+            </h2>
+            <h3>Hledání jídla</h3>
+            <p>Chcete vědět, jak vypadá jídlo, které si chcete objednat? Stačí si ho najít v naší databázi jídel!<p>
+            <h3>Přidání jídla</h3>
+            <p>Nenašli jste jídlo, co jste hledali? Můžete ho jednoduše přidat! Stačí mít jeho fotku v podporovaném formátu (PNG, JPG…), ve velikostním limitu (4 MB) a jeho název a poté stačí počkat na schválení admina. Každý den se automaticky nabídnou názvy jídel z toho dne.  Doporučujeme, aby na fotce nebyly žádní lidé nebo jiné osobní informace.  </p>
+            <h3>Hodnocení jídla</h3>
+            <p>Chcete se podělit o dojmech z oběda? Nově jsme zprovoznili hodnocení jídel – na škále od 1 do 7. U již přidaného jídla se zobrazí průměr všech ohodnocení.  </p>
+        </div>
+
+        <div id="Authors">
+            <h2>
+                <u>Kdo na tom dělá?</u>
+            </h2>
+            <p class="center">Žáci Gymnázia Postupická</p>
+
+
+
+            <div class="grid-container">
+                <div class="item">
+                    <h3>Admin</h3>
+                    <ul>
+                        <li class="list">Programuje celou tuhle stránku</li>
+                        <li class="list">Určitě vyřeší vaší stížnost/problém</li>
+                    </ul>
+                    <p>Kontakt:</p>
+                    <p><a href="mailto:syzonenko.semen@postupicka.cz">syzonenko.semen@postupicka.cz</a>, ale pokud jste student tak spíš na Teams.</p>
+                </div>
+                <div class="image">
+                    <img src="/static/images/WhatsApp_Image_2026-02-03_at_15.32.27.jpeg" width=200>
+                </div>
+                <div class="item">
+                    <h3>Grafik</h3>
+                    <p>Autorka všech ilustrací a slohu (zatím kromě kontaktů)</p>
+                    <p>Kontakt:</p>
+                    <ul>
+                        <li class="list"><a href="mailto:oricekucet@gmail.com">oricekucet@gmail.com</a></li>
+                        <li class="list"><a href="https://www.tumblr.com/n3reus">Můj tumblr</a></li>
+                    </ul>
+                </div>
+                <div class="image">
+                    <img src="/static/images/Grafik.jpeg" width = 200>
+                </div>
+                <div class="item">
+                    <h3>Number one supporter</h3>
+                    <p>Autor většiny fotek jídla</p>
+                    <p>Byl tady už od začátku</p>
+                    <p>Kontakt:</p>
+                    <ul>
+                        <li class="list"><a href="mailto:Kchrudos@seznam.cz">Kchrudos@seznam.cz</a></li>
+                        <li class="list"><a href="https://www.tumblr.com/chrudosk">Jeho tumbrl</a></li>
+                    </ul>
+                </div>
+                <div class="image">
+                    <img src="/static/images/Number_one_supporter.jpeg" width = 200>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

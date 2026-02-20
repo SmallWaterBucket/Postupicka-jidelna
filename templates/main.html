@@ -20,7 +20,22 @@
         padding: 10px;
         flex-direction: column;
     }
+
+    @font-face {
+        font-family: 'Aurach';
+        src: url("/static/fonts/AurachHeavy.ttf") format('truetype');
+    }
+
+
+    @font-face {
+        font-family: 'Book-Antiqua';
+        src: url("/static/fonts/Book-Antiqua.ttf.ttf") format('truetype');
+    }
+
     .not_navbar {
+
+        color: rgb(50,61,127);
+
         display:flex;
         flex-grow:1;
         align-items: center;
@@ -49,6 +64,31 @@
         max-width: 1200px;   /* limits stretching on large screens */
     }
 
+    input {
+        border-radius: 15px;
+        padding: 10px;
+        border: 2px solid #ccc;
+        width: 250px;
+    }
+    button:hover {
+        background-color: rgb(50,61,127);
+        color: white;
+    }
+    button{
+        border-radius: 12px;
+    }
+    .food{
+        transition: all 0.3s ease 0s;
+    }
+    .food:hover{
+        scale: 1.15;
+    }
+    h1 {
+        font-family: 'Aurach', sans-serif;
+    }
+    p {
+        font-family: 'Book-Antiqua.ttf';
+    }
 
   </style>
 
@@ -61,7 +101,7 @@
     <p>Tak tato stránka vám přinese řešení. Na této stránce můžete <b>publikovat fotky jídel z jídelny</b> a dávat jakému koliv jídlu <b>hodnocení</b>.</p>
     <form action="{{ url_for('hello_world') }}" method="post">
         <label for="food_name_label">Hledat jídlo:</label>
-        <input type="text" id="food_name" name="food_name" placeholder="jídlo">
+        <input class="search" type="text" id="food_name" name="food_name" placeholder="jídlo">
         <button type="submit">Hledat</button>
     </form>
         <div class = "jidelnicek">
