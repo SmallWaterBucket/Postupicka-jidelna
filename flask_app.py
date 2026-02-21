@@ -311,7 +311,8 @@ def food_edit(food_id):
             decision = request.form.get("decision")
             if decision == "delete":
                 cursor.execute("delete from Main where id = %s",(id,))
-                os.remove(path)
+                filename = path.split('/')[-1]
+                os.remove(f"{UPLOAD_FOLDER}/{filename}")
             else:
                 new_name = request.form.get("food_name")
                 new_path = request.form.get("path")
