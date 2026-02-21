@@ -297,7 +297,7 @@ def food_edit(food_id):
     f = open("/home/jidelna/password_admin.txt",'r')
     password = f.read()
     cursor = db.cursor()
-    cursor.execute("SELECT * FROM New WHERE id = %s;", (food_id,))
+    cursor.execute("SELECT * FROM Main WHERE id = %s;", (food_id,))
     result = cursor.fetchone()
 
     if not result:
