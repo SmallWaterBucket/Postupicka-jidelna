@@ -275,8 +275,7 @@ def all_foods():
     answer = mycursor.fetchall()
     ret = []
     for item in answer:
-        food_item = item[1]  # name column
-        food_item = food_item.replace(' ', '_')
+        food_item = item[1], item[0]  # name column, id column
         ret.append(food_item)
 
     return render_template("foods.html", foods=ret)

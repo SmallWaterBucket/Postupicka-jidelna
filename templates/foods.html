@@ -7,9 +7,9 @@
 <body>
     {% include "navbar.html" %}
     <h1><u>Všechny jídla, která byla nahrána na tuto stránku:</u></h1>
-    {% for food in foods %}
-        <a href="/get_food/{{food}}">
-            <p>{{food.replace('_',' ')}}</p>
+    {% for food, food_id in foods %}
+        <a href="/get_food/{{food_id}}">
+            <p>{{food}}</p>
         </a>
     {% endfor %}
     <p>Není tady to co hledáte? <a href="/add_food">Přidejte ho</a></p>
