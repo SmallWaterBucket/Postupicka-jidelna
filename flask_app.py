@@ -216,7 +216,7 @@ def get_new_food(food_id):
             if decision == "accept":
                 cursor.execute("insert into Main (name,path,average) values (%s,%s,%s)", (name, path, average))
             if decision == "deny":
-                os.remove(f"/home/jidelna/mysite/static/images/{filename}")
+                os.remove(path)
             cursor.execute("delete from New where id = %s",(id,))
             db.commit()
             return f"Action successful"
@@ -290,3 +290,31 @@ def about():
 @app.route('/contacts')
 def contacts():
     return render_template("Contacts.html")
+
+@app.route('/food_edit/<food_id>', methods=["GET", "POST"])
+def food_edit(food_id):
+    db = get_db()
+    f = open("/home/jidelna/password_admin.txt",'r')
+    password = f.read()
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM New WHERE id = %s;", (food_id,))
+    result = cursor.fetchone()
+
+    if not result:
+        return "Not found"
+    
+    id, name, path, average = result
+
+    image_url = get_image(name)
+    message = ""
+    if request.method == "POST":
+        EnteredPassword = request.form.get("password")
+        if password == EnteredPassword:
+            
+
+        
+            db.commit()
+            return f"Action successful"
+        else:
+            message = "Incorrect password"
+    return render_template("food_edit.html", image=image_url, name=name, rating=average, message=message, food_id=food_id)
