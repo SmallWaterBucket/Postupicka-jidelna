@@ -308,9 +308,14 @@ def food_edit(food_id):
     if request.method == "POST":
         EnteredPassword = request.form.get("password")
         if password == EnteredPassword:
-            
-
-        
+            decision = request.form.get("decision")
+            if decision == "delete":
+                cursor.execute("delete from Main where id = %s",(id,))
+                os.remove(path)
+            else:
+                new_name = request.form.get("food_name")
+                new_path = request.form.get("path")
+                cursor.execute("update Main set name = %s, path = %s where id = %s",(new_name, new_path, id,))
             db.commit()
             return f"Action successful"
         else:

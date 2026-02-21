@@ -10,7 +10,7 @@
             color: white;
         }
         .apply:hover{
-            background-color: rgb(0, 255, 0);
+            background-color: rgb(0, 145, 0);
             color: white;
         }
     </style>
@@ -20,7 +20,6 @@
 
 <form action="{{ url_for('food_edit', food_id=food_id) }}" method="post">
     <p><input type="text" id="food_name" name="food_name" placeholder="jídlo" value="{{name}}"></p>
-    <p>{{name}}</p>
     <img src="{{ image }}" height="100" alt="{{ name }}">
     <p><input type="text" id="path" name="path" placeholder="image path" value="{{image}}"></p>
 
