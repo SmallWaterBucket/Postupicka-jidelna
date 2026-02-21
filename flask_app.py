@@ -92,12 +92,11 @@ def close_db(exception):
         db.close()
 
 
-@app.route('/get_food/<food_name>', methods = ["GET", "POST"])
-def get_food(food_name):
+@app.route('/get_food/<food_id>', methods = ["GET", "POST"])
+def get_food(food_id):
     db = get_db()
-    food_name = food_name.replace('_', ' ')
     cursor = db.cursor()
-    cursor.execute(f"SELECT * FROM Main WHERE NAME = %s;", (food_name,))
+    cursor.execute(f"SELECT * FROM Main WHERE id = %s;", (food_id,))
     result = cursor.fetchone()
 
     if not result:
@@ -116,8 +115,8 @@ def get_food(food_name):
         average = str(ret[0][0])
         db.commit()
 
-    image_url = get_image(food_name)
-    return render_template("a.html", image=image_url, name=name, rating=str(average))
+    image_url = get_image(name)
+    return render_template("food.html", image=image_url, name=name, rating=str(average), food_id=food_id)
 
 @app.route("/image/<filename>")
 def get_image_page(filename):

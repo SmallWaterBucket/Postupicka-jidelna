@@ -15,8 +15,7 @@
 <p><a href="{{ image }}"><img src="{{ image }}" height="200" alt="{{ name }}"></a></p>
 <p>Rating: {{ rating }}/7</p>
 
-<!-- ===== Bottom row: user voting ===== -->
-<form method="POST" action="{{ url_for('get_food', food_name=name) }}">
+<form method="POST" action="{{ url_for('get_food', food_id=food_id) }}">
     <div class="rating-css">
         <div class="star-icon">
             <input type="radio" name="rating" id="rating1" value="1">
@@ -37,6 +36,8 @@
     </div>
 
     <button type="submit" name="submit_button" value="Rating">Submit rating</button>
+
+    <a href="/food_edit/{{ food_id }}">Admin page</a>
 </form>
 
 </body>
