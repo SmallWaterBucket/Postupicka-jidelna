@@ -12,42 +12,41 @@
             flex-direction: column;
             align-items: center;
         }
-        h1{
-            font-family: 'Aurach';
-        }
     </style>
 </head>
 <body>
 {% include "navbar.html" %}
-<h1>{{ name }}</h1>
-<p><a href="{{ image }}"><img src="{{ image }}" height="200" alt="{{ name }}"></a></p>
-<p>Rating: {{ rating }}/7</p>
-<p style="color:tomato">{{text}}</p>
+<div class="not_navbar">
+    <h1>{{ name }}</h1>
+    <p><a href="{{ image }}"><img src="{{ image }}" height="200" alt="{{ name }}"></a></p>
+    <p>Rating: {{ rating }}/7</p>
+    <p style="color:tomato">{{text}}</p>
 
-<form method="POST" action="{{ url_for('get_food', food_id=food_id) }}">
-    <div class="rating-css">
-        <div class="star-icon">
-            <input type="radio" name="rating" id="rating1" value="1">
-            <label for="rating1" class="fa fa-star"></label>
-            <input type="radio" name="rating" id="rating2" value="2">
-            <label for="rating2" class="fa fa-star"></label>
-            <input type="radio" name="rating" id="rating3" value="3">
-            <label for="rating3" class="fa fa-star"></label>
-            <input type="radio" name="rating" id="rating4" value="4">
-            <label for="rating4" class="fa fa-star"></label>
-            <input type="radio" name="rating" id="rating5" value="5">
-            <label for="rating5" class="fa fa-star"></label>
-            <input type="radio" name="rating" id="rating6" value="6">
-            <label for="rating6" class="fa fa-star"></label>
-            <input type="radio" name="rating" id="rating7" value="7">
-            <label for="rating7" class="fa fa-star"></label>
+    <form method="POST" action="{{ url_for('get_food', food_id=food_id) }}">
+       <div class="rating-css">
+           <div class="star-icon">
+                <input type="radio" name="rating" id="rating1" value="1">
+                <label for="rating1" class="fa fa-star"></label>
+                <input type="radio" name="rating" id="rating2" value="2">
+                <label for="rating2" class="fa fa-star"></label>
+                <input type="radio" name="rating" id="rating3" value="3">
+                <label for="rating3" class="fa fa-star"></label>
+                <input type="radio" name="rating" id="rating4" value="4">
+                <label for="rating4" class="fa fa-star"></label>
+                <input type="radio" name="rating" id="rating5" value="5">
+                <label for="rating5" class="fa fa-star"></label>
+                <input type="radio" name="rating" id="rating6" value="6">
+                <label for="rating6" class="fa fa-star"></label>
+                <input type="radio" name="rating" id="rating7" value="7">
+                <label for="rating7" class="fa fa-star"></label>
+            </div>
         </div>
-    </div>
 
-    <p><button type="submit" name="submit_button" value="Rating">Submit rating</button></p>
+        <p><button type="submit" name="submit_button" value="Rating">Submit rating</button></p>
     
-    <a href="/food_edit/{{ food_id }}">Admin page</a>
-</form>
+        <a href="/food_edit/{{ food_id }}">Admin page</a>
+    </form>
+</div>
 
 </body>
 </html>
