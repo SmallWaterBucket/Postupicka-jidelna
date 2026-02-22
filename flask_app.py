@@ -135,7 +135,7 @@ def get_image(image):
     result = cursor.fetchone()
     if not result:
         return "/image/WhatsApp_Image_2026-01-16_at_19.21.37.jpeg"
-    id, name, path, average = result
+    id, name, path, average, isFood = result
     filename = path.split('/')[-1]
     image_url = f"/image/{filename}"
     return image_url
@@ -307,7 +307,7 @@ def food_edit(food_id):
     if not result:
         return "Not found"
     
-    id, name, path, average = result
+    id, name, path, average, isFood = result
 
     image_url = get_image(name)
     message = ""
@@ -324,9 +324,14 @@ def food_edit(food_id):
             else:
                 new_name = request.form.get("food_name")
                 new_path = request.form.get("path")
-                cursor.execute("update Main set name = %s, path = %s where id = %s",(new_name, new_path, id,))
+                isFood = request.form.get("isFood")
+                if isFood == "isFood":
+                    isFood = 1
+                else:
+                    isFood = 0
+                cursor.execute("update Main set name = %s, path = %s, isFood = %s where id = %s",(new_name, new_path, isFood, id,))
             db.commit()
             return f"Action successful"
         else:
             message = "Incorrect password"
-    return render_template("food_edit.html", image=image_url, name=name, rating=average, message=message, food_id=food_id)
+    return render_template("food_edit.html", image=image_url, name=name, rating=average, message=message, food_id=food_id, isFood=isFood)
