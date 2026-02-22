@@ -31,6 +31,10 @@
         font-family: 'Book-Antiqua';
         src: url("/static/fonts/Book-Antiqua.ttf.ttf") format('truetype');
     }
+    
+    .navbar{
+        z-index:1;
+    }
 
     .not_navbar {
 
@@ -79,7 +83,7 @@
     }
     .food{
         transition: all 0.3s ease 0s;
-        z-index: -1;
+        z-index: 0;
     }
     .food:hover{
         scale: 1.15;
@@ -95,7 +99,9 @@
 
 </head>
 <body>
-    {% include "navbar.html" %}
+    <div class="navbar">
+        {% include "navbar.html" %}
+    </div>
     <div class = "not_navbar">
     <h1><u>Jídla z jídelny Gymnázia Postupická</u></h1>
     <p>Taky jste si někdy objednávali jídlo, a i když jste si vygooglili jak má vypadat, bylo to něco úplně <b>jiného?</b></p>
