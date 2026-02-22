@@ -14,6 +14,7 @@
 <h1>{{ name }}</h1>
 <p><a href="{{ image }}"><img src="{{ image }}" height="200" alt="{{ name }}"></a></p>
 <p>Rating: {{ rating }}/7</p>
+<p style="color:tomato">{{text}}</p>
 
 <form method="POST" action="{{ url_for('get_food', food_id=food_id) }}">
     <div class="rating-css">
@@ -34,8 +35,6 @@
             <label for="rating7" class="fa fa-star"></label>
         </div>
     </div>
-
-    <p style="color:tomato">{{text}}</p>
 
     <p><button type="submit" name="submit_button" value="Rating">Submit rating</button></p>
     
