@@ -117,7 +117,8 @@ def get_food(food_id):
     
     if average == -1:
         average = "Žádné hodnocení"
-
+        
+    text = ""
     if not isFood:
         text = "Toto není jídlo ze školní jídelny."
 
