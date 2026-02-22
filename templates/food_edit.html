@@ -22,6 +22,9 @@
     <p><input type="text" id="food_name" name="food_name" placeholder="jídlo" value="{{name}}"></p>
     <img src="{{ image }}" height="100" alt="{{ name }}">
     <p><input type="text" id="path" name="path" placeholder="image path" value="{{image}}"></p>
+    <input type="checkbox" id="isFood" name="isFood" value="isFood" {% if isFood %}checked{% endif %}>
+    <label for="isFood">Je jídlo?</label>
+
 
     <p>Rating: {{ rating }}/10</p>
     <label for="password">Password:</label>

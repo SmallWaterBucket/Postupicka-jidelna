@@ -102,7 +102,7 @@ def get_food(food_id):
     if not result:
         return get_message("Food not found")
 
-    id, name, path, average = result
+    id, name, path, average, isFood = result
     average=float(average)
     if request.method == "POST":
         new_rating = request.form.get("rating")
@@ -114,9 +114,15 @@ def get_food(food_id):
         cursor.execute("update Main SET average = %s where id = %s",(str(ret[0][0]),id,))
         average = str(ret[0][0])
         db.commit()
+    
+    if average == -1:
+        average = "Žádné hodnocení"
+
+    if not isFood:
+        text = "Toto není jídlo ze školní jídelny."
 
     image_url = get_image(name)
-    return render_template("food.html", image=image_url, name=name, rating=str(average), food_id=food_id)
+    return render_template("food.html", image=image_url, name=name, rating=str(average), food_id=food_id, text=text)
 
 @app.route("/image/<filename>")
 def get_image_page(filename):
