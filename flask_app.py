@@ -69,8 +69,8 @@ def search(food):
     ret = []
     for item in answer:
         food_item = item[1]  # name column
-        food_item = food_item.replace(' ', '_')
-        ret.append(food_item)
+        food_id = item[0]   # id column
+        ret.append((food_item, food_id))
 
     return render_template("search.html", food=food, answers=ret)
 
@@ -213,7 +213,7 @@ def get_new_food(food_id):
     
     id, name, path, average = result
 
-    image_url = get_image(name)
+    image_url = f"/image/{path.split('/')[-1]}"
     message = ""
     if request.method == "POST":
         EnteredPassword = request.form.get("password")

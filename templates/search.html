@@ -12,9 +12,9 @@
         <button type="submit">Hledat</button>
     </form>
     <h1><u>Výsledky pro "{{food}}":</u></h1>
-    {% for answer in answers %}
-        <a href="/get_food/{{answer}}">
-            <p>{{answer.replace('_',' ')}}</p>
+    {% for answer, id in answers %}
+        <a href="/get_food/{{id}}">
+            <p>{{answer}}</p>
         </a>
     {% endfor %}
     <p>Není tady to co hledáte? <a href="/add_food">Přidejte ho</a></p>
