@@ -171,7 +171,7 @@ def add_food():
                 app.config['UPLOAD_FOLDER'],
                 secure_filename(filename)))
             cursor = db.cursor()
-            cursor.execute("insert into New (name,path,rating) values (%s,%s,%s)", (FoodName, os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(filename)), rating))
+            cursor.execute("insert into New (name,path,rating,isFood) values (%s,%s,%s,%s)", (FoodName, os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(filename)), rating, 1))
             db.commit()
             return get_message("Food submitted")
         else:
