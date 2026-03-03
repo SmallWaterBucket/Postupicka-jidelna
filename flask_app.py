@@ -261,6 +261,7 @@ def scrape():
     for day in days:
         #date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].text.strip()
         date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].get("id").split("_")[1:]
+        date = ".".join(date)
         #disabled = date - today <= 2
         
         foods = []
@@ -305,7 +306,8 @@ def new_scrape():
 
     for day in days:
         #date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].text.strip()
-        date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].get("id").split("_")[1:].join(".")
+        date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].get("id").split("_")[1:]
+        date = ".".join(date)
         date = datetime.datetime.strptime(date, "%d.%m.%Y")
         disabled = date - today <= 2
         
