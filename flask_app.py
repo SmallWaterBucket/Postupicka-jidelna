@@ -260,7 +260,7 @@ def scrape():
 
     for day in days:
         #date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].text.strip()
-        date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].get("id").split("_")[1:]
+        date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].get("id").split("_")
         return date
         date = ".".join(date)
         #disabled = date - today <= 2
