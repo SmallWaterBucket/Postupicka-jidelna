@@ -298,7 +298,7 @@ def new_scrape():
 
     data = [] # foods from Hlavni canteen, not modrany
 
-    today = datetime.datetime.now()
+    today = datetime.datetime.now().date()
 
 
     #date = datetime.datetime(date.year, date.month, date.day + 2)
@@ -307,7 +307,7 @@ def new_scrape():
         #date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].text.strip()
         date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].get("id").split("-")[1:]
         date = ".".join(date)
-        date = datetime.datetime.strptime(date, "%Y.%m.%d")
+        date = datetime.datetime.strptime(date, "%Y.%m.%d").date()
         disabled = (date - today).days <= 2
         
         foods = []
