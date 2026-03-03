@@ -256,7 +256,7 @@ def scrape():
     today = datetime.datetime.now().strftime("%d.%m.%Y")
 
 
-    date = datetime.datetime(date.year, date.month, date.day + 2)
+    #date = datetime.datetime(date.year, date.month, date.day + 2)
 
     for day in days:
         #date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].text.strip()
@@ -289,7 +289,7 @@ def scrape():
 
 
 
-def scrape():
+def new_scrape():
     #page = requests.get("https://api.allorigins.win/raw?url=https://strav.nasejidelna.cz/0254/login")
     page = requests.get("https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=https://strav.nasejidelna.cz/0254/login")
     soup = BeautifulSoup(page.text, "html.parser")
@@ -301,7 +301,7 @@ def scrape():
     today = datetime.datetime.now().strftime("%d.%m.%Y")
 
 
-    date = datetime.datetime(date.year, date.month, date.day + 2)
+    #date = datetime.datetime(date.year, date.month, date.day + 2)
 
     for day in days:
         #date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].text.strip()
