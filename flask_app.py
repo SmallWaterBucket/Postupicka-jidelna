@@ -235,14 +235,14 @@ def get_new_food(food_id):
 
 @app.route('/debug')
 def debug():
-    db = get_db()
-    mycursor = db.cursor()
-
-    if request.method == "POST":
-        food = request.form.get("food_name")
-        return redirect(f"/search/{food}")
-    data=new_scrape()
-    return render_template("NewMain.html", data = data)
+    return str(scrape())
+    #db = get_db()
+    #mycursor = db.cursor()
+#
+#    if request.method == "POST":
+#        food = request.form.get("food_name")
+#        return redirect(f"/search/{food}")
+#    return render_template("NewMain.html", data = data)
 
 def scrape():
     #page = requests.get("https://api.allorigins.win/raw?url=https://strav.nasejidelna.cz/0254/login")
@@ -261,6 +261,7 @@ def scrape():
     for day in days:
         #date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].text.strip()
         date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].get("id").split("_")[1:]
+        return date
         date = ".".join(date)
         #disabled = date - today <= 2
         
