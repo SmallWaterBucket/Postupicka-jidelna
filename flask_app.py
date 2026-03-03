@@ -237,7 +237,7 @@ def get_new_food(food_id):
 def debug():
     db = get_db()
     mycursor = db.cursor()
-
+    data = new_scrape()
     if request.method == "POST":
         food = request.form.get("food_name")
         return redirect(f"/search/{food}")
