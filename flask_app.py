@@ -220,7 +220,7 @@ def get_new_food(food_id):
         if password == EnteredPassword:
             decision = request.form.get("decision")
             if decision == "accept":
-                cursor.execute("insert into Main (name,path,average) values (%s,%s,%s)", (name, path, average))
+                cursor.execute("insert into Main (name,path,average,isFood) values (%s,%s,%s,%s)", (name, path, average, 1))
             if decision == "deny":
                 os.remove(path)
             cursor.execute("delete from New where id = %s",(id,))
@@ -233,8 +233,14 @@ def get_new_food(food_id):
 
 @app.route('/debug')
 def debug():
-    return "Github connected, hopefully"
+    db = get_db()
+    mycursor = db.cursor()
 
+    if request.method == "POST":
+        food = request.form.get("food_name")
+        return redirect(f"/search/{food}")
+    data=scrape()
+    return render_template("NewMain.html", data = data)
 
 def scrape():
     #page = requests.get("https://api.allorigins.win/raw?url=https://strav.nasejidelna.cz/0254/login")
