@@ -239,7 +239,7 @@ def debug():
     if request.method == "POST":
         food = request.form.get("food_name")
         return redirect(f"/search/{food}")
-    data=scrape()
+    data=new_scrape()
     return render_template("NewMain.html", data = data)
 
 def scrape():
@@ -279,6 +279,48 @@ def scrape():
         data.append((date,foods))
 
     return data
+
+
+
+def new_scrape():
+    #page = requests.get("https://api.allorigins.win/raw?url=https://strav.nasejidelna.cz/0254/login")
+    page = requests.get("https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=https://strav.nasejidelna.cz/0254/login")
+    soup = BeautifulSoup(page.text, "html.parser")
+
+    days = soup.find_all("div", class_="jidelnicekDen")
+
+    data = [] # foods from Hlavni canteen, not modrany
+
+    today = date.today().strftime("%d.%m.%Y")
+
+    for day in days:
+        date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].text.strip()
+        date = date.split(" ")[1]
+        foods = []
+
+        food_containers = day.find_all("div", class_="container")
+        for food in food_containers:
+            if food.find_all("span", style="color:green;")[0].text.strip() == "Hlavní":
+                food = food.text.strip().replace("\n","").strip()
+                food = unicodedata.normalize("NFKC", food).replace("\xa0", " ").strip()
+                if "Polévka" not in food:
+                    if "(" in food:
+                        food = food[16:food.index("(") - 1]
+                    else:
+                        food = food[16:len(food) - 1]
+
+                    # Generovany chatem GPT{
+                    food = re.sub(r"[,\s\xa0]*čaj.*$", "", food, flags=re.IGNORECASE) # odstrani vse po ", caj"
+                    food = re.sub(r"\s+", " ", food)
+                    food = ' '.join(food.split())
+                    #}
+
+                    foods.append((food,get_image(food)))
+        data.append((date,foods, "enabled"))
+
+
+
+
 
 @app.route('/foods')
 def all_foods():
