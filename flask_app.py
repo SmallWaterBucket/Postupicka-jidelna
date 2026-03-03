@@ -1,3 +1,5 @@
+import datetime
+
 from flask import Flask, render_template,url_for, request, redirect, flash, send_from_directory, g
 import os.path
 import os,requests, unicodedata, MySQLdb,re
@@ -251,7 +253,7 @@ def scrape():
 
     data = [] # foods from Hlavni canteen, not modrany
 
-    today = date.today().strftime("%d.%m.%Y")
+    today = datetime.datetime.now().strftime("%d.%m.%Y")
 
     for day in days:
         date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].text.strip()
@@ -291,7 +293,7 @@ def new_scrape():
 
     data = [] # foods from Hlavni canteen, not modrany
 
-    today = date.today().strftime("%d.%m.%Y")
+    today = datetime.datetime.now().strftime("%d.%m.%Y")
 
     for day in days:
         date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].text.strip()
