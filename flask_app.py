@@ -235,14 +235,13 @@ def get_new_food(food_id):
 
 @app.route('/debug')
 def debug():
-    return str(scrape())
-    #db = get_db()
-    #mycursor = db.cursor()
-#
-#    if request.method == "POST":
-#        food = request.form.get("food_name")
-#        return redirect(f"/search/{food}")
-#    return render_template("NewMain.html", data = data)
+    db = get_db()
+    mycursor = db.cursor()
+
+    if request.method == "POST":
+        food = request.form.get("food_name")
+        return redirect(f"/search/{food}")
+    return render_template("NewMain.html", data = data)
 
 def scrape():
     #page = requests.get("https://api.allorigins.win/raw?url=https://strav.nasejidelna.cz/0254/login")
@@ -260,8 +259,7 @@ def scrape():
 
     for day in days:
         #date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].text.strip()
-        date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].get("id").split("_")
-        return date
+        date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].get("id").split("-")[1:]
         date = ".".join(date)
         #disabled = date - today <= 2
         
@@ -307,7 +305,7 @@ def new_scrape():
 
     for day in days:
         #date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].text.strip()
-        date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].get("id").split("_")[1:]
+        date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].get("id").split("-")[1:]
         date = ".".join(date)
         date = datetime.datetime.strptime(date, "%d.%m.%Y")
         disabled = date - today <= 2
