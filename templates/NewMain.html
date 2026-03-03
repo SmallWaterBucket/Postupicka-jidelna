@@ -118,9 +118,11 @@
                 <div class = "foods">
                 {% for food,image in foods %}
                     <div class = "food">
-                        <input type="radio" value="{{day}},{{food}}" name="{{day}}">
-                        <p>{{food}}</p>
-                        <a href="{{ image }}"><img class="image" src="{{ image }}" height="200" alt="{{ food }}"></a>
+                        <input type="radio" value="{{day}},{{food}}" id="{{day}},{{food}}" name="{{day}}">
+                        <label for = "{{day}},{{food}}">
+                            <p>{{food}}</p>
+                            <a href="{{ image }}"><img class="image" src="{{ image }}" height="200" alt="{{ food }}"></a>
+                        </label>
                     </div>
                 {% endfor %}
                 </div>
