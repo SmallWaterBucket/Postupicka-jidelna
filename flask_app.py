@@ -211,7 +211,7 @@ def get_new_food(food_id):
     if not result:
         return "Not found"
     
-    id, name, path, average = result
+    id, name, path, average, isFood = result
 
     image_url = f"/image/{path.split('/')[-1]}"
     message = ""
@@ -220,7 +220,7 @@ def get_new_food(food_id):
         if password == EnteredPassword:
             decision = request.form.get("decision")
             if decision == "accept":
-                cursor.execute("insert into Main (name,path,average,isFood) values (%s,%s,%s,%s)", (name, path, average, 1))
+                cursor.execute("insert into Main (name,path,average,isFood) values (%s,%s,%s,%s)", (name, path, average, isFood))
             if decision == "deny":
                 os.remove(path)
             cursor.execute("delete from New where id = %s",(id,))
