@@ -299,7 +299,7 @@ def new_scrape():
 
     data = [] # foods from Hlavni canteen, not modrany
 
-    today = datetime.datetime.now().strftime("%d.%m.%Y")
+    today = datetime.datetime.now()
 
 
     #date = datetime.datetime(date.year, date.month, date.day + 2)
