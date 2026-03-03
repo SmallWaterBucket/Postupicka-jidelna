@@ -256,8 +256,8 @@ def scrape():
     today = datetime.datetime.now().strftime("%d.%m.%Y")
 
     for day in days:
-        date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].text.strip()
-        date = date.split(" ")[1]
+        #date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].text.strip()
+        date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].id
         foods = []
 
         food_containers = day.find_all("div", class_="container")
