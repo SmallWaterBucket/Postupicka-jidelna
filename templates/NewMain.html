@@ -129,9 +129,9 @@
             <div class = "day">
                 <h2>{{day}}</h2>
                 <div class = "foods">
-                {% for food,image in foods %}
+                {% for food,image,disabled in foods %}
                     <div class = "food">
-                        <input type="radio" class="foodSelection" value="{{day}},{{food}}" id="{{day}},{{food}}" name="{{day}}">
+                        <input type="radio" class="foodSelection" value="{{day}},{{food}}" id="{{day}},{{food}}" name="{{day}}" disabled = "{{  disabled }}">
                         <label for = "{{day}},{{food}}">
                             <p>{{food}}</p>
                             <a href="{{ image }}"><img class="image" src="{{ image }}" height="200" alt="{{ food }}"></a>

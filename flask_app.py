@@ -251,9 +251,11 @@ def scrape():
 
     data = [] # foods from Hlavni canteen, not modrany
 
+    today = date.today().strftime("%d.%m.%Y")
+
     for day in days:
         date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].text.strip()
-
+        date = date.split(" ")[1]
         foods = []
 
         food_containers = day.find_all("div", class_="container")
