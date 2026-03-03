@@ -158,7 +158,7 @@ def add_food():
             filename = secure_filename(file.filename)
             if extension not in app.config['ALLOWED_EXTENSIONS']:
                 return 'The uploaded file is not an image.'
-            if os.path.isfile(f"/home/jidelna/mysite/static/images/{file.filename}"):
+            if os.path.isfile(f"{app.config['UPLOAD_FOLDER']}/{file.filename}"):
                 rnd = random.randrange(0, 100000)
                 filename = f"{rnd}{extension}"
                 while os.path.isfile(filename):
