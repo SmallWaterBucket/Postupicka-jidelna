@@ -309,7 +309,7 @@ def new_scrape():
         date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].get("id").split("-")[1:]
         date = ".".join(date)
         date = datetime.datetime.strptime(date, "%Y.%m.%d").date()
-        disabled = (date - today).days <= 2
+        disabled = (date - today).days < 2
         
         foods = []
 
