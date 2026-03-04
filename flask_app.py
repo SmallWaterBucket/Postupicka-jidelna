@@ -235,6 +235,7 @@ def get_new_food(food_id):
 
 @app.route('/debug')
 def debug():
+    return str(new_scrape())
     db = get_db()
     mycursor = db.cursor()
     data = new_scrape()
