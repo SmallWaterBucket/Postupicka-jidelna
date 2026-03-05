@@ -238,9 +238,15 @@ def debug():
     db = get_db()
     mycursor = db.cursor()
     data = new_scrape()
+    test = []
     if request.method == "POST":
-        food = request.form.get("food_name")
-        return redirect(f"/search/{food}")
+        if "search" in request.form:
+            food = request.form.get("food_name")
+            return redirect(f"/search/{food}")
+        else:
+            for day,foods in data:
+                choice = request.form.get(str(day))
+                test.append((day, choice))
     return render_template("NewMain.html", data = data)
 
 def scrape():
@@ -308,6 +314,7 @@ def new_scrape():
         date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].get("id").split("-")[1:]
         date = ".".join(date)
         date = datetime.datetime.strptime(date, "%Y.%m.%d").date()
+        date = datetime.datetime.strftime(date, "%d.%m.%Y")
         disabled = (date - today).days <= 2
         
         foods = []
