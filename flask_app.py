@@ -316,6 +316,7 @@ def new_scrape():
         date = ".".join(date)
         date = datetime.datetime.strptime(date, "%Y.%m.%d").date()
         disabled = (date - today).days < 2
+        date = date.strftime("%d.%m.%Y")
         
         foods = []
 
