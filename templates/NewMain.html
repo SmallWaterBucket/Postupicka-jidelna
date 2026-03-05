@@ -138,7 +138,7 @@
                 <div class = "foods">
                 {% for food,image,disabled in foods %}
                     <div class = "food">
-                        <input type="radio" class="foodSelection" value="{{day}},{{food}}" id="{{day}},{{food}}" name="{{day}}" disabled = "{{  disabled }}" onchange="this.form.submit()">
+                        <input type="radio" class="foodSelection" value="{{day}},{{food}}" id="{{day}},{{food}}" name="{{day}}" {% if disabled %} disabled {% endif %}">
                         <label for = "{{day}},{{food}}">
                             <p>{{food}}</p>
                             <a href="{{ image }}"><img class="image" src="{{ image }}" height="200" alt="{{ food }}"></a>

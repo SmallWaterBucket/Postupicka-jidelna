@@ -235,6 +235,7 @@ def get_new_food(food_id):
 
 @app.route('/debug')
 def debug():
+    #return str(new_scrape())
     db = get_db()
     mycursor = db.cursor()
     data = new_scrape()
@@ -314,8 +315,7 @@ def new_scrape():
         date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].get("id").split("-")[1:]
         date = ".".join(date)
         date = datetime.datetime.strptime(date, "%Y.%m.%d").date()
-        date = datetime.datetime.strftime(date, "%d.%m.%Y")
-        disabled = (date - today).days <= 2
+        disabled = (date - today).days < 2
         
         foods = []
 
