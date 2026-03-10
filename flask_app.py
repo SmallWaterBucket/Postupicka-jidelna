@@ -251,6 +251,11 @@ def debug():
                 return str(test)
     return render_template("NewMain.html", data = data)
 
+
+@app.route('/order/<data>', methods=["GET", "POST"])
+def order(data):
+    return str(data)
+
 def scrape():
     #page = requests.get("https://api.allorigins.win/raw?url=https://strav.nasejidelna.cz/0254/login")
     page = requests.get("https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=https://strav.nasejidelna.cz/0254/login")
