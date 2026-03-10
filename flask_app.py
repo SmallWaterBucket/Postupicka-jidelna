@@ -233,7 +233,7 @@ def get_new_food(food_id):
     return render_template("accept_deny.html", image=image_url, name=name, rating=average, message=message, food_id=food_id)
 
 
-@app.route('/debug')
+@app.route('/debug', methods=["GET", "POST"])
 def debug():
     #return str(new_scrape())
     db = get_db()
