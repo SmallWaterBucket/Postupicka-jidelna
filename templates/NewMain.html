@@ -92,7 +92,7 @@
         font-family: 'Aurach', sans-serif;
     }
     p {
-        font-family: 'Book-Antiqua.ttf';
+        font-family: 'Book-Antiqua';
     }
     .foodSelection{
         display: none;
@@ -126,11 +126,12 @@
         <h1><u>Jídla z jídelny Gymnázia Postupická</u></h1>
         <p>Taky jste si někdy objednávali jídlo, a i když jste si vygooglili jak má vypadat, bylo to něco úplně <b>jiného?</b></p>
         <p>Tak tato stránka vám přinese řešení. Na této stránce můžete <b>publikovat fotky jídel z jídelny</b> a dávat jakému koliv jídlu <b>hodnocení</b>.</p>
-        <form action="{{ url_for('Main') }}" method="post">
+        <form action="/" method="post">
             <label for="food_name_label">Hledat jídlo:</label>
             <input class="search" type="text" id="food_name" name="food_name" placeholder="jídlo">
             <button type="submit" name="search" value="search">Hledat</button>
-    
+        </form>
+        <form action="/debug" method="post">
             <div class = "jidelnicek">
             {% for day,foods in data %}
                 <div class = "day">
