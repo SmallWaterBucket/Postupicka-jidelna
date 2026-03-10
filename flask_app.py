@@ -238,6 +238,8 @@ def debug():
     #return str(new_scrape())
     db = get_db()
     mycursor = db.cursor()
+    username = ""
+    password = ""
     data = new_scrape()
     test = []
     if request.method == "POST":
