@@ -117,6 +117,18 @@
 
   </style>
 
+  <script>
+    function sendFood(day, food) {
+      fetch("/order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ day: day, food: food })
+      })
+    }
+  </script>
+
 </head>
 <body>
     <div class="navbar">
@@ -139,7 +151,7 @@
                     <div class = "foods">
                     {% for food,image,disabled in foods %}
                         <div class = "food">
-                           <input type="radio" class="foodSelection" value="{{day}},{{food}}" id="{{day}},{{food}}" name="{{day}}" {% if disabled %} disabled {% endif %} onchange="this.form.submit()">
+                           <input type="radio" class="foodSelection" value="{{day}},{{food}}" id="{{day}},{{food}}" name="{{day}}" {% if disabled %} disabled {% endif %} onchange="sendFood('{{day}}','{{food}}')">
                             <label for = "{{day}},{{food}}">
                                 <p>{{food}}</p>
                                 <a href="{{ image }}"><img class="image" src="{{ image }}" height="200" alt="{{ food }}"></a>
