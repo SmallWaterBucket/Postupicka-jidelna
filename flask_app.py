@@ -246,7 +246,7 @@ def debug():
             return redirect(f"/search/{food}")
         else:
             for day,foods in data:
-                choice = request.form.get(str(day))
+                choice = request.form.get[str(day)]
                 test.append((day, choice))
                 return str(test)
     return render_template("NewMain.html", data = data)
