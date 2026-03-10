@@ -124,7 +124,7 @@
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ day: day, food: food })
+        body: JSON.stringify({ day: day, food: food, username: '{{ username }}', password: '{{ password }}' })
       })
     }
   </script>
