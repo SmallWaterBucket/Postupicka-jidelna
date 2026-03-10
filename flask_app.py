@@ -247,12 +247,8 @@ def debug():
             food = request.form.get("food_name")
             return redirect(f"/search/{food}")
         else:
-            for day,foods in data:
-                choice = request.form.get(str(day))
-                username = request.form.get("username")
-                password = request.form.get("password")
-                test.append((day, choice))
-                return str(test)
+            username = request.form.get("username")
+            password = request.form.get("password")
     return render_template("NewMain.html", data = data, username=username, password=password)
 
 
