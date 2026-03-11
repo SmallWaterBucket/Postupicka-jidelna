@@ -235,8 +235,6 @@ def get_new_food(food_id):
 
 @app.route('/debug', methods=["GET", "POST"])
 def debug():
-    print("test")
-    #return str(new_scrape())
     db = get_db()
     mycursor = db.cursor()
     username = ""
@@ -248,9 +246,26 @@ def debug():
             food = request.form.get("food_name")
             return redirect(f"/search/{food}")
         else:
-            username = request.form.get("username")
-            password = request.form.get("password")
+            if "password" in request.form:
+                username = request.form.get("username")
+                password = request.form.get("password")
+            else:
+                return render_template("Login.html")
     return render_template("NewMain.html", data = data, username=username, password=password)
+
+
+@app.route("/statement")
+def statement():
+    return render_template("statement.html")
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+
+    return render_template("Login.html")
+
 
 
 @app.route('/order', methods=["POST"])

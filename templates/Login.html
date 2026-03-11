@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Přihlášení</title>
+  <link rel="icon" href="/favicon.ico">
+  <style>
+    .day{
+        display:flex;
+        flex-direction: column;
+        flex-grow: 1;
+        flex-shrink: 1;
+        flex-wrap: wrap;
+        align-items: center;
+        width: 100%;
+    }
+
+    @font-face {
+        font-family: 'Aurach';
+        src: url("/static/fonts/AurachHeavy.ttf") format('truetype');
+    }
+
+
+    @font-face {
+        font-family: 'Book-Antiqua';
+        src: url("/static/fonts/Book-Antiqua.ttf.ttf") format('truetype');
+    }
+    
+    .navbar{
+        z-index:1;
+    }
+
+    .not_navbar {
+
+        color: rgb(50,61,127);
+
+        display:flex;
+        flex-grow:1;
+        align-items: center;
+        flex-direction: column;
+    }
+    .image{
+        display:flex;
+        flex-shrink: 1;
+        flex-grow: 1;
+    }
+
+    input {
+        border-radius: 15px;
+        padding: 10px;
+        border: 2px solid #ccc;
+        width: 250px;
+    }
+    button:hover {
+        background-color: rgb(50,61,127);
+        color: white;
+    }
+    button{
+        border-radius: 12px;
+    }
+
+    h1 {
+        font-family: 'Aurach', sans-serif;
+        text-decoration-line: underline;
+    }
+    p {
+        font-family: 'Book-Antiqua.ttf';
+    }
+
+  </style>
+
+</head>
+<body>
+    <div class="navbar">
+        {% include "navbar.html" %}
+    </div>
+    <div class = "not_navbar">
+        <h1>Přihlášení</h1>
+        <p>Použijte vaše přihlašovací údaje do systému iCanteen.</p>
+        <form method="POST" action="/debug">
+            <input type = "text" placeholder="Uživatelské jméno" name="username" id = "username">
+            <input type = "password" placeholder="Heslo" name="password" id ="password"> 
+            <button type="submit">Login</button>
+        </form>
+        <p style="color: red;">Toto je beta feature. Je v a aktivním vývoji, ale bohužel zatím není funkční.</p>
+        <p><a href = "/statement">Uklání vašich osobních údajů</a></p>
+    </div>
+</body>
+</html>
