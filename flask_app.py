@@ -253,8 +253,9 @@ def debug():
     return render_template("NewMain.html", data = data, username=username, password=password)
 
 
-@app.route('/order/<data>', methods=["GET", "POST"])
-def order(data):
+@app.route('/order', methods=["POST"])
+def order():
+    data = request.json
     print(str(data))
     return str(data)
 
