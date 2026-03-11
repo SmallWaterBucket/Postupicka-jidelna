@@ -77,6 +77,12 @@
             scale: 1.15;
         }
         </style>
+        <script>
+            function submitPost(day, food) {
+                fetch("/order", {
+                method: "POST"})
+            }
+        </script>
     </head>
     
     <body>
@@ -88,8 +94,8 @@
                     <li><a href="/foods">Seznam jídel</a></li>
                     <li><a href="/add_food">Přidat jídlo</a></li>
                     <li><a href="/contacts">Kontakty</div></a></li>
+                    <li><a href="#" onclick="submitPost()">Přihláśení</a></li>
                 </ul>
-                <button id="login">Login</button>
             </nav>
         </form>
     </body>
