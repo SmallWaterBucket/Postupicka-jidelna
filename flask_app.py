@@ -40,7 +40,7 @@ def get_message(message):
             link_text = "Přidat ho?"
             img=get_image("Jidlo nenalezeno new")
         case "Food submitted":
-            message="Děkujeme za to že jste přidali jídlo."
+            message="Děkujeme, že jste přidali jídlo."
             submessage = " Zkontrolujeme ho do jednoho týdne a přidáme ho."
             img = "/image/Added_food.jpeg"
         case "File too big":
@@ -167,7 +167,7 @@ def add_food():
                     rnd = random.randrange(0, 100000)
                     filename = f"{rnd}{extension}"
             FoodName = request.form.get("food_name")
-            rating = -1
+            rating = request.form.get("rating")
 
             file.save(os.path.join(
                 app.config['UPLOAD_FOLDER'],
@@ -222,7 +222,10 @@ def get_new_food(food_id):
         if password == EnteredPassword:
             decision = request.form.get("decision")
             if decision == "accept":
-                cursor.execute("insert into Main (name,path,average,isFood) values (%s,%s,%s,%s)", (name, path, average, isFood))
+                cursor.execute("insert into Main (name,path,average,isFood) values (%s,%s,%s,%s)", (name, path, -1, isFood))
+                cursor.execute("SELECT id FROM Main WHERE name = %s AND path = %s;", (name, path))
+                new_id = cursor.fetchone()[0]
+                cursor.execute("insert into Ratings (foodid,rating) values (%s,%s)", (new_id, average))
             if decision == "deny":
                 os.remove(path)
             cursor.execute("delete from New where id = %s",(id,))

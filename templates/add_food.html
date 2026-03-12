@@ -21,17 +21,19 @@
     {% include "navbar.html" %}
     <div class="not_navbar">
         <form action="{{ url_for('add_food') }}" method="post" enctype="multipart/form-data">
-            <label for="food_name">Food name:</label>
-            <p>
-                <input type="text" id="food_name" name="food_name" placeholder="Food name" list="foodList">
-                <datalist class="datalist" id="foodList">
-                    {% for food,images in foods %}
-                        <option value="{{food}}">
-                    {% endfor %}
-                </datalist>
-            </p>
-
+            <label for="food_name">Název jídla:</label>
+            <input type="text" id="food_name" name="food_name" placeholder="Název jídla" list="foodList">
+            <datalist class="datalist" id="foodList">
+                {% for food,images in foods %}
+                    <option value="{{food}}">
+                {% endfor %}
+            </datalist>
+            
+            <label for="rating">Hodnocení:</label>
+            <input type="number" id="rating" name="rating" placeholder="Hodnocení (1-7)" min="1" max="7">
+            
             <input type="file" name="file">
+
             <p><button type="submit">Submit</button></p>
         </form>
     </div>
