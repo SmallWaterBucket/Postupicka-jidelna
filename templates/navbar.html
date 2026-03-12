@@ -107,8 +107,7 @@
                     {% if not password %}
                         <li><button type="submit" class="login">Přihláśení</button></li>
                     {% else %}
-                        <li>{{ username }}</li>
-                        <li>kredit: {{ kredit }}</li>
+                        <li><p>Uživatel: {{ username }}</p><p>Kredit: {{ kredit }}</p></li>
                         <li><a href="/debug">Odhlásit se</a></li>
                     {% endif %}
                 </ul>
