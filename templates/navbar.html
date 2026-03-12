@@ -112,7 +112,8 @@
                         <li><button type="submit" class="login">Přihláśení</button></li>
                     {% else %}
                         <div class = "user_info">
-                            <li><p>Uživatel: {{ username }}</p><p>Kredit: {{ kredit }}</p></li>
+                            <li>Uživatel: {{ username }}</li>
+                            <li>Kredit: {{ kredit }}</li>
                             <li><a href="/debug">Odhlásit se</a></li>
                         </div>
                     {% endif %}
