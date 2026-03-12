@@ -91,12 +91,6 @@
             flex-direction: column;
         }
         </style>
-        <script>
-            function submitPost(day, food) {
-                fetch("/order", {
-                method: "POST"})
-            }
-        </script>
     </head>
     
     <body>
@@ -111,11 +105,11 @@
                     {% if not password %}
                         <li><button type="submit" class="login">Přihláśení</button></li>
                     {% else %}
+                        <li><a href="/debug">Odhlásit se</a></li>
                         <div class = "user_info">
                             <li>Uživatel: {{ username }}</li>
                             <li>Kredit: {{ kredit }}</li>
                         </div>
-                        <li><a href="/debug">Odhlásit se</a></li>
                     {% endif %}
                 </ul>
             </nav>
