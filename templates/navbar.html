@@ -86,6 +86,10 @@
             background-color: transparent;
             scale: 1.15;
         }
+        .user_info {
+            display: flex;
+            flex-direction: column;
+        }
         </style>
         <script>
             function submitPost(day, food) {
@@ -107,8 +111,10 @@
                     {% if not password %}
                         <li><button type="submit" class="login">Přihláśení</button></li>
                     {% else %}
-                        <li><p>Uživatel: {{ username }}</p><p>Kredit: {{ kredit }}</p></li>
-                        <li><a href="/debug">Odhlásit se</a></li>
+                        <div class = "user_info">
+                            <li><p>Uživatel: {{ username }}</p><p>Kredit: {{ kredit }}</p></li>
+                            <li><a href="/debug">Odhlásit se</a></li>
+                        </div>
                     {% endif %}
                 </ul>
             </nav>
