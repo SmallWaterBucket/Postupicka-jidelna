@@ -58,6 +58,10 @@
 
         .navbar li{
             color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
             text-align: center;
         }
 
@@ -104,6 +108,8 @@
                         <li><button type="submit" class="login">Přihláśení</button></li>
                     {% else %}
                         <li>{{ username }}</li>
+                        <li>kredit: {{ kredit }}</li>
+                        <li><a href="/debug">Odhlásit se</a></li>
                     {% endif %}
                 </ul>
             </nav>
