@@ -84,10 +84,13 @@
         a li {
             transition: all 0.3s ease 0s;
         }
-        .navbar.logo a:hover {
+        .navbar li:first-child a:hover {
             background-color: transparent;
-            scale: 1.15;
         }
+        .navbar li:first-child a:hover .logo{
+            transform: scale(1.15);
+        }
+
         .user_info {
             display: flex;
             flex-direction: column;
