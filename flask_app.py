@@ -1,4 +1,5 @@
 import datetime
+import subprocess
 
 from flask import Flask, render_template,url_for, request, redirect, flash, send_from_directory, g
 import os.path
@@ -433,3 +434,13 @@ def food_edit(food_id):
         else:
             message = "Incorrect password"
     return render_template("food_edit.html", image=image_url, name=name, rating=average, message=message, food_id=food_id, isFood=isFood)
+
+
+@app.route("/kredit/<args>")
+def kredit(args):
+    proc = subprocess.run(
+        ["/home/jidelna/kredit.exe", args],
+        capture_output=True,
+        text=True
+    )
+    return proc.stdout
