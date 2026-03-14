@@ -436,10 +436,10 @@ def food_edit(food_id):
     return render_template("food_edit.html", image=image_url, name=name, rating=average, message=message, food_id=food_id, isFood=isFood)
 
 
-@app.route("/kredit/<args>")
-def kredit(args):
+@app.route("/kredit/<username>,<password>")
+def kredit(username, password):
     proc = subprocess.run(
-        ["/home/jidelna/kredit.exe", args],
+        ["/home/jidelna/kredit.exe", username, password],
         capture_output=True,
         text=True
     )
