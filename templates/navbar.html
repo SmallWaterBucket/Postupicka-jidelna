@@ -81,10 +81,10 @@
         .navbar a:hover {
             background-color: rgb(63,78,158);
         }
-        li a {
+        a li {
             transition: all 0.3s ease 0s;
         }
-        .navbar li:first-child a:hover {
+        .navbar a:first-child a:hover {
             background-color: transparent;
             scale: 1.15;
         }
@@ -107,7 +107,7 @@
                     {% if not password %}
                         <li><button type="submit" class="login">Přihláśení</button></li>
                     {% else %}
-                        <li><a href="/debug">Odhlásit se</a></li>
+                        <a href="/debug"><li>Odhlásit se</li></a>
                         <div class = "user_info">
                             <li>Uživatel: {{ username }}</li>
                             <li>Kredit: {{ kredit }}</li>
