@@ -438,5 +438,6 @@ def food_edit(food_id):
 
 @app.route("/kredit/<username>,<password>")
 def kredit(username, password):
-    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=https://152.70.41.16:8080/credit/{username},{password}")
+    #page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://152.70.41.16.nip.io:8080/credit/{username},{password}")
+    page = requests.get(f"http://152.70.41.16.nip.io:8080/credit/{username},{password}")
     return page.text
