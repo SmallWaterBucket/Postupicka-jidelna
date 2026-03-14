@@ -438,9 +438,5 @@ def food_edit(food_id):
 
 @app.route("/kredit/<username>,<password>")
 def kredit(username, password):
-    proc = subprocess.run(
-        ["/home/jidelna/kredit.exe", username, password],
-        capture_output=True,
-        text=True
-    )
-    return proc.stdout
+    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=https://http://152.70.41.16:8080/credit/{username},{password}")
+    return page.text
