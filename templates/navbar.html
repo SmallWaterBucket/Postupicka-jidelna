@@ -99,18 +99,18 @@
         <form action = "/debug" method="post">
             <nav class = "navbar">
                 <ul>
-                    <li><a href="/"><img class="logo" src="/image/3rd_logo.jpeg"></a></li>
-                    <li><a href="/about">O nás</a></li>
-                    <li><a href="/foods">Seznam jídel</a></li>
-                    <li><a href="/add_food">Přidat jídlo</a></li>
-                    <li><a href="/contacts">Kontakty</a></li>
+                    <a href="/"></a><li><img class="logo" src="/image/3rd_logo.jpeg"></li></a>
+                    <a href="/about"></a><li>O nás</li></a>
+                    <a href="/foods"></a><li>Seznam jídel</li></a>
+                    <a href="/add_food"></a><li>Přidat jídlo</li></a>
+                    <a href="/contacts"></a><li>Kontakty</li></a>
                     {% if not password %}
                         <li><button type="submit" class="login">Přihláśení</button></li>
                     {% else %}
                         <li><a href="/debug">Odhlásit se</a></li>
                         <div class = "user_info">
-                            <span>Uživatel: {{ username }}</span>
-                            <span>Kredit: {{ kredit }}</span>
+                            <li>Uživatel: {{ username }}</li>
+                            <li>Kredit: {{ kredit }}</li>
                         </div>
                     {% endif %}
                 </ul>
