@@ -60,10 +60,10 @@ def search(food):
     if request.method == "POST":
         food = request.form.get("food_name")
         return redirect(f"/search/{food}")
-    mycursor.execute("SELECT * FROM Main where name = %s", (food,))
+    mycursor.execute("SELECT id FROM Main where name = %s", (food,))
     answer = mycursor.fetchone()
     if answer:
-        return redirect(f"/get_food/{food}")
+        return redirect(f"/get_food/{answer[0]}")
 
     mycursor.execute("SELECT * FROM Main WHERE name LIKE %s OR SOUNDEX(name) = SOUNDEX(%s);", (f"%{food}%", food))
 
