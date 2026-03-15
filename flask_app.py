@@ -355,7 +355,7 @@ def new_scrape(username, password):
         foods = []
 
         food_containers = day.find_all("div", class_="container")
-        my_id = 0
+        my_id = -1
         for food in food_containers:
             if food.find_all("span", style="color:green;")[0].text.strip() == "Hlavní":
                 food = food.text.strip().replace("\n","").strip()
