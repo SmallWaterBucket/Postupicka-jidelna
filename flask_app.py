@@ -344,12 +344,13 @@ def new_scrape(username, password):
         date = ".".join(date)
         date = datetime.datetime.strptime(date, "%Y.%m.%d").date()
         disabled = (date - today).days < 2
-        date = date.strftime("%d.%m.%Y")
-        
+
         chosen_food_date = datetime.datetime.strftime(date, "%Y-%m-%d")
         chosen_food = ""
         if password:
             chosen_food = get_orderd_food(username, password, chosen_food_date)
+
+        date = date.strftime("%d.%m.%Y")
 
         foods = []
 
