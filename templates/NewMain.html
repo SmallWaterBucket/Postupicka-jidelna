@@ -145,13 +145,13 @@
         </form>
         <form action="/order" target="_blank" method="post">
             <div class = "jidelnicek">
-            {% for day,foods in data %}
+            {% for day,foods,chosen_food in data %}
                 <div class = "day">
                     <h2>{{day}}</h2>
                     <div class = "foods">
-                    {% for food,image,disabled in foods %}
+                    {% for food,image,disabled, id in foods %}
                         <div class = "food">
-                           <input type="radio" class="foodSelection" value="{{day}},{{food}}" id="{{day}},{{food}}" name="{{day}}" {% if disabled %} disabled {% endif %} onchange="sendFood('{{day}}','{{food}}')">
+                           <input type="radio" class="foodSelection" value="{{day}},{{food}}" id="{{day}},{{food}}" name="{{day}}" {% if disabled %} disabled {% endif %} onchange="sendFood('{{day}}','{{food}}')" {% if chosen_food == id %} checked {% endif %}>
                             <label for = "{{day}},{{food}}">
                                 <p>{{food}}</p>
                                 <a href="{{ image }}"><img class="image" src="{{ image }}" height="200" alt="{{ food }}"></a>

@@ -243,7 +243,6 @@ def debug():
     mycursor = db.cursor()
     username = ""
     password = ""
-    data = new_scrape()
     test = []
     if request.method == "POST":
         if "search" in request.form:
@@ -257,6 +256,9 @@ def debug():
                     return "Špatné přihlašovací údaje"
             else:
                 return render_template("Login.html")
+    
+    data = new_scrape(username, password)
+
     return render_template("NewMain.html", data = data, username=username, password=password, kredit=kredit(username, password))
 
 
@@ -322,7 +324,7 @@ def scrape():
 
 
 
-def new_scrape():
+def new_scrape(username, password):
     #page = requests.get("https://api.allorigins.win/raw?url=https://strav.nasejidelna.cz/0254/login")
     page = requests.get("https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=https://strav.nasejidelna.cz/0254/login")
     soup = BeautifulSoup(page.text, "html.parser")
@@ -344,9 +346,15 @@ def new_scrape():
         disabled = (date - today).days < 2
         date = date.strftime("%d.%m.%Y")
         
+        chosen_food_date = datetime.datetime.strftime(date, "%Y-%m-%d")
+        chosen_food = ""
+        if password:
+            chosen_food = get_orderd_food(username, password, chosen_food_date)
+
         foods = []
 
         food_containers = day.find_all("div", class_="container")
+        id = 0
         for food in food_containers:
             if food.find_all("span", style="color:green;")[0].text.strip() == "Hlavní":
                 food = food.text.strip().replace("\n","").strip()
@@ -362,9 +370,9 @@ def new_scrape():
                     food = re.sub(r"\s+", " ", food)
                     food = ' '.join(food.split())
                     #}
-
-                    foods.append((food,get_image(food), disabled))
-        data.append((date,foods))
+                    foods.append((food,get_image(food), disabled,id))
+            id+=1
+        data.append((date,foods, chosen_food))
 
     return data
 
@@ -446,4 +454,8 @@ def kredit(username, password):
 
 def try_login(username, password):
     page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://152.70.41.16.nip.io:8080/login.exe/{username},{password}")
+    return page.text
+
+def get_orderd_food(username, password, date):
+    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://152.70.41.16.nip.io:8080/get_ordered_foods.exe/{username},{password},{date}")
     return page.text
