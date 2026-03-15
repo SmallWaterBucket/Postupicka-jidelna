@@ -323,7 +323,7 @@ def scrape():
     return data
 
 
-
+@app.route("/new_scrape/<username>,<password>")
 def new_scrape(username, password):
     #page = requests.get("https://api.allorigins.win/raw?url=https://strav.nasejidelna.cz/0254/login")
     page = requests.get("https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=https://strav.nasejidelna.cz/0254/login")
@@ -343,7 +343,7 @@ def new_scrape(username, password):
 
             chosen_food_date = datetime.datetime.strftime(date, "%Y-%m-%d")
             chosen_food_dates.append(chosen_food_date)
-
+        return str(chosen_food_dates)
         chosen_foods_str = get_orderd_food(username, password, chosen_food_dates)
         chosen_foods = chosen_foods_str.split(" ")
     
