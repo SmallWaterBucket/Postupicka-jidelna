@@ -332,12 +332,24 @@ def new_scrape(username, password):
     days = soup.find_all("div", class_="jidelnicekDen")
 
     data = [] # foods from Hlavni canteen, not modrany
+    chosen_food_dates = []
 
     today = datetime.datetime.now().date()
+    if password:
+        for day in days:
+            date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].get("id").split("-")[1:]
+            date = ".".join(date)
+            date = datetime.datetime.strptime(date, "%Y.%m.%d").date()
 
+            chosen_food_date = datetime.datetime.strftime(date, "%Y-%m-%d")
+            chosen_food_dates.append(chosen_food_date)
 
-    #date = datetime.datetime(date.year, date.month, date.day + 2)
+        chosen_foods_str = get_orderd_food(username, password, chosen_food_dates)
+        chosen_foods = chosen_foods_str.split(" ")
+    
 
+    
+    day_index = 0
     for day in days:
         #date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].text.strip()
         date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].get("id").split("-")[1:]
@@ -345,12 +357,14 @@ def new_scrape(username, password):
         date = datetime.datetime.strptime(date, "%Y.%m.%d").date()
         disabled = (date - today).days < 2
 
+
         chosen_food_date = datetime.datetime.strftime(date, "%Y-%m-%d")
         chosen_food = ""
         if password:
-            chosen_food = int(get_orderd_food(username, password, chosen_food_date))
+            chosen_food = chosen_foods[day_index]
 
         date = date.strftime("%d.%m.%Y")
+
 
         foods = []
 
@@ -374,7 +388,7 @@ def new_scrape(username, password):
                     foods.append((food,get_image(food), disabled,my_id))
             my_id+=1
         data.append((date,foods, chosen_food))
-
+        day_index+=1
     return data
 
 
@@ -457,6 +471,7 @@ def try_login(username, password):
     page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://152.70.41.16.nip.io:8080/login.exe/{username},{password}")
     return page.text
 
-def get_orderd_food(username, password, date):
-    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://152.70.41.16.nip.io:8080/get_ordered_foods.exe/{username},{password},{date}")
+def get_orderd_food(username, password, dates):
+    dates = ".".join(dates)
+    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://152.70.41.16.nip.io:8080/get_ordered_foods.exe/{username},{password},{dates}")
     return page.text
