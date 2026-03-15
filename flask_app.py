@@ -348,14 +348,14 @@ def new_scrape(username, password):
         chosen_food_date = datetime.datetime.strftime(date, "%Y-%m-%d")
         chosen_food = ""
         if password:
-            chosen_food = get_orderd_food(username, password, chosen_food_date)
+            chosen_food = int(get_orderd_food(username, password, chosen_food_date))
 
         date = date.strftime("%d.%m.%Y")
 
         foods = []
 
         food_containers = day.find_all("div", class_="container")
-        id = 0
+        my_id = 0
         for food in food_containers:
             if food.find_all("span", style="color:green;")[0].text.strip() == "Hlavní":
                 food = food.text.strip().replace("\n","").strip()
@@ -371,8 +371,8 @@ def new_scrape(username, password):
                     food = re.sub(r"\s+", " ", food)
                     food = ' '.join(food.split())
                     #}
-                    foods.append((food,get_image(food), disabled,id))
-            id+=1
+                    foods.append((food,get_image(food), disabled,my_id))
+            my_id+=1
         data.append((date,foods, chosen_food))
 
     return data
