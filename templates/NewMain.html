@@ -147,6 +147,7 @@
             <div class = "jidelnicek">
             {% for day,foods,chosen_food in data %}
                 <div class = "day">
+                    <p>chosen food: {{ chosen_food }}</p>
                     <h2>{{day}}</h2>
                     <div class = "foods">
                     {% for food,image,disabled, id in foods %}
