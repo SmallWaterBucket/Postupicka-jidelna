@@ -477,3 +477,8 @@ def get_orderd_food(username, password, dates):
     dates = ".".join(dates)
     page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://152.70.41.16.nip.io:8080/get_ordered_foods.exe/{username},{password},{dates}")
     return page.text
+
+@app.route("/ordered_foods_debug/<username>,<password>,<dates>")
+def get_orderd_food_debug(username, password, dates):
+    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://152.70.41.16.nip.io:8080/get_ordered_foods.exe/{username},{password},{dates}")
+    return page.text
