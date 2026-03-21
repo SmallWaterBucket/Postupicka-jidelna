@@ -346,6 +346,7 @@ def new_scrape(username, password):
         #return str(chosen_food_dates)
         chosen_foods_str = get_orderd_food(username, password, chosen_food_dates)
         chosen_foods = chosen_foods_str.split("\n")
+        return str(chosen_foods)
         
     
 
