@@ -346,7 +346,7 @@ def new_scrape(username, password):
         #return str(chosen_food_dates)
         chosen_foods_str = get_orderd_food(username, password, chosen_food_dates)
         chosen_foods = chosen_foods_str.split("\n")
-        return str(chosen_foods)
+        #return str(chosen_foods)
         
     
 
@@ -363,7 +363,10 @@ def new_scrape(username, password):
         chosen_food_date = datetime.datetime.strftime(date, "%Y-%m-%d")
         chosen_food = ""
         if password:
-            chosen_food = int(chosen_foods[day_index])
+            if chosen_foods[day_index]:
+                chosen_food = int(chosen_foods[day_index])
+            else:
+                chosen_food = ""
 
         date = date.strftime("%d.%m.%Y")
 
