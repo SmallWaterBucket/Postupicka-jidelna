@@ -472,6 +472,7 @@ def try_login(username, password):
     page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://152.70.41.16.nip.io:8080/login.exe/{username},{password}")
     return page.text
 
+@app.route("/ordered_foods/<username>,<password>,<dates>")
 def get_orderd_food(username, password, dates):
     dates = ".".join(dates)
     page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://152.70.41.16.nip.io:8080/get_ordered_foods.exe/{username},{password},{dates}")

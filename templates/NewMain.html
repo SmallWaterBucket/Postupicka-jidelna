@@ -147,12 +147,10 @@
             <div class = "jidelnicek">
             {% for day,foods,chosen_food in data %}
                 <div class = "day">
-                    <p>chosen food: {{ chosen_food }}</p>
                     <h2>{{day}}</h2>
                     <div class = "foods">
                     {% for food,image,disabled, my_id in foods %}
                         <div class = "food">
-                            <p>{{my_id}}</p>
                             <input type="radio" class="foodSelection" value="{{day}},{{food}}" id="{{day}},{{food}}" name="{{day}}" {% if disabled %} disabled {% endif %} onchange="sendFood('{{day}}','{{food}}')" {% if chosen_food == my_id %} checked {% endif %}>
                             <label for = "{{day}},{{food}}">
                                 <p>{{food}}</p>
