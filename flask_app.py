@@ -275,8 +275,15 @@ def login():
 @app.route('/order', methods=["POST"])
 def order():
     data = request.json
-    print(str(data))
-    return str(data)
+    username = data.get("username")
+    password = data.get("password")
+    food = data.get("food")
+    day = data.get("day")
+    date = datetime.datetime.strptime(day, "%d.%m.%Y").strftime("%Y-%m-%d")
+
+    ret = order_food(username, password, date, food)
+    print(ret)
+    return ret
 
 def scrape():
     #page = requests.get("https://api.allorigins.win/raw?url=https://strav.nasejidelna.cz/0254/login")
@@ -487,3 +494,7 @@ def get_orderd_food(username, password, dates):
 def get_orderd_food_debug(username, password, dates):
     page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://152.70.41.16.nip.io:8080/get_ordered_foods.exe/{username},{password},{dates}")
     return page.text
+
+@app.route("/order_request/<username>,<password>,<date>,<food_id>")
+def order_food(username, password, date, food_id):
+    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://152.70.41.16.nip.io:8080/order.exe/{username},{password},{date},{food_id}")

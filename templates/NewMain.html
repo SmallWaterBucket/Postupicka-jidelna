@@ -151,7 +151,7 @@
                     <div class = "foods">
                     {% for food,image,disabled, my_id in foods %}
                         <div class = "food">
-                            <input type="radio" class="foodSelection" value="{{day}},{{food}}" id="{{day}},{{food}}" name="{{day}}" {% if disabled %} disabled {% endif %} onchange="sendFood('{{day}}','{{food}}')" {% if chosen_food == my_id %} checked {% endif %}>
+                            <input type="radio" class="foodSelection" value="{{day}},{{food}}" id="{{day}},{{food}}" name="{{day}}" {% if disabled %} disabled {% endif %} onchange="sendFood('{{day}}','{{my_id}}')" {% if chosen_food == my_id %} checked {% endif %}>
                             <label for = "{{day}},{{food}}">
                                 <p>{{food}}</p>
                                 <a href="{{ image }}"><img class="image" src="{{ image }}" height="200" alt="{{ food }}"></a>
