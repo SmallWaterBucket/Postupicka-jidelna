@@ -426,7 +426,9 @@ def all_foods():
     answer = mycursor.fetchall()
     ret = []
     for item in answer:
-        food_item = item[1], item[0], item[2], item[3]  # food, food_id,image,rating
+        filename = os.path.split(item[2])[-1]
+        image_url = f"/image/{filename}"
+        food_item = item[1], item[0], image_url, item[3]  # food, food_id,image,rating
         ret.append(food_item)
 
     return render_template("foods.html", foods=ret)
