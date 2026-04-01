@@ -12,7 +12,7 @@
             font-family: 'Aurach';
             color: rgb(50,61,127);
         }
-        body{
+        .foods{
             display: flex;
             flex-direction: row;
             flex-wrap: wrap;
@@ -20,6 +20,9 @@
         .food_container{
             width: 250px;
             height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .image{
             object-fit: contain;
@@ -29,17 +32,19 @@
 <body>
     {% include "navbar.html" %}
     <h1><u>Všechny jídla, která byla nahrána na tuto stránku:</u></h1>
-    {% for food, food_id,image,rating in foods %}
-        <div class="food_container">
-            <a href="/get_food/{{food_id}}">
-                <p>{{food}}</p>
-            </a>
-            <a href = "{{image}}">
-                <img src="{{image}}" alt="{{food}}" width="200">
-            </a>
-            <p>Rating: {{rating}}</p>
-        </div>
-    {% endfor %}
+    <div class="foods">
+        {% for food, food_id,image,rating in foods %}
+            <div class="food_container">
+                <a href="/get_food/{{food_id}}">
+                    <p>{{food}}</p>
+                </a>
+                <a href = "{{image}}">
+                    <img src="{{image}}" alt="{{food}}" width="200">
+                </a>
+                <p>Rating: {{rating}}</p>
+            </div>
+        {% endfor %}
+    </div>
     <p>Není tady to co hledáte? <a href="/add_food">Přidejte ho</a></p>
 </body>
 </html>
