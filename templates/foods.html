@@ -24,7 +24,11 @@
             flex-direction: column;
             align-items: center;
         }
-        .image{
+        .image {
+            max-width: 200px;
+            max-height: 200px;
+            width: auto;
+            height: auto;
             object-fit: contain;
         }
   </style>
@@ -39,7 +43,7 @@
                     <p>{{food}}</p>
                 </a>
                 <a href = "{{image}}">
-                    <img src="{{image}}" alt="{{food}}" width="200">
+                    <img class="image" src="{{image}}" alt="{{food}}">
                 </a>
                 <p>Rating: {{rating}}</p>
             </div>
