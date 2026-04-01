@@ -14,10 +14,10 @@
         }
         .body{
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             flex-wrap: wrap;
         }
-        .food{
+        .food_container{
             width: 250px;
             height: 300px;
         }
@@ -30,7 +30,7 @@
     {% include "navbar.html" %}
     <h1><u>Všechny jídla, která byla nahrána na tuto stránku:</u></h1>
     {% for food, food_id,image,rating in foods %}
-        <div class="food">
+        <div class="food_container">
             <a href="/get_food/{{food_id}}">
                 <p>{{food}}</p>
             </a>
