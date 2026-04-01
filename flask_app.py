@@ -426,7 +426,7 @@ def all_foods():
     answer = mycursor.fetchall()
     ret = []
     for item in answer:
-        food_item = item[1], item[0]  # name column, id column
+        food_item = item[1], item[0], get_image(item[1]), item[3]  # food, food_id,image,rating
         ret.append(food_item)
 
     return render_template("foods.html", foods=ret)
