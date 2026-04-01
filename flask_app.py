@@ -7,7 +7,13 @@ import os,requests, unicodedata, MySQLdb,re
 from werkzeug.utils import secure_filename
 from bs4 import BeautifulSoup
 import random
-
+#todo:
+#- fix food rating; possibly fixed, testing needed;
+#- better foods page
+#- change text on login page
+#- fix navbar sticking
+#- better division of days on the main page
+#- add a posibility to see whether the food is already in the database when accepting new food
 
 app = Flask(__name__)
 
@@ -174,6 +180,8 @@ def add_food():
                 app.config['UPLOAD_FOLDER'],
                 secure_filename(filename)))
             cursor = db.cursor()
+            if not rating:
+                rating = -1
             cursor.execute("insert into New (name,path,rating,isFood) values (%s,%s,%s,%s)", (FoodName, os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(filename)), rating, 1))
             db.commit()
             return get_message("Food submitted")
