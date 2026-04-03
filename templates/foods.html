@@ -34,7 +34,9 @@
   </style>
 </head>
 <body>
-    {% include "navbar.html" %}
+    <div class="navbar">
+        {% include "navbar.html" %}
+    </div>
     <h1><u>Všechny jídla, která byla nahrána na tuto stránku:</u></h1>
     <div class="foods">
         {% for food, food_id,image,rating in foods %}
