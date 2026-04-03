@@ -8,12 +8,14 @@ from werkzeug.utils import secure_filename
 from bs4 import BeautifulSoup
 import random
 #todo:
-#- fix food rating; possibly fixed, testing needed;
-#- better foods page
-#- change text on login page
+#- fix food rating; possibly fixed, testing needed; done 
+#- better foods page; done
+#- change text on login page; done
 #- fix navbar sticking
-#- better division of days on the main page
+#- better division of days on the main page; done
 #- add a posibility to see whether the food is already in the database when accepting new food
+#- fix gramatical mistake on the /foods page
+#- add the day of the week on the main page
 
 app = Flask(__name__)
 
