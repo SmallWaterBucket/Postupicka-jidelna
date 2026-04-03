@@ -154,7 +154,7 @@
                             <input type="radio" class="foodSelection" value="{{day}},{{food}}" id="{{day}},{{food}}" name="{{day}}" {% if disabled %} disabled {% endif %} onchange="sendFood('{{day}}','{{my_id}}')" {% if chosen_food == my_id %} checked {% endif %}>
                             <label for = "{{day}},{{food}}">
                                 <p>{{food}}</p>
-                                <a href="{{ image }}"><img class="image" src="{{ image }}" height="200" alt="{{ food }}"></a>
+                                <img class="image" src="{{ image }}" height="200" alt="{{ food }}">
                             </label>
                         </div>
                     {% endfor %}

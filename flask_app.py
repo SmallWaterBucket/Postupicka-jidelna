@@ -15,8 +15,9 @@ import random
 #- better division of days on the main page; done
 #- add a posibility to see whether the food is already in the database when accepting new food
 #- fix gramatical mistake on the /foods page; done
-#- add the day of the week on the main page
+#- add the day of the week on the main page; done
 #- remove a href tag from food image when selecting
+#- change the way debug page works
 
 app = Flask(__name__)
 
