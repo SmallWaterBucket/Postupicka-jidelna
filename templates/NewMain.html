@@ -145,9 +145,9 @@
         </form>
         <form action="/order" target="_blank" method="post">
             <div class = "jidelnicek">
-            {% for day,foods,chosen_food in data %}
+            {% for day,day_str,foods,chosen_food in data %}
                 <div class = "day">
-                    <h2>{{day}}</h2>
+                    <h2>{{day_str}}</h2>
                     <div class = "foods">
                     {% for food,image,disabled, my_id in foods %}
                         <div class = "food">

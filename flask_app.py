@@ -11,11 +11,12 @@ import random
 #- fix food rating; possibly fixed, testing needed; done 
 #- better foods page; done
 #- change text on login page; done
-#- fix navbar sticking
+#- fix navbar sticking; done
 #- better division of days on the main page; done
 #- add a posibility to see whether the food is already in the database when accepting new food
-#- fix gramatical mistake on the /foods page
+#- fix gramatical mistake on the /foods page; done
 #- add the day of the week on the main page
+#- remove a href tag from food image when selecting
 
 app = Flask(__name__)
 
@@ -371,7 +372,7 @@ def new_scrape(username, password):
     
     day_index = 0
     for day in days:
-        #date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].text.strip()
+        str_date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].text.strip()
         date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].get("id").split("-")[1:]
         date = ".".join(date)
         date = datetime.datetime.strptime(date, "%Y.%m.%d").date()
@@ -387,6 +388,7 @@ def new_scrape(username, password):
                 chosen_food = ""
 
         date = date.strftime("%d.%m.%Y")
+
 
 
         foods = []
@@ -410,7 +412,7 @@ def new_scrape(username, password):
                     #}
                     foods.append((food,get_image(food), disabled,my_id))
             my_id+=1
-        data.append((date,foods, chosen_food))
+        data.append((date,str_date,foods, chosen_food))
         day_index+=1
     return data
 
