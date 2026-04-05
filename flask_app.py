@@ -13,12 +13,13 @@ import random
 #- change text on login page; done
 #- fix navbar sticking; done
 #- better division of days on the main page; done
-#- add a posibility to see whether the food is already in the database when accepting new food; needs testing
+#- add a posibility to see whether the food is already in the database when accepting new food; needs testing; done
 #- fix gramatical mistake on the /foods page; done
 #- add the day of the week on the main page; done
 #- remove a href tag from food image when selecting; done
 #- change the way debug page works; done
 #- add a counter to the foods page
+#- redesign the login page too
 
 app = Flask(__name__)
 
