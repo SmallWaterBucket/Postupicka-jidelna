@@ -339,7 +339,7 @@ def scrape(): #day,day_str,foods,chosen_food
                     food = ' '.join(food.split())
                     #}
 
-                    foods.append((food,get_image(food)), True, -1) #food,image,disabled, my_id
+                    foods.append((food,get_image(food), True, -1)) #food,image,disabled, my_id
         data.append((date, date,foods, -2))
 
     return data
