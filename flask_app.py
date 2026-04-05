@@ -275,8 +275,6 @@ def login():
                     return "Špatné přihlašovací údaje"
                 data = new_scrape(username, password)
                 return render_template("NewMain.html", data = data, username=username, password=password, kredit=kredit(username, password))
-            else:
-                return render_template("Login.html")
     return render_template("Login.html")
     
 
