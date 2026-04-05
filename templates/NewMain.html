@@ -102,12 +102,14 @@
         background: green;
         color: white;
     }
+    {% if page == "login" %}
     .foodSelection:disabled + label {
         border: 2px solid red;
         background: red;
         color: white;
         cursor: not-allowed;
     }
+    {% endif %}
 
     label{
         display: flex;

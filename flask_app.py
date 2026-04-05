@@ -37,7 +37,7 @@ def Main():
         food = request.form.get("food_name")
         return redirect(f"/search/{food}")
     data=scrape()
-    return render_template("NewMain.html", data = data)
+    return render_template("NewMain.html", data = data, page="main")
 
 @app.route("/message/<message>")
 def get_message(message):
@@ -276,7 +276,7 @@ def login():
                 if try_login(username, password) == "0":
                     return "Špatné přihlašovací údaje"
                 data = new_scrape(username, password)
-                return render_template("NewMain.html", data = data, username=username, password=password, kredit=kredit(username, password))
+                return render_template("NewMain.html", data = data, username=username, password=password, kredit=kredit(username, password), page="login")
     return render_template("Login.html")
     
 
