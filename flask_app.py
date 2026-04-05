@@ -18,6 +18,7 @@ import random
 #- add the day of the week on the main page; done
 #- remove a href tag from food image when selecting; done
 #- change the way debug page works
+#- add a counter to the foods page
 
 app = Flask(__name__)
 
@@ -284,9 +285,9 @@ def login():
 def statement():
     return render_template("statement.html")
 
-@app.route("/login", methods=["GET", "POST"])
-def login():
-    return render_template("Login.html")
+#@app.route("/login", methods=["GET", "POST"])
+#def login():
+#    return render_template("Login.html")
 
 
 
