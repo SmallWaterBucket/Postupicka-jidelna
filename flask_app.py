@@ -19,7 +19,7 @@ import random
 #- remove a href tag from food image when selecting; done
 #- change the way debug page works; done
 #- add a counter to the foods page; done
-#- redesign the login page too
+#- redesign the login page too; done
 
 app = Flask(__name__)
 
