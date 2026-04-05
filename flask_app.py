@@ -18,7 +18,7 @@ import random
 #- add the day of the week on the main page; done
 #- remove a href tag from food image when selecting; done
 #- change the way debug page works; done
-#- add a counter to the foods page
+#- add a counter to the foods page; done
 #- redesign the login page too
 
 app = Flask(__name__)
@@ -37,7 +37,7 @@ def Main():
         food = request.form.get("food_name")
         return redirect(f"/search/{food}")
     data=scrape()
-    return render_template("main.html", data = data)
+    return render_template("NewMain.html", data = data)
 
 @app.route("/message/<message>")
 def get_message(message):
@@ -300,7 +300,7 @@ def order():
     print(ret)
     return ret
 
-def scrape():
+def scrape(): #day,day_str,foods,chosen_food
     #page = requests.get("https://api.allorigins.win/raw?url=https://strav.nasejidelna.cz/0254/login")
     page = requests.get("https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=https://strav.nasejidelna.cz/0254/login")
     soup = BeautifulSoup(page.text, "html.parser")
@@ -315,9 +315,9 @@ def scrape():
     #date = datetime.datetime(date.year, date.month, date.day + 2)
 
     for day in days:
-        #date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].text.strip()
-        date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].get("id").split("-")[1:]
-        date = ".".join(date)
+        date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].text.strip()
+        #date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].get("id").split("-")[1:]
+        #date = ".".join(date)
         #disabled = date - today <= 2
         
         foods = []
@@ -339,8 +339,8 @@ def scrape():
                     food = ' '.join(food.split())
                     #}
 
-                    foods.append((food,get_image(food)))
-        data.append((date,foods))
+                    foods.append((food,get_image(food)), True, -1) #food,image,disabled, my_id
+        data.append((date, date,foods, -2))
 
     return data
 
