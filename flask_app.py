@@ -13,10 +13,10 @@ import random
 #- change text on login page; done
 #- fix navbar sticking; done
 #- better division of days on the main page; done
-#- add a posibility to see whether the food is already in the database when accepting new food
+#- add a posibility to see whether the food is already in the database when accepting new food; needs testing
 #- fix gramatical mistake on the /foods page; done
 #- add the day of the week on the main page; done
-#- remove a href tag from food image when selecting
+#- remove a href tag from food image when selecting; done
 #- change the way debug page works
 
 app = Flask(__name__)
@@ -230,6 +230,12 @@ def get_new_food(food_id):
 
     image_url = f"/image/{path.split('/')[-1]}"
     message = ""
+#-------------------------------------------------
+    cursor.execute("SELECT * FROM Main WHERE name = %s;", (name,))
+    Main_result = cursor.fetchone()
+    if Main_result:
+        text = "Toto jídlo už je v databázi."
+
     if request.method == "POST":
         EnteredPassword = request.form.get("password")
         if password == EnteredPassword:
@@ -246,11 +252,11 @@ def get_new_food(food_id):
             return f"Action successful"
         else:
             message = "Incorrect password"
-    return render_template("accept_deny.html", image=image_url, name=name, rating=average, message=message, food_id=food_id)
+    return render_template("accept_deny.html", image=image_url, name=name, rating=average, message=message, food_id=food_id, text=text)
 
 
-@app.route('/debug', methods=["GET", "POST"])
-def debug():
+@app.route('/login', methods=["GET", "POST"])
+def login():
     db = get_db()
     mycursor = db.cursor()
     username = ""
