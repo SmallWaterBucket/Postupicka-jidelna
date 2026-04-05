@@ -273,21 +273,17 @@ def login():
                 password = request.form.get("password")
                 if try_login(username, password) == "0":
                     return "Špatné přihlašovací údaje"
+                data = new_scrape(username, password)
+                return render_template("NewMain.html", data = data, username=username, password=password, kredit=kredit(username, password))
             else:
                 return render_template("Login.html")
+    return render_template("Login.html")
     
-    data = new_scrape(username, password)
-
-    return render_template("NewMain.html", data = data, username=username, password=password, kredit=kredit(username, password))
 
 
 @app.route("/statement")
 def statement():
     return render_template("statement.html")
-
-#@app.route("/login", methods=["GET", "POST"])
-#def login():
-#    return render_template("Login.html")
 
 
 
