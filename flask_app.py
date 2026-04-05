@@ -17,7 +17,7 @@ import random
 #- fix gramatical mistake on the /foods page; done
 #- add the day of the week on the main page; done
 #- remove a href tag from food image when selecting; done
-#- change the way debug page works
+#- change the way debug page works; done
 #- add a counter to the foods page
 
 app = Flask(__name__)
@@ -231,9 +231,10 @@ def get_new_food(food_id):
 
     image_url = f"/image/{path.split('/')[-1]}"
     message = ""
-#-------------------------------------------------
+#------------------------------------------------------------------------------
     cursor.execute("SELECT * FROM Main WHERE name = %s;", (name,))
     Main_result = cursor.fetchone()
+    text = ""
     if Main_result:
         text = "Toto jídlo už je v databázi."
 
