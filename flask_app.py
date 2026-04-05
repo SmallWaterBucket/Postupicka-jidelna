@@ -194,7 +194,7 @@ def add_food():
         else:
             return "Upload failed, image required!!!"
     foods = scrape()
-    foods = foods[0][1]
+    foods = foods[0][2]
     return render_template("add_food.html",foods=foods)
 
 
