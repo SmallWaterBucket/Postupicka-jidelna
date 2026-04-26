@@ -273,7 +273,7 @@ def login():
             if "password" in request.form:
                 username = request.form.get("username")
                 password = request.form.get("password")
-                if try_login(username, password) == "0":
+                if try_login(username, password) == "0\n":
                     return "Špatné přihlašovací údaje"
                 data = new_scrape(username, password)
                 return render_template("NewMain.html", data = data, username=username, password=password, kredit=kredit(username, password), page="login")
@@ -500,7 +500,7 @@ def kredit(username, password):
 
 def try_login(username, password):
     page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://152.70.41.16.nip.io:8080/login.exe/{username},{password}")
-    return page.text
+    return str(page.text)
 
 @app.route("/ordered_foods/<username>,<password>,<dates>")
 def get_orderd_food(username, password, dates):
