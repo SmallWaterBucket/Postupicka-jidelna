@@ -81,6 +81,7 @@
             <input type = "password" placeholder="Heslo" name="password" id ="password"> 
             <button type="submit">Přihlášení</button>
         </form>
+        {% if message %}<p style="color: red;">{{message}}</p>{% endif %}
         <p style="color: rgb(1, 129, 33);">Nově je přihlašování plně funkční.</p>
         <p><a href = "/statement">Ochrana vašich osobních údajů</a></p>
     </div>

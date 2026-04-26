@@ -274,10 +274,11 @@ def login():
                 username = request.form.get("username")
                 password = request.form.get("password")
                 if try_login(username, password) == "0\n":
-                    return "Špatné přihlašovací údaje"
+                    #return "Špatné přihlašovací údaje"
+                    return render_template("Login.html", message="Špatné přihlašovací údaje")
                 data = new_scrape(username, password)
                 return render_template("NewMain.html", data = data, username=username, password=password, kredit=kredit(username, password), page="login")
-    return render_template("Login.html")
+    return render_template("Login.html", message="")
     
 
 
