@@ -46,9 +46,13 @@ app.config.update(
     PERMANENT_SESSION_LIFETIME=1800  # 30 minutes
 )
 
-key = open("/home/jidelna/password.txt",'r').read().encode()
+key = open("/home/jidelna/password.txt",'r').read().strip().encode()
 cipher = Fernet(key)
 
+
+@app.route('/key')
+def key():
+    return Fernet.generate_key().decode()
 
 @app.route('/', methods =["GET", "POST"])
 def Main():
