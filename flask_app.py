@@ -46,7 +46,7 @@ app.config.update(
     PERMANENT_SESSION_LIFETIME=1800  # 30 minutes
 )
 
-key = open("home/jidelna/password.txt",'r').read()
+key = open("/home/jidelna/password.txt",'r').read()
 cipher = Fernet(key)
 
 
