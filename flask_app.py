@@ -1,7 +1,7 @@
 import datetime
 import subprocess
 
-from flask import Flask, session, render_template,url_for, request, redirect, flash, send_from_directory, g
+from flask import Flask, session, render_template, url_for, request, redirect, flash, send_from_directory, g
 from cryptography.fernet import Fernet
 import os.path
 import os,requests, unicodedata, MySQLdb,re
@@ -46,7 +46,7 @@ app.config.update(
     PERMANENT_SESSION_LIFETIME=1800  # 30 minutes
 )
 
-key = open("/home/jidelna/password.txt",'r').read()
+key = open("/home/jidelna/password.txt",'r').read().encode()
 cipher = Fernet(key)
 
 
