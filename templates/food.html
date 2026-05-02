@@ -46,6 +46,24 @@
         <p><button type="submit" name="submit_button" value="Rating">Submit rating</button></p>
     
         <p><a href="/food_edit/{{ food_id }}">Admin page</a></p>
+    <!--
+        <div class = "comments">
+            <h2>Komentáře</h2>
+            {% for comment in comments %}
+                <div class="comment">
+                    <div class="user">
+                        <p><b>{{ comment.username }}</b></p>
+                    </div>
+                    <div class="comment_text">
+                        <p>{{ comment.text }}</p>
+                    </div>
+                    <div class="comment_date">
+                        <p style="color:gray">{{ comment.date }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    -->
     </form>
 </div>
 

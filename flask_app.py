@@ -1,13 +1,25 @@
 import datetime
 import subprocess
 
-from flask import Flask, render_template,url_for, request, redirect, flash, send_from_directory, g
+from flask import Flask, session, render_template,url_for, request, redirect, flash, send_from_directory, g
+from cryptography.fernet import Fernet
 import os.path
 import os,requests, unicodedata, MySQLdb,re
 from werkzeug.utils import secure_filename
 from bs4 import BeautifulSoup
 import random
 #todo:
+
+#add comments
+#add likes/dislikes
+#add warning about speaking about the food in the comments
+#add a way to delete comments
+#add your rating
+#add proper login
+
+#==========================================================
+#DONE:
+
 #- fix food rating; possibly fixed, testing needed; done 
 #- better foods page; done
 #- change text on login page; done
@@ -27,17 +39,36 @@ UPLOAD_FOLDER = '/home/jidelna/photos'
 app.config['ALLOWED_EXTENSIONS'] = ['.jpg', '.jpeg', '.png']
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 4*1024 * 1024 #4MB
+app.config.update(
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SECURE=True,     # MUST be True if using HTTPS
+    SESSION_COOKIE_SAMESITE='Lax',
+    PERMANENT_SESSION_LIFETIME=1800  # 30 minutes
+)
+
+key = open("home/jidelna/password.txt",'r').read()
+cipher = Fernet(key)
+
 
 @app.route('/', methods =["GET", "POST"])
 def Main():
-    db = get_db()
-    mycursor = db.cursor()
 
+    
     if request.method == "POST":
         food = request.form.get("food_name")
         return redirect(f"/search/{food}")
-    data=scrape()
-    return render_template("NewMain.html", data = data, page="main")
+
+
+    if session.get("user") and session.get("password"):
+        username = session.get("user")
+        password = cipher.decrypt(session.get("password")).decode()
+        data = new_scrape(username, password)
+        return render_template("NewMain.html", data = data, username=username, kredit=kredit(username, password))
+    else:
+        data=scrape()
+
+
+    return render_template("NewMain.html", data = data)
 
 @app.route("/message/<message>")
 def get_message(message):
@@ -165,7 +196,6 @@ def request_entity_too_large(error):
 @app.route('/add_food', methods =["GET", "POST"])
 def add_food():
     db = get_db()
-    mycursor = db.cursor()
     if request.method == "POST":
         file = request.files["file"]
         if file:
@@ -260,24 +290,19 @@ def get_new_food(food_id):
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
-    db = get_db()
-    mycursor = db.cursor()
     username = ""
     password = ""
-    test = []
     if request.method == "POST":
-        if "search" in request.form:
-            food = request.form.get("food_name")
-            return redirect(f"/search/{food}")
-        else:
-            if "password" in request.form:
-                username = request.form.get("username")
-                password = request.form.get("password")
-                if try_login(username, password) == "0\n":
-                    #return "Špatné přihlašovací údaje"
-                    return render_template("Login.html", message="Špatné přihlašovací údaje")
-                data = new_scrape(username, password)
-                return render_template("NewMain.html", data = data, username=username, password=password, kredit=kredit(username, password), page="login")
+        if "password" in request.form:
+            username = request.form.get("username")
+            password = request.form.get("password")
+            if try_login(username, password) == "0\n":
+                return render_template("Login.html", message="Špatné přihlašovací údaje")
+            #data = new_scrape(username, password)
+            session['user'] = username
+            session['password'] = cipher.encrypt(password.encode())
+            return redirect("/")
+            #return render_template("NewMain.html", data = data, username=username, password=password, kredit=kredit(username, password), page="login")
     return render_template("Login.html", message="")
     
 
