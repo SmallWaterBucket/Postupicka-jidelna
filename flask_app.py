@@ -104,7 +104,7 @@ def get_message(message):
     if session.get("user") and session.get("password"):
         username = session.get("user")
         password = cipher.decrypt(session.get("password")).decode()
-        return render_template("message.html", username=username, kredit=kredit(username, password))
+        return render_template("message.html", username=username, kredit=kredit(username, password), message=message, submessage = submessage, link = link, link_text=link_text, img = img)
 
     return render_template("message.html", message=message, submessage = submessage, link = link, link_text=link_text, img = img)
 
