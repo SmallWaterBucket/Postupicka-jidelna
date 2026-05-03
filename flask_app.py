@@ -85,21 +85,6 @@ def Main():
 
     return render_template("NewMain.html", data = data)
 
-@app.errorhandler(HTTPException)
-def handle_exception(e):
-    response = e.get_response()
-    response.data = json.dumps({
-        "code": e.code,
-        "name": e.name,
-        "description": e.description,
-    })
-    response.content_type = "application/json"
-    return response
-
-@app.route("/test")
-def test():
-    return a
-
 @app.route("/message/<message>")
 def get_message(message):
     submessage = ""
