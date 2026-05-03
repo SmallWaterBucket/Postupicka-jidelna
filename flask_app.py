@@ -176,7 +176,7 @@ def get_food(food_id):
         new_rating = request.form.get("rating")
 
         cursor.execute("SELECT rating FROM Ratings WHERE foodid = %s AND username = %s;", (id, session.get("user")))
-        user_rating = cursor.fetchone()[0]
+        user_rating = cursor.fetchone()
 
 
         if not user_rating:
