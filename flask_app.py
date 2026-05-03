@@ -6,15 +6,17 @@ from cryptography.fernet import Fernet
 import os.path, secrets
 import os,requests, unicodedata, MySQLdb,re
 from werkzeug.utils import secure_filename
+from flask import json
+from werkzeug.exceptions import HTTPException
 from bs4 import BeautifulSoup
 import random
-#todo:
+
+#TODO:
 
 #add comments
 #add likes/dislikes
 #add warning about speaking about the food in the comments
 #add a way to delete comments
-#add your rating
 
 #==========================================================
 #DONE:
@@ -35,6 +37,11 @@ import random
 #make logout work; done
 #make ordering work again; done
 #add proper login; in progress; done
+#add your rating; done
+
+
+
+#==========================================================
 
 app = Flask(__name__)
 
@@ -77,6 +84,21 @@ def Main():
 
 
     return render_template("NewMain.html", data = data)
+
+@app.errorhandler(HTTPException)
+def handle_exception(e):
+    response = e.get_response()
+    response.data = json.dumps({
+        "code": e.code,
+        "name": e.name,
+        "description": e.description,
+    })
+    response.content_type = "application/json"
+    return response
+
+@app.route("/test")
+def test():
+    return a
 
 @app.route("/message/<message>")
 def get_message(message):
