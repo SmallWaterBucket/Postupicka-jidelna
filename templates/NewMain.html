@@ -155,13 +155,17 @@
                         <div class = "food">
                             <input type="radio" class="foodSelection" value="{{day}},{{food}}" id="{{day}},{{food}}" name="{{day}}" {% if disabled %} disabled {% endif %} onchange="sendFood('{{day}}','{{my_id}}')" {% if chosen_food == my_id %} checked {% endif %}>
                             <label for = "{{day}},{{food}}">
-                                {% if kredit and food_id > -1 %}
+                                {% if not kredit and food_id > -1 %}
                                 <p><a href = /get_food/{{food_id}}>{{food}}</a></p>
                                 {% else %}
                                 <p>{{food}}</p>
                                 {% endif %}
+
+                                {% if not kredit%}
+                                <a href = {{image}}><img class="image" src="{{ image }}" height="200" alt="{{ food }}"></a>
+                                {% else %}
                                 <img class="image" src="{{ image }}" height="200" alt="{{ food }}">
-                                
+                                {% endif %}
                             </label>
                         </div>
                     {% endfor %}
