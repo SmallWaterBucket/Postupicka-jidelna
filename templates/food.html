@@ -20,7 +20,10 @@
 <div class="not_navbar">
     <h1>{{ name }}</h1>
     <p><a href="{{ image }}"><img src="{{ image }}" height="200" alt="{{ name }}"></a></p>
-    <p>Rating: {{ rating }}/7</p>
+    <p>Hodnocení: {{ rating }}/7</p>
+    {% if user_rating %}
+    <p>Vaše hodnocení: {{ user_rating }}/7</p>
+    {% endif %}
     <p style="color:tomato">{{text}}</p>
 
     <form method="POST" action="{{ url_for('get_food', food_id=food_id) }}">

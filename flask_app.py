@@ -15,10 +15,6 @@ import random
 #add warning about speaking about the food in the comments
 #add a way to delete comments
 #add your rating
-#add proper login; in progress
-#make ordering work again
-#make logout work
-#add username to all pages in navbar when logged in
 
 #==========================================================
 #DONE:
@@ -35,6 +31,10 @@ import random
 #- change the way debug page works; done
 #- add a counter to the foods page; done
 #- redesign the login page too; done
+#add username to all pages in navbar when logged in; done
+#make logout work; done
+#make ordering work again; done
+#add proper login; in progress; done
 
 app = Flask(__name__)
 
@@ -172,8 +172,14 @@ def get_food(food_id):
     average=float(average)
     if request.method == "POST":
         new_rating = request.form.get("rating")
-        cursor.execute("insert into Ratings (foodid,rating) values (%s,%s)", (id,new_rating))
-        db.commit()
+
+        cursor.execute("SELECT rating FROM Ratings WHERE foodid = %s AND username = %s;", (id, session.get("user")))
+        user_rating = cursor.fetchone()[0]
+
+
+        if not user_rating:
+            cursor.execute("insert into Ratings (foodid,rating,username) values (%s,%s,%s)", (id,new_rating,session.get("user")))
+            db.commit()
         cursor.execute("SELECT AVG(rating) AS AveragePrice FROM Ratings where foodid = %s;",(id,))
         ret = cursor.fetchall()
 
@@ -193,10 +199,10 @@ def get_food(food_id):
     if session.get("user") and session.get("password"):
         username = session.get("user")
         kredit = session.get("kredit")
-        return render_template("food.html", username=username, kredit=kredit, image=image_url, name=name, rating=str(average), food_id=food_id, text=text)
+        return render_template("food.html", username=username, kredit=kredit, image=image_url, name=name, rating=str(average), food_id=food_id, text=text, user_rating = user_rating)
 
 
-    return render_template("food.html", image=image_url, name=name, rating=str(average), food_id=food_id, text=text)
+    return render_template("food.html", image=image_url, name=name, rating=str(average), food_id=food_id, text=text, user_rating = user_rating)
 
 @app.route("/image/<filename>")
 def get_image_page(filename):
