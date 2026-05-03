@@ -261,7 +261,12 @@ def add_food():
             cursor = db.cursor()
             if not rating:
                 rating = -1
-            cursor.execute("insert into New (name,path,rating,isFood) values (%s,%s,%s,%s)", (FoodName, os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(filename)), rating, 1))
+
+            username = "Anonymous"
+            if session.get("user") and session.get("password"):
+                username = session.get("user")
+            
+            cursor.execute("insert into New (name,path,rating,isFood,username) values (%s,%s,%s,%s,%s)", (FoodName, os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(filename)), rating, 1, username))
             db.commit()
             return get_message("Food submitted")
         else:
@@ -307,7 +312,7 @@ def get_new_food(food_id):
     if not result:
         return "Not found"
     
-    id, name, path, average, isFood = result
+    id, name, path, average, isFood, username = result
 
     image_url = f"/image/{path.split('/')[-1]}"
     message = ""
@@ -326,7 +331,7 @@ def get_new_food(food_id):
                 cursor.execute("insert into Main (name,path,average,isFood) values (%s,%s,%s,%s)", (name, path, average, isFood))
                 cursor.execute("SELECT id FROM Main WHERE name = %s AND path = %s;", (name, path))
                 new_id = cursor.fetchone()[0]
-                cursor.execute("insert into Ratings (foodid,rating) values (%s,%s)", (new_id, average))
+                cursor.execute("insert into Ratings (foodid,rating, username) values (%s,%s,%s)", (new_id, average, username))
             if decision == "deny":
                 os.remove(path)
             cursor.execute("delete from New where id = %s",(id,))
@@ -431,6 +436,10 @@ def scrape(): #day,day_str,foods,chosen_food
 
                     mycursor.execute(f"SELECT average FROM Main WHERE id = %s;", (food_id,))
                     rating = mycursor.fetchone()
+                    if rating:
+                        rating = rating[0]
+                        if rating == -1:
+                            rating = ""
                     
                     foods.append((food, food_id, get_image(food), True, -1, rating, user_rating)) #food,food_id,image,disabled, my_id, rating, user_rating
         data.append((date, date,foods, -2))
