@@ -68,8 +68,10 @@ def Main():
     if session.get("user") and session.get("password"):
         username = session.get("user")
         password = cipher.decrypt(session.get("password")).decode()
+        kredit = kredit(username, password)
+        session['kredit'] = kredit
         data = new_scrape(username, password)
-        return render_template("NewMain.html", data = data, username=username, kredit=kredit(username, password))
+        return render_template("NewMain.html", data = data, username=username, kredit = kredit)
     else:
         data=scrape()
 
@@ -103,8 +105,8 @@ def get_message(message):
 
     if session.get("user") and session.get("password"):
         username = session.get("user")
-        password = cipher.decrypt(session.get("password")).decode()
-        return render_template("message.html", username=username, kredit=kredit(username, password), message=message, submessage = submessage, link = link, link_text=link_text, img = img)
+        kredit = session.get("kredit")
+        return render_template("message.html", username=username, kredit=kredit, message=message, submessage = submessage, link = link, link_text=link_text, img = img)
 
     return render_template("message.html", message=message, submessage = submessage, link = link, link_text=link_text, img = img)
 
@@ -131,8 +133,8 @@ def search(food):
 
     if session.get("user") and session.get("password"):
         username = session.get("user")
-        password = cipher.decrypt(session.get("password")).decode()
-        return render_template("search.html", username=username, kredit=kredit(username, password), food=food, answers=ret)
+        kredit = session.get("kredit")
+        return render_template("search.html", username=username, kredit=kredit, food=food, answers=ret)
 
 
 
@@ -187,6 +189,13 @@ def get_food(food_id):
         text = "Toto není jídlo ze školní jídelny."
 
     image_url = get_image(name)
+
+    if session.get("user") and session.get("password"):
+        username = session.get("user")
+        kredit = session.get("kredit")
+        return render_template("food.html", username=username, kredit=kredit, image=image_url, name=name, rating=str(average), food_id=food_id, text=text)
+
+
     return render_template("food.html", image=image_url, name=name, rating=str(average), food_id=food_id, text=text)
 
 @app.route("/image/<filename>")
@@ -319,6 +328,7 @@ def login():
             #data = new_scrape(username, password)
             session['user'] = username
             session['password'] = cipher.encrypt(password.encode())
+            session['kredit'] = kredit(username, password)
             return redirect("/")
             #return render_template("NewMain.html", data = data, username=username, password=password, kredit=kredit(username, password), page="login")
     return render_template("Login.html", message="")
