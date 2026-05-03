@@ -421,7 +421,18 @@ def scrape(): #day,day_str,foods,chosen_food
                     answer = mycursor.fetchone()
                     if answer:
                         food_id = answer[0]
-                    foods.append((food, food_id, get_image(food), True, -1)) #food,food_id,image,disabled, my_id
+
+                    user_rating = ""
+                    if session.get("user") and session.get("password"):
+                        mycursor.execute("SELECT rating FROM Ratings WHERE foodid = %s AND username = %s;", (food_id, session.get("user")))
+                        user_rating = mycursor.fetchone()
+                        if user_rating:
+                            user_rating = user_rating[0]
+
+                    mycursor.execute(f"SELECT average FROM Main WHERE id = %s;", (food_id,))
+                    rating = mycursor.fetchone()
+                    
+                    foods.append((food, food_id, get_image(food), True, -1, rating, user_rating)) #food,food_id,image,disabled, my_id, rating, user_rating
         data.append((date, date,foods, -2))
 
     return data
@@ -503,7 +514,19 @@ def new_scrape(username, password):
                     answer = mycursor.fetchone()
                     if answer:
                         food_id = answer[0]
-                    foods.append((food, food_id, get_image(food), disabled, my_id))
+
+                    user_rating = ""
+                    if session.get("user") and session.get("password"):
+                        mycursor.execute("SELECT rating FROM Ratings WHERE foodid = %s AND username = %s;", (food_id, session.get("user")))
+                        user_rating = mycursor.fetchone()
+                        if user_rating:
+                            user_rating = user_rating[0]
+
+                    mycursor.execute(f"SELECT average FROM Main WHERE id = %s;", (food_id,))
+                    rating = mycursor.fetchone()
+
+
+                    foods.append((food, food_id, get_image(food), disabled, my_id, rating, user_rating)) #food,food_id,image,disabled, my_id, rating, user_rating
             my_id+=1
         data.append((date,str_date,foods, chosen_food))
         day_index+=1
