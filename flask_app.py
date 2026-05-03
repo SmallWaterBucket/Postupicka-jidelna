@@ -320,7 +320,7 @@ def statement():
 def order():
     data = request.json
     username = data.get("username")
-    password = data.get("password")
+    password = cipher.decrypt(session.get("password")).decode()
     food = data.get("food")
     day = data.get("day")
     date = datetime.datetime.strptime(day, "%d.%m.%Y").strftime("%Y-%m-%d")
