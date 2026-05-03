@@ -68,10 +68,10 @@ def Main():
     if session.get("user") and session.get("password"):
         username = session.get("user")
         password = cipher.decrypt(session.get("password")).decode()
-        kredit = kredit(username, password)
-        session['kredit'] = kredit
+        credit = kredit(username, password)
+        session['kredit'] = credit
         data = new_scrape(username, password)
-        return render_template("NewMain.html", data = data, username=username, kredit = kredit)
+        return render_template("NewMain.html", data = data, username=username, kredit = credit)
     else:
         data=scrape()
 
