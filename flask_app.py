@@ -252,7 +252,13 @@ def add_food():
             return "Upload failed, image required!!!"
     foods = scrape()
     foods = foods[0][2]
-    return render_template("add_food.html",foods=foods)
+
+    if session.get("user") and session.get("password"):
+        username = session.get("user")
+        kredit = session.get("kredit")
+        return render_template("add_food.html", username=username, kredit=kredit, foods=foods)
+
+    return render_template("add_food.html", foods=foods)
 
 
 @app.route('/favicon.ico')
@@ -325,12 +331,12 @@ def login():
             password = request.form.get("password")
             if try_login(username, password) == "0\n":
                 return render_template("Login.html", message="Špatné přihlašovací údaje")
-            #data = new_scrape(username, password)
+
             session['user'] = username
             session['password'] = cipher.encrypt(password.encode())
             session['kredit'] = kredit(username, password)
             return redirect("/")
-            #return render_template("NewMain.html", data = data, username=username, password=password, kredit=kredit(username, password), page="login")
+            
     return render_template("Login.html", message="")
     
 
@@ -493,15 +499,31 @@ def all_foods():
         food_item = item[1], item[0], image_url, item[3]  # food, food_id,image,rating
         ret.append(food_item)
 
+    if session.get("user") and session.get("password"):
+        username = session.get("user")
+        kredit = session.get("kredit")
+        return render_template("foods.html", username=username, kredit=kredit, foods=ret)
+
     return render_template("foods.html", foods=ret)
 
 
 @app.route('/about')
 def about():
+    if session.get("user") and session.get("password"):
+        username = session.get("user")
+        kredit = session.get("kredit")
+        return render_template("About.html", username=username, kredit=kredit)
+    
     return render_template("About.html")
 
 @app.route('/contacts')
 def contacts():
+
+    if session.get("user") and session.get("password"):
+        username = session.get("user")
+        kredit = session.get("kredit")
+        return render_template("Contacts.html", username=username, kredit=kredit)
+
     return render_template("Contacts.html")
 
 @app.route('/food_edit/<food_id>', methods=["GET", "POST"])
