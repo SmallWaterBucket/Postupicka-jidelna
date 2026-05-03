@@ -172,13 +172,13 @@ def get_food(food_id):
     average=float(average)
 
     user_rating = ""
-    if request.method == "POST":
-        new_rating = request.form.get("rating")
-        if session.get("user") and session.get("password"):
+    if session.get("user") and session.get("password"):
             cursor.execute("SELECT rating FROM Ratings WHERE foodid = %s AND username = %s;", (id, session.get("user")))
             user_rating = cursor.fetchone()
 
 
+    if request.method == "POST":
+        new_rating = request.form.get("rating")
         if not user_rating:
             if not session.get("user"):
                 username = "Anonymous"
