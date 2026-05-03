@@ -39,6 +39,7 @@ UPLOAD_FOLDER = '/home/jidelna/photos'
 app.config['ALLOWED_EXTENSIONS'] = ['.jpg', '.jpeg', '.png']
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 4*1024 * 1024 #4MB
+app.secret_key = open("/home/jidelna/secret.txt",'r').read().strip()
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
     SESSION_COOKIE_SECURE=True,
@@ -50,9 +51,6 @@ key = open("/home/jidelna/password.txt",'r').read().strip().encode()
 cipher = Fernet(key)
 
 
-@app.route('/key')
-def key():
-    return secrets.token_hex(32)
 
 
 @app.route('/', methods =["GET", "POST"])
