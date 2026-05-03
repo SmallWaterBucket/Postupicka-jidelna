@@ -170,6 +170,8 @@ def get_food(food_id):
 
     id, name, path, average, isFood = result
     average=float(average)
+
+    user_rating = ""
     if request.method == "POST":
         new_rating = request.form.get("rating")
 
