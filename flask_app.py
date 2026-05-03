@@ -568,6 +568,17 @@ def food_edit(food_id):
     return render_template("food_edit.html", image=image_url, name=name, rating=average, message=message, food_id=food_id, isFood=isFood)
 
 
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/")
+
+
+
+
+
+
+
 @app.route("/kredit/<username>,<password>")
 def kredit(username, password):
     page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://152.70.41.16.nip.io:8080/kredit.exe/{username},{password}")
