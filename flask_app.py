@@ -173,8 +173,11 @@ def get_food(food_id):
 
     user_rating = ""
     if session.get("user") and session.get("password"):
-            cursor.execute("SELECT rating FROM Ratings WHERE foodid = %s AND username = %s;", (id, session.get("user")))
-            user_rating = cursor.fetchone()
+        cursor.execute("SELECT rating FROM Ratings WHERE foodid = %s AND username = %s;", (id, session.get("user")))
+        user_rating = cursor.fetchone()
+        if user_rating:
+            user_rating = user_rating[0]
+
 
 
     if request.method == "POST":
