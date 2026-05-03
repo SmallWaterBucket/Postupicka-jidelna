@@ -151,12 +151,17 @@
                 <div class = "day">
                     <h2>{{day_str}}</h2>
                     <div class = "foods">
-                    {% for food,image,disabled, my_id in foods %}
+                    {% for food,food_id,image,disabled, my_id in foods %}
                         <div class = "food">
                             <input type="radio" class="foodSelection" value="{{day}},{{food}}" id="{{day}},{{food}}" name="{{day}}" {% if disabled %} disabled {% endif %} onchange="sendFood('{{day}}','{{my_id}}')" {% if chosen_food == my_id %} checked {% endif %}>
                             <label for = "{{day}},{{food}}">
+                                {% if kredit and food_id > -1 %}
+                                <p><a href = /get_food/{{food_id}}>{{food}}</a></p>
+                                {% else %}
                                 <p>{{food}}</p>
+                                {% endif %}
                                 <img class="image" src="{{ image }}" height="200" alt="{{ food }}">
+                                
                             </label>
                         </div>
                     {% endfor %}

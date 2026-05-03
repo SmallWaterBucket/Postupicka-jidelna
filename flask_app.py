@@ -398,8 +398,14 @@ def scrape(): #day,day_str,foods,chosen_food
                     food = re.sub(r"\s+", " ", food)
                     food = ' '.join(food.split())
                     #}
-
-                    foods.append((food,get_image(food), True, -1)) #food,image,disabled, my_id
+                    food_id = -1
+                    db = get_db()
+                    mycursor = db.cursor()
+                    mycursor.execute("SELECT id FROM Main where name = %s", (food,))
+                    answer = mycursor.fetchone()
+                    if answer:
+                        food_id = answer[0]
+                    foods.append((food, food_id, get_image(food), True, -1)) #food,food_id,image,disabled, my_id
         data.append((date, date,foods, -2))
 
     return data
@@ -474,7 +480,14 @@ def new_scrape(username, password):
                     food = re.sub(r"\s+", " ", food)
                     food = ' '.join(food.split())
                     #}
-                    foods.append((food,get_image(food), disabled,my_id))
+                    food_id = -1
+                    db = get_db()
+                    mycursor = db.cursor()
+                    mycursor.execute("SELECT id FROM Main where name = %s", (food,))
+                    answer = mycursor.fetchone()
+                    if answer:
+                        food_id = answer[0]
+                    foods.append((food, food_id, get_image(food), disabled, my_id))
             my_id+=1
         data.append((date,str_date,foods, chosen_food))
         day_index+=1
