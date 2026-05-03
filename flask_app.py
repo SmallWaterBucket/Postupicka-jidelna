@@ -438,7 +438,7 @@ def scrape(): #day,day_str,foods,chosen_food
                     rating = mycursor.fetchone()
                     if rating:
                         rating = rating[0]
-                        if rating == -1:
+                        if rating == '-1':
                             rating = ""
                     
                     foods.append((food, food_id, get_image(food), True, -1, rating, user_rating)) #food,food_id,image,disabled, my_id, rating, user_rating
