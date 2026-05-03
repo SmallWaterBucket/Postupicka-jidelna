@@ -15,7 +15,10 @@ import random
 #add warning about speaking about the food in the comments
 #add a way to delete comments
 #add your rating
-#add proper login
+#add proper login; in progress
+#make ordering work again
+#make logout work
+#add username to all pages in navbar when logged in
 
 #==========================================================
 #DONE:
@@ -97,6 +100,11 @@ def get_message(message):
         case _:
             submessage = "How did you even find this?"
             message = "Go get a job."
+
+    if session.get("user") and session.get("password"):
+        username = session.get("user")
+        password = cipher.decrypt(session.get("password")).decode()
+        return render_template("message.html", username=username, kredit=kredit(username, password))
 
     return render_template("message.html", message=message, submessage = submessage, link = link, link_text=link_text, img = img)
 

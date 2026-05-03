@@ -1,24 +1,25 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>{{title}}</title>
-  <link rel="icon" href="/favicon.ico">
-  <style>
-    .not_navbar {
-        display:flex;
-        flex-grow:1;
-        align-items: center;
-        flex-direction: column;
-    img {object-fit: contain;}
-  </style>
-</head>
-<body>
-    {% include "navbar.html" %}
-    <div class="not_navbar">
-        <h1><u>{{message}}</u></h1>
-        <a href="{{link}}">{{link_text}}</a>
-        <p>{{submessage}}</p>
-        <img class = "image" src="{{img}}" height = "600">
-    </div>
-</body>
+    <head>
+      <title>{{title}}</title>
+      <link rel="icon" href="/favicon.ico">
+      <style>
+        .not_navbar {
+            display:flex;
+            flex-grow:1;
+            align-items: center;
+            flex-direction: column;
+        }
+        img {object-fit: contain;}
+      </style>
+    </head>
+    <body>
+        {% include "navbar.html" %}
+        <div class="not_navbar">
+            <h1><u>{{message}}</u></h1>
+            <a href="{{link}}">{{link_text}}</a>
+            <p>{{submessage}}</p>
+            <img class = "image" src="{{img}}" height = "600">
+        </div>
+      </body>
 </html>
