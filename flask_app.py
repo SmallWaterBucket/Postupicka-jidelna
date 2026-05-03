@@ -3,7 +3,7 @@ import subprocess
 
 from flask import Flask, session, render_template, url_for, request, redirect, flash, send_from_directory, g
 from cryptography.fernet import Fernet
-import os.path
+import os.path, secrets
 import os,requests, unicodedata, MySQLdb,re
 from werkzeug.utils import secure_filename
 from bs4 import BeautifulSoup
@@ -41,18 +41,19 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 4*1024 * 1024 #4MB
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
-    SESSION_COOKIE_SECURE=True,     # MUST be True if using HTTPS
+    SESSION_COOKIE_SECURE=True,
     SESSION_COOKIE_SAMESITE='Lax',
-    PERMANENT_SESSION_LIFETIME=1800  # 30 minutes
+    PERMANENT_SESSION_LIFETIME=1800
 )
 
-#key = open("/home/jidelna/password.txt",'r').read().strip().encode()
-#cipher = Fernet(key)
+key = open("/home/jidelna/password.txt",'r').read().strip().encode()
+cipher = Fernet(key)
 
 
 @app.route('/key')
 def key():
-    return Fernet.generate_key().decode()
+    return secrets.token_hex(32)
+
 
 @app.route('/', methods =["GET", "POST"])
 def Main():
