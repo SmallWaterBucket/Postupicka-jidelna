@@ -129,6 +129,13 @@ def search(food):
         food_id = item[0]   # id column
         ret.append((food_item, food_id))
 
+    if session.get("user") and session.get("password"):
+        username = session.get("user")
+        password = cipher.decrypt(session.get("password")).decode()
+        return render_template("search.html", username=username, kredit=kredit(username, password), food=food, answers=ret)
+
+
+
     return render_template("search.html", food=food, answers=ret)
 
 def get_db():
