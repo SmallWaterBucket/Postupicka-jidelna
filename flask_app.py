@@ -540,6 +540,10 @@ def new_scrape(username, password):
 
                     mycursor.execute(f"SELECT average FROM Main WHERE id = %s;", (food_id,))
                     rating = mycursor.fetchone()
+                    if rating:
+                        rating = rating[0]
+                        if rating == '-1':
+                            rating = ""
 
 
                     foods.append((food, food_id, get_image(food), disabled, my_id, rating, user_rating)) #food,food_id,image,disabled, my_id, rating, user_rating
