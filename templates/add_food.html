@@ -14,7 +14,7 @@
     form{
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: 10px;
         width: fit content;
     }
     
@@ -26,23 +26,22 @@
     <div class="not_navbar">
         <form action="{{ url_for('add_food') }}" method="post" enctype="multipart/form-data">
             <label for="food_name">Název jídla:</label>
-            <p>
-                <input type="text" id="food_name" name="food_name" placeholder="Název jídla" list="foodList">
-                <datalist class="datalist" id="foodList">
-                    {% for food, food_id, image,disabled,my_id, rating, user_rating in foods %} 
-                        <option value="{{food}}">
-                    {% endfor %}
-                </datalist>
-            </p>
+            <input type="text" id="food_name" name="food_name" placeholder="Název jídla" list="foodList">
+            <datalist class="datalist" id="foodList">
+                % for food, food_id, image,disabled,my_id, rating, user_rating in foods %} 
+                    <option value="{{food}}">
+                {% endfor %}
+            </datalist>
+
             <p style="color:red">Prosím, hodnoťte jídla podle chutě a ne podle vzhledu.</p>
             <p style="color:red">Je lepší pole nechat prázdné, než zadat nesmysl.</p>
-            <p>
-                <label for="rating">Hodnocení:</label>
-                <input type="number" id="rating" name="rating" min="1" max="7">
-            </p>
+
+            <label for="rating">Hodnocení:</label>
+            <input type="number" id="rating" name="rating" min="1" max="7">
 
             <input type="file" name="file">
-            <p><button type="submit">Přidat jídlo</button></p>
+            
+            <button type="submit">Přidat jídlo</button>
         </form>
     </div>
 </body>
