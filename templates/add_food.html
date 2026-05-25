@@ -28,7 +28,7 @@
             <label for="food_name">Název jídla:</label>
             <input type="text" id="food_name" name="food_name" placeholder="Název jídla" list="foodList">
             <datalist class="datalist" id="foodList">
-                % for food, food_id, image,disabled,my_id, rating, user_rating in foods %} 
+                {% for food, food_id, image,disabled,my_id, rating, user_rating in foods %} 
                     <option value="{{food}}">
                 {% endfor %}
             </datalist>
