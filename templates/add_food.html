@@ -9,14 +9,15 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        gap: 30px;
     }
-    .datalist {
-        border: 1px solid black;
-        margin-left: 20%;
-        margin-right: 20%;
-        top: 0;
+
+    form{
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: fit content;
     }
+    
 
   </style>
 </head>
@@ -34,7 +35,7 @@
                 </datalist>
             </p>
             <p style="color:red">Prosím, hodnoťte jídla podle chutě a ne podle vzhledu.</p>
-            <p>Je lepší pole nechat prázdné, než zadat nesmysl.</p>
+            <p style="color:red">Je lepší pole nechat prázdné, než zadat nesmysl.</p>
             <p>
                 <label for="rating">Hodnocení:</label>
                 <input type="number" id="rating" name="rating" min="1" max="7">
