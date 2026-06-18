@@ -130,7 +130,7 @@
       })
       .then(response => response.json())
       .then(data => {
-        document.getElementById("credit").textContent = data.credit;
+        document.getElementById("credit").textContent = "Kredit: " + data.credit;
       });
     }
   </script>
