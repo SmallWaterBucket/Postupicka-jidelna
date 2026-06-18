@@ -130,8 +130,9 @@
       })
       .then(response => response.json())
       .then(data => {
-        document.getElementById("response").innerText = data.credit;
-    });
+        document.getElementById("response").textContent = data.credit;
+      });
+    }
   </script>
 
 </head>
