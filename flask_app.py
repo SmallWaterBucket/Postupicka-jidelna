@@ -386,7 +386,8 @@ def order():
 
     ret = order_food(username, password, date, food)
     print(ret)
-    return ret
+    credit = kredit(username, password)
+    return {"credit": credit}
 
 def scrape(): #day,day_str,foods,chosen_food
     #page = requests.get("https://api.allorigins.win/raw?url=https://strav.nasejidelna.cz/0254/login")
