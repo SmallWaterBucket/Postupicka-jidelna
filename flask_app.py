@@ -679,3 +679,6 @@ def get_orderd_food_debug(username, password, dates):
 @app.route("/order_request/<username>,<password>,<date>,<food_id>")
 def order_food(username, password, date, food_id):
     page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://152.70.41.16.nip.io:8080/order.exe/{username},{password},{date},{food_id}")
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
