@@ -154,10 +154,10 @@ def get_db():
     if 'db' not in g:
         password = open(f"{path_passwords}/password_db.txt",'r').read()
         g.db = MySQLdb.connect(
-            host="jidelna.mysql.eu.pythonanywhere-services.com",
+            host="localhost",
             user="jidelna",
             passwd=password,
-            database="jidelna$default"
+            database="jidelna"
         )
     return g.db
 
