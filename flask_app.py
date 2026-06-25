@@ -49,7 +49,10 @@ UPLOAD_FOLDER = '/home/jidelna/photos'
 app.config['ALLOWED_EXTENSIONS'] = ['.jpg', '.jpeg', '.png']
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 4*1024 * 1024 #4MB
-app.secret_key = open("/home/jidelna/secret.txt",'r').read().strip()
+
+path_passwords = "/home/ubuntu/passwords"
+
+app.secret_key = open(f"{path_passwords}/secret.txt",'r').read().strip()
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
     SESSION_COOKIE_SECURE=True,
@@ -57,7 +60,7 @@ app.config.update(
     PERMANENT_SESSION_LIFETIME=1800
 )
 
-key = open("/home/jidelna/password.txt",'r').read().strip().encode()
+key = open(f"{path_passwords}/password.txt",'r').read().strip().encode()
 cipher = Fernet(key)
 
 
@@ -149,7 +152,7 @@ def search(food):
 
 def get_db():
     if 'db' not in g:
-        password = open("/home/jidelna/password_db.txt",'r').read()
+        password = open(f"{path_passwords}/password_db.txt",'r').read()
         g.db = MySQLdb.connect(
             host="jidelna.mysql.eu.pythonanywhere-services.com",
             user="jidelna",
@@ -310,7 +313,7 @@ def list_new_foods():
 @app.route('/new_food/<food_id>', methods=["GET", "POST"])
 def get_new_food(food_id):
     db = get_db()
-    f = open("/home/jidelna/password_admin.txt",'r')
+    f = open(f"{path_passwords}/password_admin.txt",'r')
     password = f.read()
     cursor = db.cursor()
     cursor.execute("SELECT * FROM New WHERE id = %s;", (food_id,))
@@ -602,7 +605,7 @@ def contacts():
 @app.route('/food_edit/<food_id>', methods=["GET", "POST"])
 def food_edit(food_id):
     db = get_db()
-    f = open("/home/jidelna/password_admin.txt",'r')
+    f = open(f"{path_passwords}/password_admin.txt",'r')
     password = f.read()
     cursor = db.cursor()
     cursor.execute("SELECT * FROM Main WHERE id = %s;", (food_id,))
