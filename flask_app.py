@@ -282,7 +282,10 @@ def add_food():
         else:
             return "Upload failed, image required!!!"
     foods = scrape()
-    foods = foods[0][2]
+    try:
+        foods = foods[0][2]
+    except:
+        foods = []
 
     if session.get("user") and session.get("password"):
         username = session.get("user")
