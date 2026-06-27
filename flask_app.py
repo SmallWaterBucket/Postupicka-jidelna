@@ -45,7 +45,7 @@ import random
 
 app = Flask(__name__)
 
-UPLOAD_FOLDER = '/home/jidelna/photos'
+UPLOAD_FOLDER = '/home/ubuntu/photos'
 app.config['ALLOWED_EXTENSIONS'] = ['.jpg', '.jpeg', '.png']
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 4*1024 * 1024 #4MB
