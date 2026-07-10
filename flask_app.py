@@ -57,7 +57,7 @@ app.config['ALLOWED_EXTENSIONS'] = ['.jpg', '.jpeg', '.png']
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 4*1024 * 1024 #4MB
 
-path_passwords = "/home/jidelna/passwords"
+path_passwords = "/home/jidelna/"
 
 app.secret_key = open(f"{path_passwords}/secret.txt",'r').read().strip()
 app.config.update(
