@@ -2,6 +2,8 @@ import datetime
 import subprocess
 
 from flask import Flask, session, render_template, url_for, request, redirect, flash, send_from_directory, g
+import PIL
+from PIL import Image
 from cryptography.fernet import Fernet
 import os.path, secrets
 import os,requests, unicodedata, MySQLdb,re
@@ -46,7 +48,7 @@ import random
 #add proper login; in progress; done
 #add your rating; done
 #Make it work on Pythonanywhere again
-
+#Fixed ratings
 
 #==========================================================
 
@@ -271,10 +273,20 @@ def add_food():
                     filename = f"{rnd}{extension}"
             FoodName = request.form.get("food_name")
             rating = request.form.get("rating")
-
-            file.save(os.path.join(
+            
+            path = os.path.join(
                 app.config['UPLOAD_FOLDER'],
-                secure_filename(filename)))
+                secure_filename(filename))
+            
+            file.save(path)
+
+            img = PIL.Image.open(path)
+            height,width = img.size
+
+            img = img.resize((height, width), PIL.Image.ANTIALIAS)
+
+            img.save(path)
+
             cursor = db.cursor()
             if not rating:
                 rating = -1
