@@ -351,7 +351,8 @@ def get_new_food(food_id):
                 cursor.execute("insert into Main (name,path,average,isFood) values (%s,%s,%s,%s)", (name, path, average, isFood))
                 cursor.execute("SELECT id FROM Main WHERE name = %s AND path = %s;", (name, path))
                 new_id = cursor.fetchone()[0]
-                cursor.execute("insert into Ratings (foodid,rating, username) values (%s,%s,%s)", (new_id, average, username))
+                if average != -1:
+                    cursor.execute("insert into Ratings (foodid,rating, username) values (%s,%s,%s)", (new_id, average, username))
             if decision == "deny":
                 os.remove(path)
             cursor.execute("delete from New where id = %s",(id,))
