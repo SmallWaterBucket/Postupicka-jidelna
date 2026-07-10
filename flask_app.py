@@ -12,7 +12,7 @@ from bs4 import BeautifulSoup
 import random
 
 #TODO:
-#Make it work on Pythonanywhere again
+
 #Add compresion for images
 #Add a posibility to add diferent canteens
 
@@ -45,7 +45,7 @@ import random
 #make ordering work again; done
 #add proper login; in progress; done
 #add your rating; done
-
+#Make it work on Pythonanywhere again
 
 
 #==========================================================
