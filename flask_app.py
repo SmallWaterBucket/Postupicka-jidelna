@@ -12,6 +12,13 @@ from bs4 import BeautifulSoup
 import random
 
 #TODO:
+#Make it work on Pythonanywhere again
+#Add compresion for images
+#Add a posibility to add diferent canteens
+
+
+#=========================================================
+#MAYBE:
 
 #add comments
 #add likes/dislikes
@@ -45,12 +52,12 @@ import random
 
 app = Flask(__name__)
 
-UPLOAD_FOLDER = '/home/ubuntu/photos'
+UPLOAD_FOLDER = '/home/jidelna/photos'
 app.config['ALLOWED_EXTENSIONS'] = ['.jpg', '.jpeg', '.png']
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 4*1024 * 1024 #4MB
 
-path_passwords = "/home/ubuntu/passwords"
+path_passwords = "/home/jidelna/passwords"
 
 app.secret_key = open(f"{path_passwords}/secret.txt",'r').read().strip()
 app.config.update(
@@ -154,10 +161,10 @@ def get_db():
     if 'db' not in g:
         password = open(f"{path_passwords}/password_db.txt",'r').read()
         g.db = MySQLdb.connect(
-            host="localhost",
+            host="jidelna.mysql.eu.pythonanywhere-services.com",
             user="jidelna",
             passwd=password,
-            database="jidelna"
+            database="jidelna$default"
         )
     return g.db
 
@@ -683,5 +690,5 @@ def get_orderd_food_debug(username, password, dates):
 def order_food(username, password, date, food_id):
     page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://152.70.41.16.nip.io:8080/order.exe/{username},{password},{date},{food_id}")
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080)
+#if __name__ == "__main__":
+#    app.run(host="0.0.0.0", port=8080)
