@@ -283,7 +283,7 @@ def add_food():
             img = PIL.Image.open(path)
             height,width = img.size
 
-            img = img.resize((height, width), PIL.Image.ANTIALIAS)
+            img.convert('RGB').save(path,'JPEG',quality=85)
 
             img.save(path)
 
