@@ -3,7 +3,7 @@ import subprocess
 
 from flask import Flask, session, render_template, url_for, request, redirect, flash, send_from_directory, g
 import PIL
-from PIL import Image
+from PIL import Image, ImageOps
 from cryptography.fernet import Fernet
 import os.path, secrets
 import os,requests, unicodedata, MySQLdb,re
@@ -278,14 +278,12 @@ def add_food():
                 app.config['UPLOAD_FOLDER'],
                 secure_filename(filename))
             
-            file.save(path)
+            #file.save(path)
+            try:
+                mycompress(app.config['UPLOAD_FOLDER'], filename)
+            except Exception as e:
+                return f"Exception {e}"
 
-            img = PIL.Image.open(path)
-            height,width = img.size
-
-            img.convert('RGB').save(path,'JPEG',quality=1)
-
-            img.save(path)
 
             cursor = db.cursor()
             if not rating:
@@ -312,6 +310,18 @@ def add_food():
         return render_template("add_food.html", username=username, kredit=kredit, foods=foods)
 
     return render_template("add_food.html", foods=foods)
+
+def mycompress(path,file):
+    print(f"Compressing {file} ...")
+    filename,ext = os.path.splitext(file)
+    foo = Image.open(path+"//"+file)
+    foo = ImageOps.exif_transpose(foo)
+    width, height = foo.size
+
+    foo = foo.resize((round(width*0.5),round(height*0.5)), Image.Resampling.LANCZOS)
+
+    foo.save(f"{path}//{filename}{ext}", optimize= True, quality= 75)
+    return 0
 
 
 @app.route('/favicon.ico')
