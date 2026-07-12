@@ -58,6 +58,7 @@ UPLOAD_FOLDER = '/home/jidelna/photos'
 app.config['ALLOWED_EXTENSIONS'] = ['.jpg', '.jpeg', '.png']
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 4*1024 * 1024 #4MB
+compress_limit = 1 # This is the number of MB above which an image will be compressed
 
 path_passwords = "/home/jidelna/"
 
@@ -279,10 +280,11 @@ def add_food():
                 secure_filename(filename))
             
             file.save(path)
-            try:
-                mycompress(app.config['UPLOAD_FOLDER'], filename)
-            except Exception as e:
-                return f"Exception {e}"
+            if os.path.getsize(path) > compress_limit * 1024 * 1024:  # If the file is larger than 1MB, compress it
+                try:
+                    mycompress(app.config['UPLOAD_FOLDER'], filename)
+                except Exception as e:
+                    return f"Exception {e}"
 
 
             cursor = db.cursor()
