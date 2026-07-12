@@ -278,7 +278,7 @@ def add_food():
                 app.config['UPLOAD_FOLDER'],
                 secure_filename(filename))
             
-            #file.save(path)
+            file.save(path)
             try:
                 mycompress(app.config['UPLOAD_FOLDER'], filename)
             except Exception as e:
