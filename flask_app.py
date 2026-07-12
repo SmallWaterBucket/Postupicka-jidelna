@@ -376,7 +376,10 @@ def get_new_food(food_id):
                 if average != -1:
                     cursor.execute("insert into Ratings (foodid,rating, username) values (%s,%s,%s)", (new_id, average, username))
             if decision == "deny":
-                os.remove(path)
+                try:
+                    os.remove(path)
+                except:
+                    pass
             cursor.execute("delete from New where id = %s",(id,))
             db.commit()
             return f"Action successful"
@@ -671,7 +674,7 @@ def food_edit(food_id):
                     isFood = 0
                 cursor.execute("update Main set name = %s, path = %s, isFood = %s where id = %s",(new_name, new_path, isFood, id,))
             db.commit()
-            return f"Action successful"
+            return redirect(f"/get_food/{id}")
         else:
             message = "Incorrect password"
     return render_template("food_edit.html", image=image_url, name=name, rating=average, message=message, food_id=food_id, isFood=isFood)
