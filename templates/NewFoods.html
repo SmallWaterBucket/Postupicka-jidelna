@@ -8,7 +8,7 @@
     {% include "navbar.html" %}
     <h1><u>Nová jídla:</u></h1>
     {% for food, id in foods %}
-        <a href="/get_food/{{id}}">
+        <a href="/new_food/{{id}}">
             <p>{{food}}</p>
         </a>
     {% endfor %}
