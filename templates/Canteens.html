@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Výběr jídelny</title>
+  <title>Hledat jídlo</title>
   <link rel="icon" href="/favicon.ico">
 </head>
 <body>
     {% include "navbar.html" %}
-    <h1><u>Nová jídla:</u></h1>
-    {% for food, id in foods %}
-        <a href="/new_food/{{id}}">
-            <p>{{food}}</p>
-        </a>
-    {% endfor %}
+    <h1><u>Výběr jídelny</u></h1>
+    <p>Vitejte na nasi strance. Prosim vyberte si nazev vasi jidelny, nebo ji <a href="/add_canteen">stvorte</a></p>
+    <label for="canteen">Jidelna:</label>
+    <select name="canteen">
+        {% for canteen,id in canteens %}
+            <option value="{{id}}">{{canteen}}</option>
+        {% endfor %}
+    </select>
     <button type="submit">Pokračovat</button>
 </body>
 </html>
