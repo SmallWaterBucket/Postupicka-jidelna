@@ -15,10 +15,13 @@ import random
 
 #TODO:
 
-#Add navbar to /new_food
-#Add compresion for images
-#Add a posibility to add diferent canteens
 
+#Add a posibility to add diferent canteens
+# /add_canteen
+# better design
+# storing canteen in cookies
+# adding full compat for iCanteen (maybe using the library for everything?)
+# adding compat with different canteen systems
 
 #=========================================================
 #MAYBE:
@@ -50,6 +53,8 @@ import random
 #add your rating; done
 #Make it work on Pythonanywhere again
 #Fixed ratings
+#Add navbar to /new_food
+#Add compresion for images
 
 #==========================================================
 
@@ -692,6 +697,10 @@ def logout():
     return redirect("/")
 
 
+@app.route("/canteens")
+def canteens():
+    ret = [("Postupicka",0)]
+    return render_template("Canteens.html", canteens=ret)
 
 
 
