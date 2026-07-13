@@ -15,6 +15,7 @@ import random
 
 #TODO:
 
+#Add navbar to /new_food
 #Add compresion for images
 #Add a posibility to add diferent canteens
 
@@ -58,7 +59,7 @@ UPLOAD_FOLDER = '/home/jidelna/photos'
 app.config['ALLOWED_EXTENSIONS'] = ['.jpg', '.jpeg', '.png']
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 4*1024 * 1024 #4MB
-compress_limit = 1 # This is the number of MB above which an image will be compressed
+compress_limit = 0.5 # This is the number of MB above which an image will be compressed
 
 path_passwords = "/home/jidelna/"
 
@@ -337,12 +338,12 @@ def list_new_foods():
     cursor.execute("SELECT * FROM New")
     result = cursor.fetchall()
 
-    ret = ""
+    ret = []
     for item in result:
         food = item[1]
         id = item[0]
-        ret+=f"<p><a href=/new_food/{id}>{food}</p>"
-    return ret
+        ret.append((food, id))
+    return render_template("NewFoods.html", foods=ret)
 
 @app.route('/new_food/<food_id>', methods=["GET", "POST"])
 def get_new_food(food_id):
@@ -384,7 +385,10 @@ def get_new_food(food_id):
                     pass
             cursor.execute("delete from New where id = %s",(id,))
             db.commit()
-            return f"Action successful"
+            if decision == "accept":
+                return redirect(f"/get_food/{new_id}")
+            else:
+                return redirect("/new_foods")
         else:
             message = "Incorrect password"
     return render_template("accept_deny.html", image=image_url, name=name, rating=average, message=message, food_id=food_id, text=text)

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hledat jídlo</title>
+  <link rel="icon" href="/favicon.ico">
+</head>
+<body>
+    {% include "navbar.html" %}
+    <h1><u>Nová jídla:</u></h1>
+    {% for food, id in foods %}
+        <a href="/get_food/{{id}}">
+            <p>{{food}}</p>
+        </a>
+    {% endfor %}
+</body>
+</html>
