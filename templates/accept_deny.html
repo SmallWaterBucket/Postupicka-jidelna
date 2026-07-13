@@ -17,7 +17,7 @@
 {% if text %}<p style="color:red">{{ text }}</p>{% endif %}
 <form action="{{ url_for('get_new_food', food_id=food_id) }}" method="post">
     <label for="password">Password:</label>
-    <p><input type="text" id="password" name="password" placeholder="Password"></p>
+    <p><input type = "password" id="password" name="password" placeholder="Password"></p>
     <p style="color:tomato">{{message}}</p>
     <button type="submit" name="decision" value="deny">Deny</button>
     <button type="submit" name="decision" value="accept">Accept</button>
