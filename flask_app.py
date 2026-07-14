@@ -705,7 +705,7 @@ def canteens():
     if not cookie:
         if request.method == "POST":
             id = request.form.get("canteen_id")
-
+            response = make_response('Setting cookie to the canteen id ...')
             response.set_cookie(
                 "id",
                 id,
