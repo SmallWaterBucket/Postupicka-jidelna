@@ -697,11 +697,30 @@ def logout():
     return redirect("/")
 
 
-@app.route("/canteens")
+@app.route("/canteens", methods =["GET", "POST"])
 def canteens():
+    
     ret = [("Postupicka",0)]
     return render_template("Canteens.html", canteens=ret)
 
+@app.route("/canteen/<id>", methods =["GET", "POST"])
+def canteen(id):
+    data = scrape()
+    return render_template("NewMain.html", data=data, canteen=id)
+    #if request.method == "POST":
+    #    food = request.form.get("food_name")
+    #    return redirect(f"/search/{food}")
+
+
+    #if session.get("user") and session.get("password"):
+    #    username = session.get("user")
+    #    password = cipher.decrypt(session.get("password")).decode()
+    #    credit = kredit(username, password)
+    #    session['kredit'] = credit
+    #    data = new_scrape(username, password)
+    #    return render_template("NewMain.html", data = data, username=username, kredit = credit)
+    #else:
+    #    data=scrape()
 
 
 

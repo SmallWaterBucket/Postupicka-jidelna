@@ -4,16 +4,31 @@
   <title>Hledat jídlo</title>
   <link rel="icon" href="/favicon.ico">
 </head>
+<style>
+    .not_navbar {
+
+        color: rgb(50,61,127);
+
+        display:flex;
+        flex-grow:1;
+        align-items: center;
+        flex-direction: column;
+    }
+</style>
 <body>
     {% include "navbar.html" %}
-    <h1><u>Výběr jídelny</u></h1>
-    <p>Vitejte na nasi strance. Prosim vyberte si nazev vasi jidelny, nebo ji <a href="/add_canteen">stvorte</a></p>
-    <label for="canteen">Jidelna:</label>
-    <select name="canteen">
-        {% for canteen,id in canteens %}
-            <option value="{{id}}">{{canteen}}</option>
-        {% endfor %}
-    </select>
-    <button type="submit">Pokračovat</button>
+    <div class = "not_navbar">
+        <h1><u>Výběr jídelny</u></h1>
+        <p>Vitejte na nasi strance. Prosim vyberte si nazev vasi jidelny, nebo ji <a href="/add_canteen">stvorte</a></p>
+        <form action="/canteens" method="post">
+            <label for="canteen">Jidelna:</label>
+            <select name="canteen">
+                {% for canteen,id in canteens %}
+                    <option value="{{id}}">{{canteen}}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Pokračovat</button>
+        </form>
+    </div>
 </body>
 </html>
