@@ -705,14 +705,14 @@ def canteens():
     if not cookie:
         if request.method == "POST":
             id = request.form.get("canteen_id")
-            response = make_response('Setting cookie to the canteen id ...')
+            response = make_response(redirect(f"/canteen/{id}"))
             response.set_cookie(
                 "id",
                 id,
                 max_age= 60 * 60 * 24 * 365
             )   
 
-            return redirect(f"/canteen/{id}")
+            return response
         ret = [("Postupicka",0)]
         return render_template("Canteens.html", canteens=ret)
     else:
