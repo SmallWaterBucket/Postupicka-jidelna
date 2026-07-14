@@ -1,5 +1,6 @@
 import datetime
 import subprocess
+from urllib import response
 
 from flask import Flask, session, render_template, url_for, request, redirect, flash, send_from_directory, g
 import PIL
@@ -15,7 +16,7 @@ import random
 
 #TODO:
 
-
+#Add colors to the food ratings everywhere
 #Add a posibility to add diferent canteens
 # /add_canteen
 # better design
@@ -699,11 +700,22 @@ def logout():
 
 @app.route("/canteens", methods =["GET", "POST"])
 def canteens():
-    if request.method == "POST":
-        id = request.form.get("canteen_id")
-        return redirect(f"/canteen/{id}")
-    ret = [("Postupicka",0)]
-    return render_template("Canteens.html", canteens=ret)
+    cookie = request.cookies.get("id")
+    if not cookie:
+        if request.method == "POST":
+            id = request.form.get("canteen_id")
+
+            response.set_cookie(
+                "id",
+                id,
+                max_age= 60 * 60 * 24 * 365,
+            )   
+
+            return redirect(f"/canteen/{id}")
+        ret = [("Postupicka",0)]
+        return render_template("Canteens.html", canteens=ret)
+    else:
+        return redirect(f"/canteen/{cookie}")
 
 @app.route("/canteen/<canteen_id>", methods =["GET", "POST"])
 def canteen(canteen_id):
