@@ -699,7 +699,9 @@ def logout():
 
 @app.route("/canteens", methods =["GET", "POST"])
 def canteens():
-    
+    if request.method == "POST":
+        id = request.form.get("id")
+        return redirect(f"/canteen/{id}")
     ret = [("Postupicka",0)]
     return render_template("Canteens.html", canteens=ret)
 
