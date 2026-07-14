@@ -21,8 +21,8 @@
         <h1><u>Výběr jídelny</u></h1>
         <p>Vitejte na nasi strance. Prosim vyberte si nazev vasi jidelny, nebo ji <a href="/add_canteen">stvorte</a></p>
         <form action="/canteens" method="post">
-            <label for="canteen">Jidelna:</label>
-            <select id="canteen" name="canteen">
+            <label for="canteen_id">Jidelna:</label>
+            <select id="canteen_id" name="canteen_id">
                 {% for canteen,id in canteens %}
                     <option value="{{id}}">{{canteen}}</option>
                 {% endfor %}

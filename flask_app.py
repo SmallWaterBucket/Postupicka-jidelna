@@ -700,15 +700,15 @@ def logout():
 @app.route("/canteens", methods =["GET", "POST"])
 def canteens():
     if request.method == "POST":
-        id = request.form.get("canteen")
+        id = request.form.get("canteen_id")
         return redirect(f"/canteen/{id}")
     ret = [("Postupicka",0)]
     return render_template("Canteens.html", canteens=ret)
 
-@app.route("/canteen/<id>", methods =["GET", "POST"])
-def canteen(id):
+@app.route("/canteen/<canteen_id>", methods =["GET", "POST"])
+def canteen(canteen_id):
     data = scrape()
-    return render_template("NewMain.html", data=data, canteen=id)
+    return render_template("NewMain.html", data=data, canteen_id=canteen_id)
     #if request.method == "POST":
     #    food = request.form.get("food_name")
     #    return redirect(f"/search/{food}")
