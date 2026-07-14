@@ -16,6 +16,7 @@ import random
 
 #TODO:
 
+#add user counter
 #Add colors to the food ratings everywhere
 #Add a posibility to add diferent canteens
 # /add_canteen
@@ -708,7 +709,7 @@ def canteens():
             response.set_cookie(
                 "id",
                 id,
-                max_age= 60 * 60 * 24 * 365,
+                max_age= 60 * 60 * 24 * 365
             )   
 
             return redirect(f"/canteen/{id}")
