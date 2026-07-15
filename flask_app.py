@@ -718,6 +718,60 @@ def canteens():
     else:
         return redirect(f"/canteen/{cookie}")
 
+@app.route('/add_canteen', methods =["GET", "POST"])
+def add_canteen():
+    db = get_db()
+    if request.method == "POST":
+        file = request.files["file"]
+        if file:
+            extension = os.path.splitext(file.filename)[1]
+            filename = secure_filename(file.filename)
+            if extension not in app.config['ALLOWED_EXTENSIONS']:
+                return 'The uploaded file is not an image.'
+            if os.path.isfile(f"{app.config['UPLOAD_FOLDER']}/{file.filename}"):
+                rnd = random.randrange(0, 100000)
+                filename = f"{rnd}{extension}"
+                while os.path.isfile(filename):
+                    rnd = random.randrange(0, 100000)
+                    filename = f"{rnd}{extension}"
+            FoodName = request.form.get("food_name")
+            canteen_system = request.form.get("canteen_system")
+            canteen_name= request.form.get("canteen_name")
+
+            path = os.path.join(
+                app.config['UPLOAD_FOLDER'],
+                secure_filename(filename))
+            
+            file.save(path)
+            if os.path.getsize(path) > compress_limit * 1024 * 1024:  # If the file is larger than 1MB, compress it
+                try:
+                    mycompress(app.config['UPLOAD_FOLDER'], filename)
+                except Exception as e:
+                    return f"Exception {e}"
+
+
+            cursor = db.cursor()
+            
+            cursor.execute("insert into New (name,path,rating,isFood,username,canteen_id) values (%s,%s,%s,%s,%s)", (FoodName, os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(filename)), canteen_system, 1, canteen_name , -1))
+            db.commit()
+            return get_message("Food submitted")
+        else:
+            return "Upload failed, image required!!!"
+    foods = scrape()
+    try:
+        foods = foods[0][2]
+    except:
+        foods = []
+
+    if session.get("user") and session.get("password"):
+        username = session.get("user")
+        kredit = session.get("kredit")
+        return render_template("add_food.html", username=username, kredit=kredit, foods=foods)
+
+    return render_template("add_food.html", foods=foods)
+
+
+
 @app.route("/canteen/<canteen_id>", methods =["GET", "POST"])
 def canteen(canteen_id):
     data = scrape()

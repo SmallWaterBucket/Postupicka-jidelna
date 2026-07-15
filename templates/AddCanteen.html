@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Přidat jídelnu</title>
+  <link rel="icon" href="/favicon.ico">
+  <style>
+    .not_navbar{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .not_navbar form{
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+        width: fit-content;
+    }
+
+    .not_navbar form p{
+        margin: 0;
+    }
+
+    .not_navbar form input,
+    .not_navbar form button,
+    .not_navbar form label{
+        margin: 0;
+    }
+    
+
+  </style>
+</head>
+<body>
+    {% include "navbar.html" %}
+    <div class="not_navbar">
+        <form action="/add_canteen" method="post" enctype="multipart/form-data">
+            <label for="food_name">Název jidelny / skoly:</label>
+            <input type="text" id="canteen_name" name="canteen_name" placeholder="Název jidelny / skoly" list="foodList">
+
+            <label for="canteen_system">Jidelni system:</label>
+            <select id="canteen_system" name="canteen_system">
+                <option value="0">iCanteen</option>
+                <option value="1">Strava</option>
+                <option value="2">Jidelna.cz</option>
+            </select>
+
+            <label for="file">Logo jidelny:</label>
+            <input type="file" name="file">
+            
+            <button type="submit">Přidat jídelnu</button>
+        </form>
+    </div>
+</body>
