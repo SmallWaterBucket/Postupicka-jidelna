@@ -20,10 +20,16 @@
 <div class="not_navbar">
     <h1>{{ name }}</h1>
     <p><a href="{{ image }}"><img src="{{ image }}" height="200" alt="{{ name }}"></a></p>
-    <p>Hodnocení: {{ rating }}/7</p>
+    {if isCanteen %}
+        <p>Jidelni system: {{ rating }}</p>
+    {else %}
+        <p>Hodnocení: {{ rating }}/7</p>
+    {endif}
+
     {% if user_rating %}
-    <p>Vaše hodnocení: {{ user_rating }}/7</p>
+        <p>Vaše hodnocení: {{ user_rating }}/7</p>
     {% endif %}
+
     <p>Jidlo je z: {{ canteen_name }}</p>
     <p style="color:tomato">{{text}}</p>
 

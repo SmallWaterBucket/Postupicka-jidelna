@@ -16,6 +16,7 @@ import random
 
 #TODO:
 
+#/suggestions
 #Change the long db outputs to only what is needed
 #add user counter
 #Add colors to the food ratings everywhere
@@ -751,6 +752,7 @@ def add_canteen():
 
             canteen_system = request.form.get("canteen_system")
             canteen_name= request.form.get("canteen_name")
+            canteen_url = request.form.get("canteen_url")
 
             if not canteen_name:
                 return "Prosim uvedte nazev jidelny"
@@ -769,7 +771,7 @@ def add_canteen():
 
             cursor = db.cursor()
             
-            cursor.execute("insert into New (name,path,rating,isFood,username,canteen_id) values (%s,%s,%s,%s,%s,%s)", (canteen_name, os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(filename)), canteen_system, 0, "Anonymous" , -1))
+            cursor.execute("insert into New (name,path,rating,isFood,username,canteen_id) values (%s,%s,%s,%s,%s,%s)", (canteen_name, os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(filename)), canteen_system, 0, canteen_url , -1))
             db.commit()
             return get_message("Food submitted")
         else:
