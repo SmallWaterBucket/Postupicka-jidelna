@@ -307,7 +307,9 @@ def add_food():
             if session.get("user") and session.get("password"):
                 username = session.get("user")
             
-            cursor.execute("insert into New (name,path,rating,isFood,username) values (%s,%s,%s,%s,%s)", (FoodName, os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(filename)), rating, 1, username))
+            canteen_id = get_canteen_id()
+
+            cursor.execute("insert into New (name,path,rating,isFood,username,canteen_id) values (%s,%s,%s,%s,%s)", (FoodName, os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(filename)), rating, 1, username, canteen_id))
             db.commit()
             return get_message("Food submitted")
         else:
@@ -388,7 +390,13 @@ def get_new_food(food_id):
                 cursor.execute("SELECT id FROM Main WHERE name = %s AND path = %s;", (name, path))
                 new_id = cursor.fetchone()[0]
                 if average != -1:
-                    cursor.execute("insert into Ratings (foodid,rating, username) values (%s,%s,%s)", (new_id, average, username))
+                    if canteen_id !=-1:
+                        cursor.execute("insert into Ratings (foodid,rating, username) values (%s,%s,%s)", (new_id, average, username))
+                    else:
+                        cursor.execute("SELECT MAX(average) as max_average from Main where canteen_id = -1")
+                        return cursor.fetchone()[0]
+                        max_average = cursor.fetchone()[0]
+                        cursor.execute("UPDATE Main set average = %s", (max_average,))
             if decision == "deny":
                 try:
                     os.remove(path)
@@ -721,7 +729,10 @@ def canteens():
             )   
 
             return response
-        ret = [("Postupicka",0)]
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute("SELECT (name,average) from Main where canteen_id = -1")
+        ret = cursor.fetchall()
         return render_template("Canteens.html", canteens=ret)
     else:
         return redirect(f"/canteen/{cookie}")
