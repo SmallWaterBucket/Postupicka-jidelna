@@ -20,11 +20,11 @@
 <div class="not_navbar">
     <h1>{{ name }}</h1>
     <p><a href="{{ image }}"><img src="{{ image }}" height="200" alt="{{ name }}"></a></p>
-    {if isCanteen %}
+    {% if isCanteen %}
         <p>Jidelni system: {{ rating }}</p>
-    {else %}
+    {% else %}
         <p>Hodnocení: {{ rating }}/7</p>
-    {endif}
+    {% endif %}
 
     {% if user_rating %}
         <p>Vaše hodnocení: {{ user_rating }}/7</p>
