@@ -234,7 +234,7 @@ def get_food(food_id):
     if not isFood:
         text = "Toto není jídlo ze školní jídelny."
 
-    image_url = get_image(name)
+    image_url = get_image_id(food_id)
 
     if session.get("user") and session.get("password"):
         username = session.get("user")
@@ -244,9 +244,9 @@ def get_food(food_id):
 
     return render_template("food.html", image=image_url, name=name, rating=str(average), food_id=food_id, text=text, user_rating = user_rating)
 
-@app.route("/image/<filename>")
-def get_image_page(filename):
-    return send_from_directory(UPLOAD_FOLDER, filename)
+#@app.route("/image/<filename>")
+#def get_image_page(filename):
+#    return send_from_directory(UPLOAD_FOLDER, filename)
 
 def get_image(image):
     db = get_db()
@@ -256,6 +256,19 @@ def get_image(image):
     if not result:
         return "/image/WhatsApp_Image_2026-01-16_at_19.21.37.jpeg"
     id, name, path, average, isFood, canteen_id = result
+    filename = path.split('/')[-1]
+    image_url = f"/image/{filename}"
+    return image_url
+
+
+def get_image_id(id):
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute(f"SELECT * FROM Main WHERE id = %s;", (id,))
+    result = cursor.fetchone()
+    if not result:
+        return "/image/WhatsApp_Image_2026-01-16_at_19.21.37.jpeg"
+    new_id, name, path, average, isFood, canteen_id = result
     filename = path.split('/')[-1]
     image_url = f"/image/{filename}"
     return image_url
@@ -507,7 +520,7 @@ def scrape(): #day,day_str,foods,chosen_food
                         if rating == '-1':
                             rating = ""
                     
-                    foods.append((food, food_id, get_image(food), True, -1, rating, user_rating)) #food,food_id,image,disabled, my_id, rating, user_rating
+                    foods.append((food, food_id, get_image_id(food_id), True, -1, rating, user_rating)) #food,food_id,image,disabled, my_id, rating, user_rating
         data.append((date, date,foods, -2))
 
     return data
@@ -605,7 +618,7 @@ def new_scrape(username, password):
                             rating = ""
 
 
-                    foods.append((food, food_id, get_image(food), disabled, my_id, rating, user_rating)) #food,food_id,image,disabled, my_id, rating, user_rating
+                    foods.append((food, food_id, get_image_id(food_id), disabled, my_id, rating, user_rating)) #food,food_id,image,disabled, my_id, rating, user_rating
             my_id+=1
         data.append((date,str_date,foods, chosen_food))
         day_index+=1
@@ -675,7 +688,7 @@ def food_edit(food_id):
     
     id, name, path, average, isFood = result
 
-    image_url = get_image(name)
+    image_url = get_image_id(food_id)
     message = ""
     if request.method == "POST":
         EnteredPassword = request.form.get("password")
