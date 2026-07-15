@@ -839,6 +839,10 @@ def canteen(canteen_id):
 
 @app.route("/", methods = ["GET", "POST"])
 def new_main_page():
+    if request.method == "POST":
+        food = request.form.get("food_name")
+        return redirect(f"/search/{food}")
+
     cookie = get_canteen_id()
     if not cookie:
         if request.method == "POST":
