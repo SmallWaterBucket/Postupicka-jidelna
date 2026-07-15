@@ -297,6 +297,7 @@ def request_entity_too_large(error):
 @app.route('/add_food', methods =["GET", "POST"])
 def add_food():
     db = get_db()
+    canteen_id = get_canteen_id()
     if request.method == "POST":
         file = request.files["file"]
         if file:
@@ -335,7 +336,7 @@ def add_food():
             if session.get("user") and session.get("password"):
                 username = session.get("user")
             
-            canteen_id = get_canteen_id()
+            
 
             cursor.execute("insert into New (name,path,rating,isFood,username,canteen_id) values (%s,%s,%s,%s,%s,%s)", (FoodName, os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(filename)), rating, 1, username, canteen_id))
             db.commit()
