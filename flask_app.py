@@ -244,9 +244,9 @@ def get_food(food_id):
 
     return render_template("food.html", image=image_url, name=name, rating=str(average), food_id=food_id, text=text, user_rating = user_rating)
 
-#@app.route("/image/<filename>")
-#def get_image_page(filename):
-#    return send_from_directory(UPLOAD_FOLDER, filename)
+@app.route("/image/<filename>")
+def get_image_page(filename):
+    return send_from_directory(UPLOAD_FOLDER, filename)
 
 def get_image(image):
     db = get_db()
