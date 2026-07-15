@@ -16,6 +16,7 @@ import random
 
 #TODO:
 
+#change / and / debug properly with session cookie and stuff
 #add canteen field to /food_edit
 #/suggestions
 #Change the long db outputs to only what is needed
@@ -87,7 +88,7 @@ cipher = Fernet(key)
 
 
 
-@app.route('/', methods =["GET", "POST"])
+@app.route('/debug', methods =["GET", "POST"])
 def Main():
     canteen_id = get_canteen_id()
 
@@ -105,7 +106,6 @@ def Main():
         return render_template("NewMain.html", data = data, username=username, kredit = credit, canteen_name = canteen_id_to_name(canteen_id), logo = get_image_id(canteen_id))
     else:
         data=scrape()
-
 
     return render_template("NewMain.html", data = data, canteen_name = canteen_id_to_name(canteen_id), logo = get_image_id(canteen_id))
 
@@ -828,7 +828,7 @@ def canteen(canteen_id):
 
 
 
-@app.route("/debug")
+@app.route("/")
 def new_main_page():
     cookie = get_canteen_id()
     if not cookie:
