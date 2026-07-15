@@ -446,7 +446,7 @@ def login():
         if "password" in request.form:
             username = request.form.get("username")
             password = request.form.get("password")
-            if try_login(username, password) == "0\n":
+            if try_login(username, password) != "1\n":
                 return render_template("Login.html", message="Špatné přihlašovací údaje")
 
             session['user'] = username
