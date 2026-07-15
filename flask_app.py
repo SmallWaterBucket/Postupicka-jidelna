@@ -16,6 +16,7 @@ import random
 
 #TODO:
 
+#add canteen field to /food_edit
 #/suggestions
 #Change the long db outputs to only what is needed
 #add user counter
@@ -101,12 +102,14 @@ def Main():
         credit = kredit(username, password)
         session['kredit'] = credit
         data = new_scrape(username, password)
-        return render_template("NewMain.html", data = data, username=username, kredit = credit, canteen_name = canteen_id_to_name(canteen_id))
+        return render_template("NewMain.html", data = data, username=username, kredit = credit, canteen_name = canteen_id_to_name(canteen_id), logo = get_image_id(canteen_id))
     else:
         data=scrape()
 
 
-    return render_template("NewMain.html", data = data, canteen_name = canteen_id_to_name(canteen_id))
+    return render_template("NewMain.html", data = data, canteen_name = canteen_id_to_name(canteen_id), logo = get_image_id(canteen_id))
+
+
 
 @app.route("/message/<message>")
 def get_message(message):
@@ -136,9 +139,9 @@ def get_message(message):
     if session.get("user") and session.get("password"):
         username = session.get("user")
         kredit = session.get("kredit")
-        return render_template("message.html", username=username, kredit=kredit, message=message, submessage = submessage, link = link, link_text=link_text, img = img)
+        return render_template("message.html", username=username, kredit=kredit, message=message, submessage = submessage, link = link, link_text=link_text, img = img, logo = get_image_id(get_canteen_id()))
 
-    return render_template("message.html", message=message, submessage = submessage, link = link, link_text=link_text, img = img)
+    return render_template("message.html", message=message, submessage = submessage, link = link, link_text=link_text, img = img, logo = get_image_id(get_canteen_id()))
 
 @app.route('/search/<food>', methods = ["GET", "POST"])
 def search(food):
@@ -165,11 +168,11 @@ def search(food):
     if session.get("user") and session.get("password"):
         username = session.get("user")
         kredit = session.get("kredit")
-        return render_template("search.html", username=username, kredit=kredit, food=food, answers=ret)
+        return render_template("search.html", username=username, kredit=kredit, food=food, answers=ret, logo = get_image_id(canteen_id))
 
 
 
-    return render_template("search.html", food=food, answers=ret)
+    return render_template("search.html", food=food, answers=ret, logo = get_image_id(canteen_id))
 
 def get_db():
     if 'db' not in g:
@@ -242,10 +245,10 @@ def get_food(food_id):
     if session.get("user") and session.get("password"):
         username = session.get("user")
         kredit = session.get("kredit")
-        return render_template("food.html", username=username, kredit=kredit, image=image_url, name=name, rating=str(average), food_id=food_id, text=text, user_rating = user_rating, canteen_name = canteen_id_to_name(canteen_id), isCanteen = isCanteen)
+        return render_template("food.html", username=username, kredit=kredit, image=image_url, name=name, rating=str(average), food_id=food_id, text=text, user_rating = user_rating, canteen_name = canteen_id_to_name(canteen_id), isCanteen = isCanteen, logo = get_image_id(canteen_id))
 
 
-    return render_template("food.html", image=image_url, name=name, rating=str(average), food_id=food_id, text=text, user_rating = user_rating, canteen_name = canteen_id_to_name(canteen_id), isCanteen = isCanteen)
+    return render_template("food.html", image=image_url, name=name, rating=str(average), food_id=food_id, text=text, user_rating = user_rating, canteen_name = canteen_id_to_name(canteen_id), isCanteen = isCanteen, logo = get_image_id(canteen_id))
 
 def canteen_id_to_name(canteen_id):
     db = get_db()
@@ -348,9 +351,9 @@ def add_food():
     if session.get("user") and session.get("password"):
         username = session.get("user")
         kredit = session.get("kredit")
-        return render_template("add_food.html", username=username, kredit=kredit, foods=foods)
+        return render_template("add_food.html", username=username, kredit=kredit, foods=foods, logo = get_image_id(canteen_id))
 
-    return render_template("add_food.html", foods=foods)
+    return render_template("add_food.html", foods=foods, logo = get_image_id(canteen_id))
 
 def mycompress(path,file):
     print(f"Compressing {file} ...")
@@ -381,7 +384,7 @@ def list_new_foods():
         food = item[1]
         id = item[0]
         ret.append((food, id))
-    return render_template("NewFoods.html", foods=ret)
+    return render_template("NewFoods.html", foods=ret, logo = get_image_id(get_canteen_id()))
 
 @app.route('/new_food/<food_id>', methods=["GET", "POST"])
 def get_new_food(food_id):
@@ -431,7 +434,7 @@ def get_new_food(food_id):
                 return redirect("/new_foods")
         else:
             message = "Incorrect password"
-    return render_template("accept_deny.html", image=image_url, name=name, rating=average, message=message, food_id=food_id, text=text, isCanteen=isCanteen)
+    return render_template("accept_deny.html", image=image_url, name=name, rating=average, message=message, food_id=food_id, text=text, isCanteen=isCanteen, logo = get_image_id(canteen_id))
 
 
 @app.route('/login', methods=["GET", "POST"])
@@ -450,7 +453,7 @@ def login():
             session['kredit'] = kredit(username, password)
             return redirect("/")
             
-    return render_template("Login.html", message="")
+    return render_template("Login.html", message="", logo = get_image_id(get_canteen_id()))
     
 
 
@@ -666,7 +669,7 @@ def all_foods():
         kredit = session.get("kredit")
         return render_template("foods.html", username=username, kredit=kredit, foods=ret)
 
-    return render_template("foods.html", foods=ret)
+    return render_template("foods.html", foods=ret, logo = get_image_id(canteen_id))
 
 
 @app.route('/about')
@@ -806,7 +809,7 @@ def canteens():
 @app.route("/canteen/<canteen_id>", methods =["GET", "POST"])
 def canteen(canteen_id):
     data = scrape()
-    return render_template("NewMain.html", data=data, canteen_id=canteen_id, canteen_name=canteen_id_to_name(canteen_id))
+    return render_template("NewMain.html", data=data, canteen_id=canteen_id, canteen_name=canteen_id_to_name(canteen_id), logo = get_image_id(canteen_id))
     #if request.method == "POST":
     #    food = request.form.get("food_name")
     #    return redirect(f"/search/{food}")
