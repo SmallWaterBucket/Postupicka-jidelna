@@ -837,7 +837,7 @@ def canteen(canteen_id):
 
 
 
-@app.route("/")
+@app.route("/", methods = ["GET", "POST"])
 def new_main_page():
     cookie = get_canteen_id()
     if not cookie:
