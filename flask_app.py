@@ -152,7 +152,7 @@ def search(food):
     if answer:
         return redirect(f"/get_food/{answer[0]}")
 
-    mycursor.execute("SELECT * FROM Main WHERE name LIKE %s OR SOUNDEX(name) = SOUNDEX(%s);", (f"%{food}%", food))
+    mycursor.execute("SELECT * FROM Main WHERE (name LIKE %s OR SOUNDEX(name) = SOUNDEX(%s)) AND canteen_id = %s;", (f"%{food}%", food, canteen_id))
 
     answer = mycursor.fetchall()
     ret = []
