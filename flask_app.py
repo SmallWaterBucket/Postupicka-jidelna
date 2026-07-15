@@ -721,29 +721,6 @@ def logout():
     session.clear()
     return redirect("/")
 
-
-@app.route("/canteens", methods =["GET", "POST"])
-def canteens():
-    cookie = request.cookies.get("id")
-    if not cookie:
-        if request.method == "POST":
-            id = request.form.get("canteen_id")
-            response = make_response(redirect(f"/canteen/{id}"))
-            response.set_cookie(
-                "id",
-                id,
-                max_age= 60 * 60 * 24 * 365
-            )   
-
-            return response
-        db = get_db()
-        cursor = db.cursor()
-        cursor.execute("SELECT name,id FROM Main WHERE canteen_id = -1")
-        ret = cursor.fetchall()
-        return render_template("Canteens.html", canteens=ret)
-    else:
-        return redirect(f"/canteen/{cookie}")
-
 @app.route('/add_canteen', methods =["GET", "POST"])
 def add_canteen():
     db = get_db()
@@ -794,7 +771,25 @@ def add_canteen():
 
     return render_template("AddCanteen.html")
 
+@app.route("/canteens", methods =["GET", "POST"])
+def canteens():
+    cookie = get_canteen_id()
+    if not cookie:
+        if request.method == "POST":
+            id = request.form.get("canteen_id")
+            response = make_response(redirect(f"/canteen/{id}"))
+            response.set_cookie(
+                "id",
+                id,
+                max_age= 60 * 60 * 24 * 365
+            )   
 
+            return response
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT name,id FROM Main WHERE canteen_id = -1")
+    ret = cursor.fetchall()
+    return render_template("Canteens.html", canteens=ret)
 
 @app.route("/canteen/<canteen_id>", methods =["GET", "POST"])
 def canteen(canteen_id):
@@ -814,6 +809,31 @@ def canteen(canteen_id):
     #    return render_template("NewMain.html", data = data, username=username, kredit = credit)
     #else:
     #    data=scrape()
+
+
+
+@app.route("/debug")
+def new_main_page():
+    cookie = get_canteen_id()
+    if not cookie:
+        if request.method == "POST":
+            id = request.form.get("canteen_id")
+            response = make_response(redirect(f"/canteen/{id}"))
+            response.set_cookie(
+                "id",
+                id,
+                max_age= 60 * 60 * 24 * 365
+            )   
+
+            return response
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute("SELECT name,id FROM Main WHERE canteen_id = -1")
+        ret = cursor.fetchall()
+        return render_template("Canteens.html", canteens=ret)
+    else:
+        return redirect(f"/canteen/{cookie}")
+    
 
 
 
