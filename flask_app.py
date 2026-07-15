@@ -704,7 +704,7 @@ def food_edit(food_id):
     if not result:
         return "Not found"
     
-    id, name, path, average, isFood, author = result
+    id, name, path, average, isFood, canteen_id, author = result
 
     image_url = get_image_id(food_id)
     message = ""
@@ -731,7 +731,7 @@ def food_edit(food_id):
             return redirect(f"/get_food/{id}")
         else:
             message = "Incorrect password"
-    return render_template("food_edit.html", image=image_url, name=name, rating=average, message=message, food_id=food_id, isFood=isFood)
+    return render_template("food_edit.html", image=image_url, name=name, rating=average, message=message, food_id=food_id, isFood=isFood, logo = get_image_id(canteen_id))
 
 
 @app.route("/logout")
