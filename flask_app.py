@@ -16,6 +16,7 @@ import random
 
 #TODO:
 
+#Change the long db outputs to only what is needed
 #add user counter
 #Add colors to the food ratings everywhere
 #Add a posibility to add diferent canteens
@@ -145,7 +146,8 @@ def search(food):
     if request.method == "POST":
         food = request.form.get("food_name")
         return redirect(f"/search/{food}")
-    mycursor.execute("SELECT id FROM Main where name = %s", (food,))
+    canteen_id = get_canteen_id()
+    mycursor.execute("SELECT id FROM Main where name = %s and canteen_id = %s", (food, canteen_id))
     answer = mycursor.fetchone()
     if answer:
         return redirect(f"/get_food/{answer[0]}")
@@ -608,15 +610,19 @@ def new_scrape(username, password):
     return data
 
 
-
+def get_canteen_id():
+    cookie = request.cookies.get("id")
+    return cookie
 
 
 @app.route('/foods')
 def all_foods():
     db = get_db()
     mycursor = db.cursor()
+    
+    canteen_id = get_canteen_id()
 
-    mycursor.execute("SELECT * FROM Main")
+    mycursor.execute("SELECT * FROM Main where canteen_id = %s;",(canteen_id,))
 
     answer = mycursor.fetchall()
     ret = []
