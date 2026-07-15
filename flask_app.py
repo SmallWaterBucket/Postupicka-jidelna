@@ -277,6 +277,8 @@ def get_image(image):
 
 
 def get_image_id(id):
+    if not id:
+        return ""
     db = get_db()
     cursor = db.cursor()
     cursor.execute(f"SELECT * FROM Main WHERE id = %s;", (id,))
@@ -298,6 +300,9 @@ def request_entity_too_large(error):
 def add_food():
     db = get_db()
     canteen_id = get_canteen_id()
+    logo = ""
+    if canteen_id:
+        logo = get_image_id(canteen_id)
     if request.method == "POST":
         file = request.files["file"]
         if file:
@@ -352,9 +357,9 @@ def add_food():
     if session.get("user") and session.get("password"):
         username = session.get("user")
         kredit = session.get("kredit")
-        return render_template("add_food.html", username=username, kredit=kredit, foods=foods, logo = get_image_id(canteen_id))
+        return render_template("add_food.html", username=username, kredit=kredit, foods=foods, logo = logo)
 
-    return render_template("add_food.html", foods=foods, logo = get_image_id(canteen_id))
+    return render_template("add_food.html", foods=foods, logo = logo)
 
 def mycompress(path,file):
     print(f"Compressing {file} ...")
@@ -670,7 +675,11 @@ def all_foods():
         kredit = session.get("kredit")
         return render_template("foods.html", username=username, kredit=kredit, foods=ret)
 
-    return render_template("foods.html", foods=ret, logo = get_image_id(canteen_id))
+    logo = ""
+    if canteen_id:
+        logo = get_image_id(canteen_id)
+
+    return render_template("foods.html", foods=ret, logo=logo)
 
 
 @app.route('/about')
