@@ -199,7 +199,7 @@ def get_food(food_id):
     if not result:
         return get_message("Food not found")
 
-    id, name, path, average, isFood, canteen_id = result
+    id, name, path, average, isFood, canteen_id, author = result
     average=float(average)
 
     user_rating = ""
@@ -265,7 +265,7 @@ def get_image(image):
     result = cursor.fetchone()
     if not result:
         return "/image/WhatsApp_Image_2026-01-16_at_19.21.37.jpeg"
-    id, name, path, average, isFood, canteen_id = result
+    id, name, path, average, isFood, canteen_id, author = result
     filename = path.split('/')[-1]
     image_url = f"/image/{filename}"
     return image_url
@@ -278,7 +278,7 @@ def get_image_id(id):
     result = cursor.fetchone()
     if not result:
         return "/image/WhatsApp_Image_2026-01-16_at_19.21.37.jpeg"
-    new_id, name, path, average, isFood, canteen_id = result
+    new_id, name, path, average, isFood, canteen_id, author = result
     filename = path.split('/')[-1]
     image_url = f"/image/{filename}"
     return image_url
@@ -411,7 +411,7 @@ def get_new_food(food_id):
         if password == EnteredPassword:
             decision = request.form.get("decision")
             if decision == "accept":
-                cursor.execute("insert into Main (name,path,average,isFood, canteen_id) values (%s,%s,%s,%s,%s)", (name, path, average, isFood, canteen_id))
+                cursor.execute("insert into Main (name,path,average,isFood, canteen_id, author) values (%s,%s,%s,%s,%s, %s)", (name, path, average, isFood, canteen_id, username))
                 cursor.execute("SELECT id FROM Main WHERE name = %s AND path = %s;", (name, path))
                 new_id = cursor.fetchone()[0]
                 if average != -1:
@@ -698,7 +698,7 @@ def food_edit(food_id):
     if not result:
         return "Not found"
     
-    id, name, path, average, isFood = result
+    id, name, path, average, isFood, author = result
 
     image_url = get_image_id(food_id)
     message = ""
