@@ -397,11 +397,13 @@ def get_new_food(food_id):
     image_url = f"/image/{path.split('/')[-1]}"
     message = ""
 #------------------------------------------------------------------------------
-    cursor.execute("SELECT * FROM Main WHERE name = %s;", (name,))
+    cursor.execute("SELECT * FROM Main WHERE name = %s and canteen_id = %s;", (name, canteen_id))
     Main_result = cursor.fetchone()
     text = ""
     if Main_result:
         text = "Toto jídlo už je v databázi."
+
+    isCanteen = canteen_id == -1
 
     if request.method == "POST":
         EnteredPassword = request.form.get("password")
@@ -426,7 +428,7 @@ def get_new_food(food_id):
                 return redirect("/new_foods")
         else:
             message = "Incorrect password"
-    return render_template("accept_deny.html", image=image_url, name=name, rating=average, message=message, food_id=food_id, text=text)
+    return render_template("accept_deny.html", image=image_url, name=name, rating=average, message=message, food_id=food_id, text=text, isCanteen=isCanteen)
 
 
 @app.route('/login', methods=["GET", "POST"])
