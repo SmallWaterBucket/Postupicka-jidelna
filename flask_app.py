@@ -752,7 +752,7 @@ def add_canteen():
 
             cursor = db.cursor()
             
-            cursor.execute("insert into New (name,path,rating,isFood,username,canteen_id) values (%s,%s,%s,%s,%s)", (FoodName, os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(filename)), canteen_system, 1, canteen_name , -1))
+            cursor.execute("insert into New (name,path,rating,isFood,username,canteen_id) values (%s,%s,%s,%s,%s,%s)", (FoodName, os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(filename)), canteen_system, 0, canteen_name , -1))
             db.commit()
             return get_message("Food submitted")
         else:
