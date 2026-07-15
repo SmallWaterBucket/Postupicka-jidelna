@@ -394,7 +394,7 @@ def get_new_food(food_id):
                         cursor.execute("insert into Ratings (foodid,rating, username) values (%s,%s,%s)", (new_id, average, username))
                     else:
                         cursor.execute("SELECT MAX(average) as max_average from Main where canteen_id = -1")
-                        return cursor.fetchone()[0]
+                        return cursor.fetchone()[1]
                         max_average = cursor.fetchone()[0]
                         cursor.execute("UPDATE Main set average = %s", (max_average,))
             if decision == "deny":
