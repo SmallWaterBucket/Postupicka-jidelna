@@ -773,18 +773,15 @@ def add_canteen():
 
 @app.route("/canteens", methods =["GET", "POST"])
 def canteens():
-    cookie = get_canteen_id()
-    if not cookie:
-        if request.method == "POST":
-            id = request.form.get("canteen_id")
-            response = make_response(redirect(f"/canteen/{id}"))
-            response.set_cookie(
-                "id",
-                id,
-                max_age= 60 * 60 * 24 * 365
-            )   
-
-            return response
+    if request.method == "POST":
+        id = request.form.get("canteen_id")
+        response = make_response(redirect(f"/canteen/{id}"))
+        response.set_cookie(
+            "id",
+            id,
+            max_age= 60 * 60 * 24 * 365
+        )   
+        return response
     db = get_db()
     cursor = db.cursor()
     cursor.execute("SELECT name,id FROM Main WHERE canteen_id = -1")
