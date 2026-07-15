@@ -731,7 +731,7 @@ def canteens():
             return response
         db = get_db()
         cursor = db.cursor()
-        cursor.execute("SELECT (name,average) from Main where canteen_id = -1")
+        cursor.execute("SELECT name,average FROM Main WHERE canteen_id = -1")
         ret = cursor.fetchall()
         return render_template("Canteens.html", canteens=ret)
     else:
