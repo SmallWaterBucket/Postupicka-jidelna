@@ -87,8 +87,8 @@ cipher = Fernet(key)
 
 @app.route('/', methods =["GET", "POST"])
 def Main():
+    canteen_id = get_canteen_id()
 
-    
     if request.method == "POST":
         food = request.form.get("food_name")
         return redirect(f"/search/{food}")
@@ -100,12 +100,12 @@ def Main():
         credit = kredit(username, password)
         session['kredit'] = credit
         data = new_scrape(username, password)
-        return render_template("NewMain.html", data = data, username=username, kredit = credit)
+        return render_template("NewMain.html", data = data, username=username, kredit = credit, canteen_name = canteen_id_to_name(canteen_id))
     else:
         data=scrape()
 
 
-    return render_template("NewMain.html", data = data)
+    return render_template("NewMain.html", data = data, canteen_name = canteen_id_to_name(canteen_id))
 
 @app.route("/message/<message>")
 def get_message(message):
@@ -239,10 +239,19 @@ def get_food(food_id):
     if session.get("user") and session.get("password"):
         username = session.get("user")
         kredit = session.get("kredit")
-        return render_template("food.html", username=username, kredit=kredit, image=image_url, name=name, rating=str(average), food_id=food_id, text=text, user_rating = user_rating)
+        return render_template("food.html", username=username, kredit=kredit, image=image_url, name=name, rating=str(average), food_id=food_id, text=text, user_rating = user_rating, canteen_name = canteen_id_to_name(canteen_id))
 
 
-    return render_template("food.html", image=image_url, name=name, rating=str(average), food_id=food_id, text=text, user_rating = user_rating)
+    return render_template("food.html", image=image_url, name=name, rating=str(average), food_id=food_id, text=text, user_rating = user_rating, canteen_name = canteen_id_to_name(canteen_id))
+
+def canteen_id_to_name(canteen_id):
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute(f"SELECT name FROM Main WHERE id = %s;", (canteen_id,))
+    result = cursor.fetchone()
+    if result:
+        return result[0]
+    return "Neznámá jídelna"
 
 @app.route("/image/<filename>")
 def get_image_page(filename):
