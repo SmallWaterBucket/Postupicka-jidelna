@@ -196,7 +196,7 @@ def get_food(food_id):
     if not result:
         return get_message("Food not found")
 
-    id, name, path, average, isFood = result
+    id, name, path, average, isFood, canteen_id = result
     average=float(average)
 
     user_rating = ""
@@ -364,7 +364,7 @@ def get_new_food(food_id):
     if not result:
         return "Not found"
     
-    id, name, path, average, isFood, username = result
+    id, name, path, average, isFood, username, canteen_id = result
 
     image_url = f"/image/{path.split('/')[-1]}"
     message = ""
@@ -380,7 +380,7 @@ def get_new_food(food_id):
         if password == EnteredPassword:
             decision = request.form.get("decision")
             if decision == "accept":
-                cursor.execute("insert into Main (name,path,average,isFood) values (%s,%s,%s,%s)", (name, path, average, isFood))
+                cursor.execute("insert into Main (name,path,average,isFood, canteen_id) values (%s,%s,%s,%s,%s)", (name, path, average, isFood, canteen_id))
                 cursor.execute("SELECT id FROM Main WHERE name = %s AND path = %s;", (name, path))
                 new_id = cursor.fetchone()[0]
                 if average != -1:
