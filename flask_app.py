@@ -253,7 +253,7 @@ def get_image(image):
     result = cursor.fetchone()
     if not result:
         return "/image/WhatsApp_Image_2026-01-16_at_19.21.37.jpeg"
-    id, name, path, average, isFood = result
+    id, name, path, average, isFood, canteen_id = result
     filename = path.split('/')[-1]
     image_url = f"/image/{filename}"
     return image_url
@@ -281,6 +281,8 @@ def add_food():
                     rnd = random.randrange(0, 100000)
                     filename = f"{rnd}{extension}"
             FoodName = request.form.get("food_name")
+            if not FoodName:
+                return "Prosim uvedte nazev jidla"
             rating = request.form.get("rating")
             
             path = os.path.join(
@@ -737,6 +739,9 @@ def add_canteen():
 
             canteen_system = request.form.get("canteen_system")
             canteen_name= request.form.get("canteen_name")
+
+            if not canteen_name:
+                return "Prosim uvedte nazev jidelny"
 
             path = os.path.join(
                 app.config['UPLOAD_FOLDER'],
