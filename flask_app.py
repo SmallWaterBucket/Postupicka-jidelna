@@ -757,18 +757,13 @@ def add_canteen():
             return get_message("Food submitted")
         else:
             return "Upload failed, image required!!!"
-    foods = scrape()
-    try:
-        foods = foods[0][2]
-    except:
-        foods = []
 
     if session.get("user") and session.get("password"):
         username = session.get("user")
         kredit = session.get("kredit")
-        return render_template("add_food.html", username=username, kredit=kredit, foods=foods)
+        return render_template("AddCanteen.html", username=username, kredit=kredit)
 
-    return render_template("add_food.html", foods=foods)
+    return render_template("AddCanteen.html")
 
 
 
