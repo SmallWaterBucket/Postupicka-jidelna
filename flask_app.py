@@ -390,13 +390,7 @@ def get_new_food(food_id):
                 cursor.execute("SELECT id FROM Main WHERE name = %s AND path = %s;", (name, path))
                 new_id = cursor.fetchone()[0]
                 if average != -1:
-                    if canteen_id !=-1:
-                        cursor.execute("insert into Ratings (foodid,rating, username) values (%s,%s,%s)", (new_id, average, username))
-                    else:
-                        cursor.execute("SELECT MAX(average) as max_average from Main where canteen_id = -1")
-                        return cursor.fetchone()[1]
-                        max_average = cursor.fetchone()[0]
-                        cursor.execute("UPDATE Main set average = %s", (max_average,))
+                    cursor.execute("insert into Ratings (foodid,rating, username) values (%s,%s,%s)", (new_id, average, username))
             if decision == "deny":
                 try:
                     os.remove(path)
@@ -731,7 +725,7 @@ def canteens():
             return response
         db = get_db()
         cursor = db.cursor()
-        cursor.execute("SELECT name,average FROM Main WHERE canteen_id = -1")
+        cursor.execute("SELECT name,id FROM Main WHERE canteen_id = -1")
         ret = cursor.fetchall()
         return render_template("Canteens.html", canteens=ret)
     else:
