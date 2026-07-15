@@ -322,7 +322,7 @@ def add_food():
             
             canteen_id = get_canteen_id()
 
-            cursor.execute("insert into New (name,path,rating,isFood,username,canteen_id) values (%s,%s,%s,%s,%s)", (FoodName, os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(filename)), rating, 1, username, canteen_id))
+            cursor.execute("insert into New (name,path,rating,isFood,username,canteen_id) values (%s,%s,%s,%s,%s,%s)", (FoodName, os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(filename)), rating, 1, username, canteen_id))
             db.commit()
             return get_message("Food submitted")
         else:
