@@ -800,7 +800,7 @@ def canteens():
 @app.route("/canteen/<canteen_id>", methods =["GET", "POST"])
 def canteen(canteen_id):
     data = scrape()
-    return render_template("NewMain.html", data=data, canteen_id=canteen_id)
+    return render_template("NewMain.html", data=data, canteen_id=canteen_id, canteen_name=canteen_id_to_name(canteen_id))
     #if request.method == "POST":
     #    food = request.form.get("food_name")
     #    return redirect(f"/search/{food}")
