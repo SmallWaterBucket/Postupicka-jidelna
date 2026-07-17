@@ -872,7 +872,7 @@ def canteen_id_to_url(canteen_id):
     cursor = db.cursor()
     cursor.execute("SELECT author FROM Main WHERE id = %s;", (canteen_id,))
     ret = cursor.fetchone()
-    return ret
+    return str(ret[0])
 
 
 @app.route("/kredit/<username>,<password>,<canteen_id>")
