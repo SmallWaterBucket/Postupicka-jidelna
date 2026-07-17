@@ -871,7 +871,7 @@ def canteen_id_to_url(canteen_id):
     db = get_db()
     cursor = db.cursor()
     cursor.execute("SELECT author FROM Main WHERE id = %s;", (canteen_id,))
-    ret = cursor.fetchall()
+    ret = cursor.fetchone()
     return ret
 
 
