@@ -649,7 +649,10 @@ def new_scrape(username, password):
 
 
 def get_canteen_id():
-    cookie = request.cookies.get("id")
+    try:
+        cookie = request.cookies.get("id")
+    except:
+        cookie = -1
     return cookie
 
 
