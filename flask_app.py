@@ -485,7 +485,7 @@ def order():
 
 def scrape(): #day,day_str,foods,chosen_food
     #page = requests.get("https://api.allorigins.win/raw?url=https://strav.nasejidelna.cz/0254/login")
-    page = requests.get("https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=https://strav.nasejidelna.cz/0254/login")
+    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url={canteen_id_to_url(get_canteen_id())}")
     soup = BeautifulSoup(page.text, "html.parser")
 
     days = soup.find_all("div", class_="jidelnicekDen")
@@ -552,7 +552,7 @@ def scrape(): #day,day_str,foods,chosen_food
 @app.route("/new_scrape/<username>,<password>")
 def new_scrape(username, password):
     #page = requests.get("https://api.allorigins.win/raw?url=https://strav.nasejidelna.cz/0254/login")
-    page = requests.get("https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=https://strav.nasejidelna.cz/0254/login")
+    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url={canteen_id_to_url(get_canteen_id())}")
     soup = BeautifulSoup(page.text, "html.parser")
 
     days = soup.find_all("div", class_="jidelnicekDen")
@@ -867,7 +867,7 @@ def new_main_page():
 def canteen_id_to_url(canteen_id):
     db = get_db()
     cursor = db.cursor()
-    cursor.execute("SELECT author FROM Main WHERE canteen_id = %s;", (canteen_id,))
+    cursor.execute("SELECT author FROM Main WHERE id = %s;", (canteen_id,))
     ret = cursor.fetchall()
     return ret[0]
 
