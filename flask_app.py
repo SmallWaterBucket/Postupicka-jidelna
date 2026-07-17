@@ -100,7 +100,7 @@ def Main():
     if session.get("user") and session.get("password"):
         username = session.get("user")
         password = cipher.decrypt(session.get("password")).decode()
-        credit = kredit(username, password)
+        credit = kredit(username, password, canteen_id)
         session['kredit'] = credit
         data = new_scrape(username, password)
         return render_template("NewMain.html", data = data, username=username, kredit = credit, canteen_name = canteen_id_to_name(canteen_id), logo = get_image_id(canteen_id))
@@ -863,34 +863,44 @@ def new_main_page():
     else:
         return redirect(f"/canteen/{cookie}")
     
+@app.route("/test/<canteen_id>")
+def canteen_id_to_url(canteen_id):
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT author FROM Main WHERE canteen_id = %s;", (canteen_id,))
+    ret = cursor.fetchall()
+    return ret[0]
 
 
-
-
-@app.route("/kredit/<username>,<password>")
-def kredit(username, password):
-    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://152.70.41.16.nip.io:8080/kredit.exe/{username},{password}")
+@app.route("/kredit/<username>,<password>,<canteen_id>")
+def kredit(username, password, canteen_id):
+    canteen_id = canteen_id_to_url(canteen_id)
+    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/kredit.exe/{username},{password},{canteen_id}")
     #page = requests.get(f"http://152.70.41.16.nip.io:8080/credit/{username},{password}")
     return page.text
 
-def try_login(username, password):
-    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://152.70.41.16.nip.io:8080/login.exe/{username},{password}")
+def try_login(username, password, canteen_id = get_canteen_id()):
+    canteen_id = canteen_id_to_url(canteen_id)
+    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/login.exe/{username},{password},{canteen_id}")
     return str(page.text)
 
-@app.route("/ordered_foods/<username>,<password>,<dates>")
-def get_orderd_food(username, password, dates):
+@app.route("/ordered_foods/<username>,<password>,<dates>,<canteen_id>")
+def get_orderd_food(username, password, dates, canteen_id = get_canteen_id()):
     dates = ".".join(dates)
-    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://152.70.41.16.nip.io:8080/get_ordered_foods.exe/{username},{password},{dates}")
+    canteen_id = canteen_id_to_url(canteen_id)
+    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/get_ordered_foods.exe/{username},{password},{dates}")
     return page.text
 
-@app.route("/ordered_foods_debug/<username>,<password>,<dates>")
-def get_orderd_food_debug(username, password, dates):
-    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://152.70.41.16.nip.io:8080/get_ordered_foods.exe/{username},{password},{dates}")
+@app.route("/ordered_foods_debug/<username>,<password>,<dates>,<canteen_id>")
+def get_orderd_food_debug(username, password, dates, canteen_id = get_canteen_id()):
+    canteen_id = canteen_id_to_url(canteen_id)
+    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/get_ordered_foods.exe/{username},{password},{dates}")
     return page.text
 
-@app.route("/order_request/<username>,<password>,<date>,<food_id>")
-def order_food(username, password, date, food_id):
-    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://152.70.41.16.nip.io:8080/order.exe/{username},{password},{date},{food_id}")
+@app.route("/order_request/<username>,<password>,<date>,<food_id>,<canteen_id>")
+def order_food(username, password, date, food_id,canteen_id = get_canteen_id()):
+    canteen_id = canteen_id_to_url(canteen_id)
+    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/order.exe/{username},{password},{date},{food_id}")
 
 #if __name__ == "__main__":
 #    app.run(host="0.0.0.0", port=8080)
