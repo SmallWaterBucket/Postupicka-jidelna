@@ -215,21 +215,22 @@ def get_food(food_id):
 
 
     if request.method == "POST":
-        new_rating = request.form.get("rating")
-        if not user_rating:
-            if not session.get("user"):
-                username = "Anonymous"
-            else:
-                username = session.get("user")
+        if canteen_id != -1:
+            new_rating = request.form.get("rating")
+            if not user_rating:
+                if not session.get("user"):
+                    username = "Anonymous"
+                else:
+                    username = session.get("user")
 
-            cursor.execute("insert into Ratings (foodid,rating,username) values (%s,%s,%s)", (id,new_rating,username))
+                cursor.execute("insert into Ratings (foodid,rating,username) values (%s,%s,%s)", (id,new_rating,username))
+                db.commit()
+            cursor.execute("SELECT AVG(rating) AS AveragePrice FROM Ratings where foodid = %s;",(id,))
+            ret = cursor.fetchall()
+
+            cursor.execute("update Main SET average = %s where id = %s",(str(ret[0][0]),id,))
+            average = str(ret[0][0])
             db.commit()
-        cursor.execute("SELECT AVG(rating) AS AveragePrice FROM Ratings where foodid = %s;",(id,))
-        ret = cursor.fetchall()
-
-        cursor.execute("update Main SET average = %s where id = %s",(str(ret[0][0]),id,))
-        average = str(ret[0][0])
-        db.commit()
     
     if average == -1:
         average = "Žádné hodnocení"
