@@ -41,7 +41,7 @@
             <label for="canteen_system">Jidelni system:</label>
             <select id="canteen_system" name="canteen_system">
                 {% for i in range(canteen_systems|length) %}
-                    <option value="{{i}}">{{canteen_systems[i]}}</option>
+                    <option value="{{i}}">{{canteen_systems[i][0]}}</option>
                 {% endfor %}
             </select>
             <p><a href="/suggestions">Neni tady vas jidelni system?</a></p>
