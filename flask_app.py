@@ -653,7 +653,9 @@ def get_canteen_id():
     try:
         cookie = request.cookies.get("id")
     except:
-        cookie = -1
+        cookie = 220
+    if not cookie:
+        return 220
     return cookie
 
 
