@@ -300,7 +300,9 @@ def request_entity_too_large(error):
 @app.route('/add_food', methods =["GET", "POST"])
 def add_food():
     db = get_db()
-    canteen_id = get_canteen_id()
+    canteen_id = get_canteen_id_raw()
+    if not canteen_id:
+        return redirect("/canteens")
     logo = ""
     if canteen_id:
         logo = get_image_id(canteen_id)
@@ -446,6 +448,9 @@ def get_new_food(food_id):
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
+    canteen_id = get_canteen_id_raw()
+    if not canteen_id:
+        return redirect("/canteens")
     username = ""
     password = ""
     if request.method == "POST":
@@ -460,7 +465,7 @@ def login():
             session['kredit'] = kredit(username, password)
             return redirect("/")
             
-    return render_template("Login.html", message="", logo = get_image_id(get_canteen_id()))
+    return render_template("Login.html", message="", logo = get_image_id(canteen_id))
     
 
 
@@ -658,13 +663,23 @@ def get_canteen_id():
         return 220
     return cookie
 
+def get_canteen_id_raw():
+    try:
+        cookie = request.cookies.get("id")
+    except:
+        cookie = ''
+    return cookie
+
 
 @app.route('/foods')
 def all_foods():
     db = get_db()
     mycursor = db.cursor()
     
-    canteen_id = get_canteen_id()
+    canteen_id = get_canteen_id_raw()
+
+    if not canteen_id:
+        return redirect("/canteens")
 
     mycursor.execute("SELECT * FROM Main where canteen_id = %s;",(canteen_id,))
 
@@ -849,7 +864,7 @@ def new_main_page():
         food = request.form.get("food_name")
         return redirect(f"/search/{food}")
 
-    cookie = get_canteen_id()
+    cookie = get_canteen_id_raw()
     if not cookie:
         if request.method == "POST":
             id = request.form.get("canteen_id")
@@ -861,11 +876,8 @@ def new_main_page():
             )   
 
             return response
-        db = get_db()
-        cursor = db.cursor()
-        cursor.execute("SELECT name,id FROM Main WHERE canteen_id = -1")
-        ret = cursor.fetchall()
-        return render_template("Canteens.html", canteens=ret)
+
+        return redirect("/canteens")
     else:
         return redirect(f"/canteen/{cookie}")
     
