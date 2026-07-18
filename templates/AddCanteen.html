@@ -40,9 +40,9 @@
 
             <label for="canteen_system">Jidelni system:</label>
             <select id="canteen_system" name="canteen_system">
-                <option value="0">iCanteen</option>
-                <option value="1">Strava</option>
-                <option value="2">Jidelna.cz</option>
+                {% for i in range(canteen_systems|length) %}
+                    <option value="{{i}}">{{canteen_systems[i]}}</option>
+                {% endfor %}
             </select>
             <p><a href="/suggestions">Neni tady vas jidelni system?</a></p>
 

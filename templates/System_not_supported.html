@@ -1,0 +1,94 @@
+<head>
+    <title>
+        Systém není podporován
+    </title>
+    <style>
+        @font-face {
+            font-family: 'Aurach';
+            src: url("/static/fonts/AurachHeavy.ttf") format('truetype');
+        }
+
+
+        @font-face {
+            font-family: 'Book-Antiqua';
+            src: url("/static/fonts/Book-Antiqua.ttf.ttf") format('truetype');
+        }
+
+        h1{
+            font-family: 'Aurach';
+            font-size: 3.5vw;
+            text-align: center;
+        }
+        h2{
+            font-family: 'Aurach';
+            font-size: 2.5vw;
+            text-align: center;
+        }
+        h3{
+            font-size: 1.5vw;
+        }
+
+        p{
+            font-family: 'Book-Antiqua';
+            font-size: 1.5vw;
+        }
+
+        li.list{
+            font-size: 1.5vw;
+        }
+
+        .not_navbar{
+            color: rgb(50,61,127);
+            display:flex;
+            flex-direction: column;
+        }
+        img {object-fit: contain;}
+
+        .person{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+        }
+        .center{
+            text-align: center;
+        }
+        .grid-container{
+            margin-left: 20px;
+            display:grid;
+            grid-template-columns: 1fr 1fr;
+
+        }
+        .image{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        {% include "navbar.html" %}
+    </div>
+
+    <div class="not_navbar">
+        <h1>
+            <u>Systém není podporován</u>
+        </h1>
+
+        <p>Bohužel přihlášení do jídelního systému: {{ canteen_system_name }} není podporováno</p>
+        
+        <h1>
+            <u>Proc?</u>
+        </h1>
+
+        <p>Duvody jsou ruzne. Nad podporou nekterych systemu pracuji, jine mozna neni tak jednoduche udelat a potrvaji mi chvili. Nektere systemy dost mozna nikdy nedostanou podporu z duvodu jejich komplikovanosti.</p>
+        
+        <h1>
+            <u>Co muzu delat?</u>
+        </h1>
+
+        <p>Urcite me muzete <a href="/suggestions">pozadat</a> abych pridal podporu pro vas system a ja se na to nekdy nejspise podivam. Pokud umite programovat tak muzete vyuzit vase schopnosti a kontribovat podporu pro dany system na nas <a href="https://github.com/SmallWaterBucket/Postupicka-jidelna">GitHub</a>, ale prosim ne vibecodeujte ho, muzete pouzivat AI ale prosim primerene at furt chapete co se deje.</p>
+    </div>
+</body>

@@ -30,7 +30,7 @@
         <p>Vaše hodnocení: {{ user_rating }}/7</p>
     {% endif %}
 
-    <p>Jidlo je z: {{ canteen_name }}</p>
+    <p>Jidlo je z: <a href = "/canteen/{{ canteen_id }}">{{ canteen_name }}</a></p>
     <p style="color:tomato">{{text}}</p>
 
     <form method="POST" action="{{ url_for('get_food', food_id=food_id) }}">

@@ -22,11 +22,8 @@ import random
 #Change the long db outputs to only what is needed
 #add user counter
 #Add colors to the food ratings everywhere
-#Add a posibility to add diferent canteens
-# /add_canteen
 # better design
-# storing canteen in cookies
-# adding full compat for iCanteen (maybe using the library for everything?)
+# adding full compat for iCanteen (maybe using the library for everything?); kinda done, not really for older systems
 # adding compat with different canteen systems
 
 #=========================================================
@@ -61,6 +58,9 @@ import random
 #Fixed ratings
 #Add navbar to /new_food
 #Add compresion for images
+# /add_canteen
+# storing canteen in cookies
+#Add a posibility to add diferent canteens
 
 #==========================================================
 
@@ -81,6 +81,8 @@ app.config.update(
     SESSION_COOKIE_SAMESITE='Lax',
     PERMANENT_SESSION_LIFETIME=1800
 )
+canteen_systems = [("iCanteen / strav.nasejidelna.cz", 1),("Strava.cz", 0),("Jidelna.cz", 0),("Primirest / Primiapp.cz", 0)]
+
 
 key = open(f"{path_passwords}/password.txt",'r').read().strip().encode()
 cipher = Fernet(key)
@@ -246,10 +248,10 @@ def get_food(food_id):
     if session.get("user") and session.get("password"):
         username = session.get("user")
         kredit = session.get("kredit")
-        return render_template("food.html", username=username, kredit=kredit, image=image_url, name=name, rating=str(average), food_id=food_id, text=text, user_rating = user_rating, canteen_name = canteen_id_to_name(canteen_id), isCanteen = isCanteen, logo = get_image_id(canteen_id))
+        return render_template("food.html", username=username, kredit=kredit, image=image_url, name=name, rating=str(average), food_id=food_id, text=text, user_rating = user_rating, canteen_name = canteen_id_to_name(canteen_id), isCanteen = isCanteen, logo = get_image_id(canteen_id), canteen_id = canteen_id)
 
 
-    return render_template("food.html", image=image_url, name=name, rating=str(average), food_id=food_id, text=text, user_rating = user_rating, canteen_name = canteen_id_to_name(canteen_id), isCanteen = isCanteen, logo = get_image_id(canteen_id))
+    return render_template("food.html", image=image_url, name=name, rating=str(average), food_id=food_id, text=text, user_rating = user_rating, canteen_name = canteen_id_to_name(canteen_id), isCanteen = isCanteen, logo = get_image_id(canteen_id), canteen_id = canteen_id)
 
 def canteen_id_to_name(canteen_id):
     db = get_db()
@@ -446,11 +448,18 @@ def get_new_food(food_id):
     return render_template("accept_deny.html", image=image_url, name=name, rating=average, message=message, food_id=food_id, text=text, isCanteen=isCanteen, logo = get_image_id(canteen_id))
 
 
+
 @app.route('/login', methods=["GET", "POST"])
 def login():
     canteen_id = get_canteen_id_raw()
     if not canteen_id:
         return redirect("/canteens")
+    
+    canteen_system_id = canteen_id_to_system(canteen_id)
+    canteen_system_name, support = canteen_systems[canteen_system_id]
+    if not support:
+        return render_template("System_not_supported.html", canteen_system_name = canteen_system_name)
+
     username = ""
     password = ""
     if request.method == "POST":
@@ -458,14 +467,14 @@ def login():
             username = request.form.get("username")
             password = request.form.get("password")
             if try_login(username, password) != "1\n":
-                return render_template("Login.html", message="Špatné přihlašovací údaje")
+                return render_template("Login.html", message="Špatné přihlašovací údaje", canteen_system_name = canteen_system_name)
 
             session['user'] = username
             session['password'] = cipher.encrypt(password.encode())
             session['kredit'] = kredit(username, password)
             return redirect("/")
             
-    return render_template("Login.html", message="", logo = get_image_id(canteen_id))
+    return render_template("Login.html", message="", logo = get_image_id(canteen_id), canteen_system_name = canteen_system_name)
     
 
 
@@ -816,9 +825,9 @@ def add_canteen():
     if session.get("user") and session.get("password"):
         username = session.get("user")
         kredit = session.get("kredit")
-        return render_template("AddCanteen.html", username=username, kredit=kredit)
+        return render_template("AddCanteen.html", username=username, kredit=kredit, canteen_systems = canteen_systems)
 
-    return render_template("AddCanteen.html")
+    return render_template("AddCanteen.html", canteen_systems = canteen_systems)
 
 @app.route("/canteens", methods =["GET", "POST"])
 def canteens():
@@ -839,8 +848,16 @@ def canteens():
 
 @app.route("/canteen/<canteen_id>", methods =["GET", "POST"])
 def canteen(canteen_id):
+
     data = scrape()
-    return render_template("NewMain.html", data=data, canteen_id=canteen_id, canteen_name=canteen_id_to_name(canteen_id), logo = get_image_id(canteen_id))
+
+    response = make_response(render_template("NewMain.html", data=data, canteen_id=canteen_id, canteen_name=canteen_id_to_name(canteen_id), logo = get_image_id(canteen_id)))
+    response.set_cookie(
+        "id",
+        canteen_id,
+        max_age= 60 * 60 * 24 * 365
+    )
+    return response
     #if request.method == "POST":
     #    food = request.form.get("food_name")
     #    return redirect(f"/search/{food}")
@@ -881,13 +898,19 @@ def new_main_page():
     else:
         return redirect(f"/canteen/{cookie}")
     
-@app.route("/test/<canteen_id>")
 def canteen_id_to_url(canteen_id):
     db = get_db()
     cursor = db.cursor()
     cursor.execute("SELECT author FROM Main WHERE id = %s;", (canteen_id,))
     ret = cursor.fetchone()
     return str(ret[0])
+
+def canteen_id_to_system(canteen_id):
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT average FROM Main WHERE id = %s;", (canteen_id,))
+    ret = cursor.fetchone()
+    return ret[0]
 
 @app.route("/blank")
 def blank():
