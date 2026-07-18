@@ -13,6 +13,7 @@
             align-items: center;
             color: rgb(50,61,127);
         }
+
     </style>
 </head>
 <body>
@@ -23,15 +24,27 @@
     {% if isCanteen %}
         <p>Jidelni system: {{ rating }}</p>
     {% else %}
-        <p>Hodnocení: {{ rating }}/7</p>
+        {% if rating <= 2 %}
+            <p style="color:red">Hodnocení: {{ rating }}/7</p>
+        {% elif rating <= 5 %}
+            <p style="color:gold">Hodnocení: {{ rating }}/7</p>
+        {% else %}
+            <p style="color:rgb(0, 255, 0)">Hodnocení: {{ rating }}/7</p>
+        {% endif %}
     {% endif %}
 
     {% if user_rating %}
-        <p>Vaše hodnocení: {{ user_rating }}/7</p>
+        {% if user_rating <= 2 %}
+            <p style="color:red">Vaše hodnocení: {{ user_rating }}/7</p>
+        {% elif user_rating <= 5 %}
+            <p style="color:gold">Vaše hodnocení: {{ user_rating }}/7</p>
+        {% else %}
+            <p style="color:rgb(0, 255, 0)">Vaše hodnocení: {{ user_rating }}/7</p>
+        {% endif %}
     {% endif %}
 
     <p>Jidlo je z: <a href = "/canteen/{{ canteen_id }}">{{ canteen_name }}</a></p>
-    <p style="color:tomato">{{text}}</p>
+    {% if text %}<p style="color:tomato">{{text}}</p>{% endif %}
 
     <form method="POST" action="{{ url_for('get_food', food_id=food_id) }}">
        <div class="rating-css">

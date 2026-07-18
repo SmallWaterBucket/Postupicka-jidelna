@@ -16,6 +16,7 @@ import random
 
 #TODO:
 
+#Change rating to hodnoceni /foods
 #change / and / debug properly with session cookie and stuff
 #add canteen field to /food_edit
 #/suggestions
