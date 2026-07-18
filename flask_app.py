@@ -456,8 +456,8 @@ def login():
         return redirect("/canteens")
     
     canteen_system_id = canteen_id_to_system(canteen_id)
-    canteen_system_name, support = canteen_systems[canteen_system_id]
-    if not support:
+    canteen_system_name, support = canteen_systems[int(canteen_system_id)]
+    if support == 0:
         return render_template("System_not_supported.html", canteen_system_name = canteen_system_name)
 
     username = ""
