@@ -877,6 +877,12 @@ def canteen_id_to_url(canteen_id):
     ret = cursor.fetchone()
     return str(ret[0])
 
+@app.route("/blank")
+def blank():
+    return ""
+
+
+
 
 @app.route("/kredit/<username>,<password>,<canteen_id>")
 def kredit(username, password, canteen_id):
