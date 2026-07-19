@@ -928,7 +928,7 @@ def blank():
 
 
 @app.route("/kredit/<username>,<password>,<canteen_id>")
-def kredit(username, password, canteen_id):
+def kredit(username, password, canteen_id = get_canteen_id()):
     canteen_id = canteen_id_to_url(canteen_id)
     page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/kredit.exe/{username},{password},{canteen_id}")
     #page = requests.get(f"http://152.70.41.16.nip.io:8080/credit/{username},{password}")
