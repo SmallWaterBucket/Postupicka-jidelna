@@ -130,7 +130,7 @@
                 data: {
                     labels: [
                         {% for subpage,visits in subpage_stats %}
-                            {{ subpage }}
+                            "{{ subpage }}"
                         {% endfor %}
                     ],
                     datasets: [
