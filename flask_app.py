@@ -249,10 +249,10 @@ def get_food(food_id):
     if session.get("user") and session.get("password"):
         username = session.get("user")
         kredit = session.get("kredit")
-        return render_template("food.html", username=username, kredit=kredit, image=image_url, name=name, rating=int(average), food_id=food_id, text=text, user_rating = user_rating, canteen_name = canteen_id_to_name(canteen_id), isCanteen = isCanteen, logo = get_image_id(canteen_id), canteen_id = canteen_id)
+        return render_template("food.html", username=username, kredit=kredit, image=image_url, name=name, rating=float(average), food_id=food_id, text=text, user_rating = user_rating, canteen_name = canteen_id_to_name(canteen_id), isCanteen = isCanteen, logo = get_image_id(canteen_id), canteen_id = canteen_id)
 
 
-    return render_template("food.html", image=image_url, name=name, rating=int(average), food_id=food_id, text=text, user_rating = user_rating, canteen_name = canteen_id_to_name(canteen_id), isCanteen = isCanteen, logo = get_image_id(canteen_id), canteen_id = canteen_id)
+    return render_template("food.html", image=image_url, name=name, rating=float(average), food_id=food_id, text=text, user_rating = user_rating, canteen_name = canteen_id_to_name(canteen_id), isCanteen = isCanteen, logo = get_image_id(canteen_id), canteen_id = canteen_id)
 
 def canteen_id_to_name(canteen_id):
     db = get_db()
@@ -698,7 +698,7 @@ def all_foods():
     for item in answer:
         filename = os.path.split(item[2])[-1]
         image_url = f"/image/{filename}"
-        food_item = item[1], item[0], image_url, int(item[3])  # food, food_id,image,rating
+        food_item = item[1], item[0], image_url, float(item[3])  # food, food_id,image,rating
         ret.append(food_item)
 
     if session.get("user") and session.get("password"):
