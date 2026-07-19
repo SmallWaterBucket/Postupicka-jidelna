@@ -123,30 +123,6 @@
             });
         </script>
 
-        <canvas id="subpage_graph"></canvas>
-        <script>
-            new Chart(document.getElementsById("subpage_graph"), {
-                type: "pie",
-                data: {
-                    labels: [
-                        {% for subpage,visits in subpage_stats %}
-                            "{{ subpage }}"
-                        {% endfor %}
-                    ],
-                    datasets: [
-                        {
-                            label: "Subpage visits",
-                            data: [
-                                {% for subpage,visits in subpage_stats %}
-                                    {{ visits }}
-                                {% endfor %}
-                            ]
-                        }
-                    ]
-                }
-            });
-        </script>
-
 
 
 
@@ -163,5 +139,32 @@
                 </tr>
             {% endfor %}
         </table>
+
+        
+        <canvas id="subpage_graph"></canvas>
+        <script>
+            new Chart(document.getElementsById("subpage_graph"), {
+                type: "pie",
+                data: {
+                    labels: [
+                        {% for subpage,visits in subpage_stats %}
+                            "{{ subpage }}",
+                        {% endfor %}
+                    ],
+                    datasets: [
+                        {
+                            label: "Subpage visits",
+                            data: [
+                                {% for subpage,visits in subpage_stats %}
+                                    {{ visits }},
+                                {% endfor %}
+                            ]
+                        }
+                    ]
+                }
+            });
+        </script>
+
+
     </div>
 </body>
