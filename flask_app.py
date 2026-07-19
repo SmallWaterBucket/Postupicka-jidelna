@@ -23,6 +23,7 @@ import random
 # better design
 # adding full compat for iCanteen (maybe using the library for everything?); kinda done, not really for older systems
 # adding compat with different canteen systems
+#fix the contacts
 
 #=========================================================
 #MAYBE:

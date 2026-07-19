@@ -41,6 +41,7 @@
             color: rgb(50,61,127);
             display:flex;
             flex-direction: column;
+            width: 100%;
         }
         img {object-fit: contain;}
 
@@ -75,14 +76,17 @@
         .pair{
             display: flex;
             flex-direction: row;
-            justify-content: space around;
+            justify-content: space-around;
             align-items: center;
             gap: 40px;
             width: 100%;
         }
+        .pair table {
+            flex: 0 0 auto;
+        }
         .canvas-container{
             position: relative;
-            width: 80%;
+            flex: 1;
             max-width:1000px;
             height:400px;
         }
