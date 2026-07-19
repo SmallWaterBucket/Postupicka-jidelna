@@ -126,7 +126,7 @@
         <canvas id="subpage_graph"></canvas>
         <script>
             new Chart(document.getElementsById("subpage_graph"), {
-                type: pie,
+                type: "pie",
                 data: {
                     labels: [
                         {% for subpage,visits in subpage_stats %}
