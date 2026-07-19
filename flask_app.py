@@ -17,7 +17,7 @@ import random
 #TODO:
 
 #change / and / debug properly with session cookie and stuff; needs testing
-
+#Fix the chart passing through navbar
 #Change the long db outputs to only what is needed
 #add user counter
 # better design
