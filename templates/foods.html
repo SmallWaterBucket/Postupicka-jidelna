@@ -51,9 +51,9 @@
                     {% if rating <= 2 %}
                         <p style="color:red">Hodnocení: {{ rating }}/7</p>
                     {% elif rating <= 5 %}
-                        <p style="color:gold">Hodnocení: {{ rating }}/7</p>
+                        <p style="color:orange">Hodnocení: {{ rating }}/7</p>
                     {% else %}
-                        <p style="color:rgb(0, 255, 0)">Hodnocení: {{ rating }}/7</p>
+                        <p style="color:green">Hodnocení: {{ rating }}/7</p>
                     {% endif %}
                 {% else %}
                     <p>Žádné hodnocení</p>

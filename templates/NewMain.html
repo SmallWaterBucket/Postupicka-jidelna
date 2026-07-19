@@ -176,17 +176,17 @@
                                     {% if user_rating <= 2 %}
                                     <p style="color:red">Vaše hodnocení: {{ user_rating }}/7</p>
                                     {% elif user_rating <= 5 %}
-                                        <p style="color:gold">Vaše hodnocení: {{ user_rating }}/7</p>
+                                        <p style="color:orange">Vaše hodnocení: {{ user_rating }}/7</p>
                                     {% else %}
-                                        <p style="color:rgb(0, 255, 0)">Vaše hodnocení: {{ user_rating }}/7</p>
+                                        <p style="color:green">Vaše hodnocení: {{ user_rating }}/7</p>
                                     {% endif %}
                                 {% elif rating %}
                                     {% if rating <= 2 %}
                                         <p style="color:red">Hodnocení jiných uživatelů:  {{ rating }}/7</p>
                                     {% elif rating <= 5 %}
-                                        <p style="color:gold">Hodnocení jiných uživatelů: {{ rating }}/7</p>
+                                        <p style="color:orange">Hodnocení jiných uživatelů: {{ rating }}/7</p>
                                     {% else %}
-                                        <p style="color:rgb(0, 255, 0)">Hodnocení jiných uživatelů: {{ rating }}/7</p>
+                                        <p style="color:green">Hodnocení jiných uživatelů: {{ rating }}/7</p>
                                     {% endif %}
 
                                 {% else %}
