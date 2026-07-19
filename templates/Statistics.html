@@ -72,6 +72,13 @@
         th, td {
             padding: 10px;
         }
+        .pair{
+            display: flex;
+            flex-direction: row;
+            justify-content: space around;
+            align-items: center;
+            gap: 40px
+        }
 
 
     </style>
@@ -82,88 +89,94 @@
         {% include "navbar.html" %}
     </div>
 
+
     <div class="not_navbar">
         <h1>Statistiky:</h1>
 
         <h3>Navstevy celkem: {{ total }}</h3>
 
-        <h2>Navstevy podle mesicu:</h2>
-        <table>
-            <tr>
-                <th>Mesic</th>
-                <th>Navstevy</th>
-            </tr>
-            {% for month,visits in monthly_stats %}
-                <tr>
-                    <td>{{ month }}</td>
-                    <td>{{ visits }}</td>
-                </tr>
-            {% endfor %}
-        </table>
 
-        <canvas id="monthly"></canvas>
-        <script>
-            new Chart(document.getElementById("monthly"),{
-                type: "line",
-                data: {
-                    labels: [
-                        {% for month, visits in monthly_stats %}
-                            "{{ month }}",
-                        {% endfor %}
-                    ],
-                    datasets: [{
-                        label: "Visits per month",
-                        data: [
+
+        <div class="pair">
+            <h2>Navstevy podle mesicu:</h2>
+            <table>
+                <tr>
+                    <th>Mesic</th>
+                    <th>Navstevy</th>
+                </tr>
+                {% for month,visits in monthly_stats %}
+                    <tr>
+                        <td>{{ month }}</td>
+                        <td>{{ visits }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            <canvas id="monthly"></canvas>
+            <script>
+                new Chart(document.getElementById("monthly"),{
+                    type: "line",
+                    data: {
+                        labels: [
                             {% for month, visits in monthly_stats %}
-                                {{ visits }},
+                                "{{ month }}",
                             {% endfor %}
-                        ]
-                    }]
-                }
-            });
-        </script>
-
-
-
-
-        <h2>Navstevy podle podstranek:</h2>
-        <table>
-            <tr>
-                <th>Podstranka</th>
-                <th>Navstevy</th>
-            </tr>
-            {% for subpage,visits in subpage_stats %}
-                <tr>
-                    <td>{{ subpage }}</td>
-                    <td>{{ visits }}</td>
-                </tr>
-            {% endfor %}
-        </table>
-
-        
-        <canvas id="subpage_graph"></canvas>
-        <script>
-            new Chart(document.getElementById("subpage_graph"), {
-                type: "pie",
-                data: {
-                    labels: [
-                        {% for subpage,visits in subpage_stats %}
-                            "{{ subpage }}",
-                        {% endfor %}
-                    ],
-                    datasets: [
-                        {
-                            label: "Subpage visits",
+                        ],
+                        datasets: [{
+                            label: "Visits per month",
                             data: [
-                                {% for subpage,visits in subpage_stats %}
+                                {% for month, visits in monthly_stats %}
                                     {{ visits }},
                                 {% endfor %}
                             ]
-                        }
-                    ]
-                }
-            });
-        </script>
+                        }]
+                    }
+                });
+            </script>
+        </div>
+
+
+
+        <div class="pair">
+            <h2>Navstevy podle podstranek:</h2>
+            <table>
+                <tr>
+                    <th>Podstranka</th>
+                    <th>Navstevy</th>
+                </tr>
+                {% for subpage,visits in subpage_stats %}
+                    <tr>
+                        <td>{{ subpage }}</td>
+                        <td>{{ visits }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+
+            <canvas id="subpage_graph"></canvas>
+            <script>
+                new Chart(document.getElementById("subpage_graph"), {
+                    type: "pie",
+                    data: {
+                        labels: [
+                            {% for subpage,visits in subpage_stats %}
+                                "{{ subpage }}",
+                            {% endfor %}
+                        ],
+                        datasets: [
+                            {
+                                label: "Subpage visits",
+                                data: [
+                                    {% for subpage,visits in subpage_stats %}
+                                        {{ visits }},
+                                    {% endfor %}
+                                ]
+                            }
+                        ]
+                    }
+                });
+            </script>
+        </div>
 
 
     </div>
