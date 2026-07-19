@@ -129,7 +129,7 @@ def add_visit(subpage):
 
 @app.after_request
 def track_visit(response):
-    if request.method == "GET" and not request.path.startswith("/image") and not request.path.startswith("/favicon.ico"):
+    if request.method == "GET" and not request.path.startswith("/image") and not request.path.startswith("/favicon.ico") and not request.path.startswith("/static"):
         add_visit(request.path)
     return response
 
