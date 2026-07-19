@@ -144,7 +144,10 @@ def statistics():
     monthly_stats = cursor.fetchall()
     cursor.execute("SELECT subpage, COUNT(*) AS visits FROM Visits GROUP BY subpage ORDER BY visits DESC")
     subpage_stats = cursor.fetchall()
-    return render_template("Statistics.html", total=total_visits, monthly_stats=monthly_stats, subpage_stats = subpage_stats,logo = get_image_id(get_canteen_id()))
+    commits = subprocess.check_output(
+        ["git", "rev-list", "--count", "HEAD"]
+    ).decode.strip()
+    return render_template("Statistics.html", total=total_visits, monthly_stats=monthly_stats, subpage_stats = subpage_stats,logo = get_image_id(get_canteen_id()), commits = commits)
 
 
 @app.route("/message/<message>")
