@@ -79,6 +79,12 @@
             align-items: center;
             gap: 40px
         }
+        .canvas-container{
+            position: relative;
+            width: 40%;
+            max-width:500px;
+            height:400px;
+        }
 
 
     </style>
@@ -96,9 +102,9 @@
         <h3>Navstevy celkem: {{ total }}</h3>
 
 
-
+        <h2>Navstevy podle mesicu:</h2>
         <div class="pair">
-            <h2>Navstevy podle mesicu:</h2>
+            
             <table>
                 <tr>
                     <th>Mesic</th>
@@ -111,8 +117,11 @@
                     </tr>
                 {% endfor %}
             </table>
+            
+            <div class="canvas-container">
+                <canvas id="monthly"></canvas>
+            </div>
 
-            <canvas id="monthly"></canvas>
             <script>
                 new Chart(document.getElementById("monthly"),{
                     type: "line",
@@ -136,9 +145,9 @@
         </div>
 
 
-
+        <h2>Navstevy podle podstranek:</h2>
         <div class="pair">
-            <h2>Navstevy podle podstranek:</h2>
+            
             <table>
                 <tr>
                     <th>Podstranka</th>
@@ -152,8 +161,10 @@
                 {% endfor %}
             </table>
 
+            <div class="canvas-container">
+                <canvas id="subpage_graph"></canvas>
+            </div>
 
-            <canvas id="subpage_graph"></canvas>
             <script>
                 new Chart(document.getElementById("subpage_graph"), {
                     type: "pie",
