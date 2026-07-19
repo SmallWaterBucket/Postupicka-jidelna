@@ -24,12 +24,16 @@
     {% if isCanteen %}
         <p>Jidelni system: {{ rating }}</p>
     {% else %}
-        {% if rating <= 2 %}
-            <p style="color:red">Hodnocení: {{ rating }}/7</p>
-        {% elif rating <= 5 %}
-            <p style="color:orange">Hodnocení: {{ rating }}/7</p>
+        {% if rating != -1 %}
+            {% if rating <= 2 %}
+                <p style="color:red">Hodnocení: {{ rating }}/7</p>
+            {% elif rating <= 5 %}
+                <p style="color:orange">Hodnocení: {{ rating }}/7</p>
+            {% else %}
+                <p style="color:green">Hodnocení: {{ rating }}/7</p>
+            {% endif %}
         {% else %}
-            <p style="color:green">Hodnocení: {{ rating }}/7</p>
+            <p>Žádné hodnocení</p>
         {% endif %}
     {% endif %}
 

@@ -234,9 +234,6 @@ def get_food(food_id):
             cursor.execute("update Main SET average = %s where id = %s",(str(ret[0][0]),id,))
             average = str(ret[0][0])
             db.commit()
-    
-    if average == -1:
-        average = "Žádné hodnocení"
         
     text = ""
     if not isFood:
