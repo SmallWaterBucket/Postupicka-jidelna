@@ -768,7 +768,7 @@ def food_edit(food_id):
                     isFood = 1
                 else:
                     isFood = 0
-                cursor.execute("update Main set name = %s, path = %s, isFood = %s, canteen_id = %s where id = %s",(new_name, new_path, isFood, id,canteen_id,))
+                cursor.execute("update Main set name = %s, path = %s, isFood = %s, canteen_id = %s where id = %s",(new_name, new_path, isFood, canteen_id,id,))
             db.commit()
             return redirect(f"/get_food/{id}")
         else:
