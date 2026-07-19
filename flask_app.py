@@ -887,7 +887,7 @@ def canteen(canteen_id):
         credit = kredit(username, password, canteen_id)
         session['kredit'] = credit
         data = new_scrape(username, password)
-        response = make_response(render_template("NewMain.html", data = data, username=username, kredit = credit, canteen_name = canteen_id_to_name(canteen_id), logo = get_image_id(canteen_id)), canteen_id = canteen_id)
+        response = make_response(render_template("NewMain.html", data = data, username=username, kredit = credit, canteen_name = canteen_id_to_name(canteen_id), logo = get_image_id(canteen_id), canteen_id = canteen_id))
     else:
         data=scrape()
         response = make_response(render_template("NewMain.html", data=data, canteen_id=canteen_id, canteen_name=canteen_id_to_name(canteen_id), logo = get_image_id(canteen_id)))
