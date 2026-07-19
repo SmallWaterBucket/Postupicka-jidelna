@@ -16,9 +16,7 @@ import random
 
 #TODO:
 
-
-#change / and / debug properly with session cookie and stuff
-#add canteen field to /food_edit
+#change / and / debug properly with session cookie and stuff; needs testing
 #/suggestions
 #Change the long db outputs to only what is needed
 #add user counter
@@ -63,6 +61,7 @@ import random
 #Add a posibility to add diferent canteens
 #Change rating to hodnoceni /foods
 #Add colors to the food ratings everywhere
+#add canteen field to /food_edit
 
 #==========================================================
 
@@ -92,26 +91,33 @@ cipher = Fernet(key)
 
 
 
-@app.route('/debug', methods =["GET", "POST"])
+@app.route('/', methods =["GET", "POST"])
 def Main():
-    canteen_id = get_canteen_id()
 
     if request.method == "POST":
         food = request.form.get("food_name")
         return redirect(f"/search/{food}")
 
+    cookie = get_canteen_id_raw()
+    if not cookie:
+        if request.method == "POST":
+            id = request.form.get("canteen_id")
+            response = make_response(redirect(f"/canteen/{id}"))
+            response.set_cookie(
+                "id",
+                id,
+                max_age= 60 * 60 * 24 * 365
+            )   
 
-    if session.get("user") and session.get("password"):
-        username = session.get("user")
-        password = cipher.decrypt(session.get("password")).decode()
-        credit = kredit(username, password, canteen_id)
-        session['kredit'] = credit
-        data = new_scrape(username, password)
-        return render_template("NewMain.html", data = data, username=username, kredit = credit, canteen_name = canteen_id_to_name(canteen_id), logo = get_image_id(canteen_id))
+            return response
+
+        return redirect("/canteens")
     else:
-        data=scrape()
-
-    return render_template("NewMain.html", data = data, canteen_name = canteen_id_to_name(canteen_id), logo = get_image_id(canteen_id))
+        return redirect(f"/canteen/{cookie}")
+#
+    
+#
+    #return render_template("NewMain.html", data = data, canteen_name = canteen_id_to_name(canteen_id), logo = get_image_id(canteen_id))
 
 
 
@@ -852,54 +858,30 @@ def canteens():
 @app.route("/canteen/<canteen_id>", methods =["GET", "POST"])
 def canteen(canteen_id):
 
-    data = scrape()
+    if session.get("user") and session.get("password"):
+        username = session.get("user")
+        password = cipher.decrypt(session.get("password")).decode()
+        credit = kredit(username, password, canteen_id)
+        session['kredit'] = credit
+        data = new_scrape(username, password)
+        response = make_response(render_template("NewMain.html", data = data, username=username, kredit = credit, canteen_name = canteen_id_to_name(canteen_id), logo = get_image_id(canteen_id)))
+    else:
+        data=scrape()
+        response = make_response(render_template("NewMain.html", data=data, canteen_id=canteen_id, canteen_name=canteen_id_to_name(canteen_id), logo = get_image_id(canteen_id)))
 
-    response = make_response(render_template("NewMain.html", data=data, canteen_id=canteen_id, canteen_name=canteen_id_to_name(canteen_id), logo = get_image_id(canteen_id)))
+
     response.set_cookie(
         "id",
         canteen_id,
         max_age= 60 * 60 * 24 * 365
     )
     return response
-    #if request.method == "POST":
-    #    food = request.form.get("food_name")
-    #    return redirect(f"/search/{food}")
-
-
-    #if session.get("user") and session.get("password"):
-    #    username = session.get("user")
-    #    password = cipher.decrypt(session.get("password")).decode()
-    #    credit = kredit(username, password)
-    #    session['kredit'] = credit
-    #    data = new_scrape(username, password)
-    #    return render_template("NewMain.html", data = data, username=username, kredit = credit)
-    #else:
-    #    data=scrape()
 
 
 
-@app.route("/", methods = ["GET", "POST"])
+@app.route("/debug", methods = ["GET", "POST"])
 def new_main_page():
-    if request.method == "POST":
-        food = request.form.get("food_name")
-        return redirect(f"/search/{food}")
-
-    cookie = get_canteen_id_raw()
-    if not cookie:
-        if request.method == "POST":
-            id = request.form.get("canteen_id")
-            response = make_response(redirect(f"/canteen/{id}"))
-            response.set_cookie(
-                "id",
-                id,
-                max_age= 60 * 60 * 24 * 365
-            )   
-
-            return response
-
-        return redirect("/canteens")
-    else:
-        return redirect(f"/canteen/{cookie}")
+    return ""
     
 def canteen_id_to_url(canteen_id):
     db = get_db()
