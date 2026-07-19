@@ -121,6 +121,28 @@ def Main():
     #return render_template("NewMain.html", data = data, canteen_name = canteen_id_to_name(canteen_id), logo = get_image_id(canteen_id))
 
 
+def add_visit(subpage):
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("INSERT INTO Visits (subpage) VALUES (%s)", (subpage,))
+    db.commit()
+
+@app.after_request
+def track_visit(response):
+    if request.method == "GET" and not request.path.startswith("/image") and not request.path.startswith("/favicon.ico"):
+        add_visit(request.path)
+    return response
+
+@app.route("/statistics")
+def statistics():
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT COUNT(*) AS visits FROM Visits;")
+    total_visits = cursor.fetchone()[0]
+    cursor.execute("SELECT MONTH(date) AS month, COUNT(*) AS visits FROM Visits WHERE YEAR(date) = YEAR(CURRENT_DATE) GROUP BY MONTH(date) ORDER BY month;")
+    monthly_stats = cursor.fetchall()
+    return render_template("Statistics.html", total=total_visits, monthly_stats=monthly_stats, logo = get_image_id(get_canteen_id()))
+
 
 @app.route("/message/<message>")
 def get_message(message):
