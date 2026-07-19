@@ -99,5 +99,19 @@
                 </tr>
             {% endfor %}
         </table>
+
+        <h2>Navstevy podle podstranek:</h2>
+        <table>
+            <tr>
+                <th>Podstranka</th>
+                <th>Navstevy</th>
+            </tr>
+            {% for subpage,visits in subpage_stats %}
+                <tr>
+                    <td>{{ subpage }}</td>
+                    <td>{{ visits }}</td>
+                </tr>
+            {% endfor %}
+        </table>
     </div>
 </body>

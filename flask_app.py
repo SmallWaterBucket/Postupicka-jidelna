@@ -139,9 +139,11 @@ def statistics():
     cursor = db.cursor()
     cursor.execute("SELECT COUNT(*) AS visits FROM Visits;")
     total_visits = cursor.fetchone()[0]
-    cursor.execute("SELECT MONTH(date) AS month, COUNT(*) AS visits FROM Visits WHERE YEAR(date) = YEAR(CURRENT_DATE) GROUP BY MONTH(date) ORDER BY month;")
+    cursor.execute("SELECT MONTHNAME(date) AS month, COUNT(*) AS visits FROM Visits WHERE YEAR(date) = YEAR(CURRENT_DATE) GROUP BY MONTH(date) ORDER BY month;")
     monthly_stats = cursor.fetchall()
-    return render_template("Statistics.html", total=total_visits, monthly_stats=monthly_stats, logo = get_image_id(get_canteen_id()))
+    cursor.execute("SELECT subpage, COUNT(*) AS visits FROM Visits GROUP BY subpage ORDER BY visits DESC")
+    subpage_stats = cursor.fetchall()
+    return render_template("Statistics.html", total=total_visits, monthly_stats=monthly_stats, subpage_stats = subpage_stats,logo = get_image_id(get_canteen_id()))
 
 
 @app.route("/message/<message>")
