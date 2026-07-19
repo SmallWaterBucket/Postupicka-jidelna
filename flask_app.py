@@ -16,13 +16,12 @@ import random
 
 #TODO:
 
-#Change rating to hodnoceni /foods
+
 #change / and / debug properly with session cookie and stuff
 #add canteen field to /food_edit
 #/suggestions
 #Change the long db outputs to only what is needed
 #add user counter
-#Add colors to the food ratings everywhere
 # better design
 # adding full compat for iCanteen (maybe using the library for everything?); kinda done, not really for older systems
 # adding compat with different canteen systems
@@ -62,6 +61,8 @@ import random
 # /add_canteen
 # storing canteen in cookies
 #Add a posibility to add diferent canteens
+#Change rating to hodnoceni /foods
+#Add colors to the food ratings everywhere
 
 #==========================================================
 
@@ -743,6 +744,9 @@ def food_edit(food_id):
     
     id, name, path, average, isFood, canteen_id, author = result
 
+    cursor.execute("SELECT name,id FROM Main WHERE canteen_id = -1;")
+    canteens = cursor.fetchall()
+
     image_url = get_image_id(food_id)
     message = ""
     if request.method == "POST":
@@ -759,16 +763,17 @@ def food_edit(food_id):
                 new_name = request.form.get("food_name")
                 new_path = request.form.get("path")
                 isFood = request.form.get("isFood")
+                canteen_id = request.form.get("canteen")
                 if isFood == "isFood":
                     isFood = 1
                 else:
                     isFood = 0
-                cursor.execute("update Main set name = %s, path = %s, isFood = %s where id = %s",(new_name, new_path, isFood, id,))
+                cursor.execute("update Main set name = %s, path = %s, isFood = %s, canteen_id = %s where id = %s",(new_name, new_path, isFood, id,canteen_id,))
             db.commit()
             return redirect(f"/get_food/{id}")
         else:
             message = "Incorrect password"
-    return render_template("food_edit.html", image=image_url, name=name, rating=average, message=message, food_id=food_id, isFood=isFood, logo = get_image_id(canteen_id))
+    return render_template("food_edit.html", image=image_url, name=name, rating=average, message=message, food_id=food_id, isFood=isFood, logo = get_image_id(canteen_id), canteen_id = canteen_id, canteens = canteens)
 
 
 @app.route("/logout")

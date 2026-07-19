@@ -22,6 +22,11 @@
     <p><input type="text" id="food_name" name="food_name" placeholder="jídlo" value="{{name}}"></p>
     <img src="{{ image }}" height="100" alt="{{ name }}">
     <p><input type="text" id="path" name="path" placeholder="image path" value="{{image}}"></p>
+    <p><select id="canteen">
+        {% for i in range(canteens|length) %}
+            <option value="{{ canteens[i][1] }}" {% if canteen_id == i %}selected{% endif %}>{{ canteens[i][0] }}</option>
+        {% endfor %}
+    </select></p>
     <input type="checkbox" id="isFood" name="isFood" value="isFood" {% if isFood %}checked{% endif %}>
     <label for="isFood">Je jídlo?</label>
 
