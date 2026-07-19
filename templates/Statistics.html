@@ -77,6 +77,7 @@
     </style>
 </head>
 <body>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <div class="navbar">
         {% include "navbar.html" %}
     </div>
@@ -99,6 +100,31 @@
                 </tr>
             {% endfor %}
         </table>
+
+        <canvas id="monthly"></canvas>
+        <script>
+            new Chart(document.getElementById("monthly"),{
+                type: "line",
+                data: {
+                    labels: [
+                        {% for month, visits in monthly_stats %}
+                            "{{ month }}",
+                        {% endfor %}
+                    ],
+                    datasets: [{
+                        label: "Visits per month",
+                        data: [
+                            {% for month, visits in monthly_stats %}
+                                {{ visits }},
+                            {% endfor %}
+                        ]
+                    }]
+                }
+            });
+        </script>
+
+
+
 
         <h2>Navstevy podle podstranek:</h2>
         <table>
