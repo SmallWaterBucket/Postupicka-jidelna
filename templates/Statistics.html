@@ -84,8 +84,10 @@
                 <th>Navstevy</th>
             </tr>
             {% for month,visits in monthly_stats %}
-                <td>{{ month }}</td>
-                <td>{{ visits }}</td>
+                <tr>
+                    <td>{{ month }}</td>
+                    <td>{{ visits }}</td>
+                </tr>
             {% endfor %}
         </table>
     </div>
