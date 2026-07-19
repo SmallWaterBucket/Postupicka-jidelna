@@ -17,7 +17,7 @@ import random
 #TODO:
 
 #change / and / debug properly with session cookie and stuff; needs testing
-#/suggestions
+
 #Change the long db outputs to only what is needed
 #add user counter
 # better design
@@ -62,6 +62,7 @@ import random
 #Change rating to hodnoceni /foods
 #Add colors to the food ratings everywhere
 #add canteen field to /food_edit
+#/suggestions, instead created a custom email and added it to contacts
 
 #==========================================================
 
