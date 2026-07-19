@@ -943,19 +943,19 @@ def try_login(username, password, canteen_id = get_canteen_id()):
 def get_orderd_food(username, password, dates, canteen_id = get_canteen_id()):
     dates = ".".join(dates)
     canteen_id = canteen_id_to_url(canteen_id)
-    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/get_ordered_foods.exe/{username},{password},{dates}")
+    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/get_ordered_foods.exe/{username},{password},{dates},{canteen_id}")
     return page.text
 
 @app.route("/ordered_foods_debug/<username>,<password>,<dates>,<canteen_id>")
 def get_orderd_food_debug(username, password, dates, canteen_id = get_canteen_id()):
     canteen_id = canteen_id_to_url(canteen_id)
-    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/get_ordered_foods.exe/{username},{password},{dates}")
+    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/get_ordered_foods.exe/{username},{password},{dates},{canteen_id}")
     return page.text
 
 @app.route("/order_request/<username>,<password>,<date>,<food_id>,<canteen_id>")
 def order_food(username, password, date, food_id,canteen_id = get_canteen_id()):
     canteen_id = canteen_id_to_url(canteen_id)
-    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/order.exe/{username},{password},{date},{food_id}")
+    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/order.exe/{username},{password},{date},{food_id},{canteen_id}")
 
 #if __name__ == "__main__":
 #    app.run(host="0.0.0.0", port=8080)
