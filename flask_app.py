@@ -146,7 +146,7 @@ def statistics():
     subpage_stats = cursor.fetchall()
     commits = subprocess.check_output(
         ["git", "rev-list", "--count", "HEAD"]
-    ).decode.strip()
+    ).decode().strip()
     return render_template("Statistics.html", total=total_visits, monthly_stats=monthly_stats, subpage_stats = subpage_stats,logo = get_image_id(get_canteen_id()), commits = commits)
 
 
