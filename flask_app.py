@@ -158,7 +158,7 @@ def statistics():
     old_food_stats = cursor.fetchall()
     canteen_stats = []
     for canteen_id, foods in old_food_stats:
-        canteen_stats.append(f"{(canteen_id_to_name(canteen_id)} ({canteen_id})", foods))
+        canteen_stats.append((f"{canteen_id_to_name(canteen_id)} ({canteen_id})", foods))
     commits = subprocess.check_output(
         ["git", "-C", "/home/jidelna/Postupicka-jidelna", "rev-list", "--count", "HEAD"]
     ).decode().strip()
