@@ -21,7 +21,7 @@ def main():
    return redirect('https://jidelna.eu.pythonanywhere.com')
 
 
-@app.route("iCanteen/<app>/<path:url>")
+@app.route("/iCanteen/<app>/<path:url>")
 def credit(app, url):
     if app not in ALLOWED_APPS:
        return "App not allowed"
