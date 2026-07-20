@@ -89,7 +89,7 @@ app.config.update(
     SESSION_COOKIE_SAMESITE='Lax',
     PERMANENT_SESSION_LIFETIME=1800
 )
-canteen_systems = [("iCanteen / strav.nasejidelna.cz", 1),("Strava.cz", 0),("Jidelna.cz", 0),("Primirest / Primiapp.cz", 0)]
+canteen_systems = [("iCanteen / strav.nasejidelna.cz", 2),("Strava.cz", 1),("Jidelna.cz", 0),("Primirest / Primiapp.cz", 0)] #0 - doesn't work, 1 - testing, 2 - mostly full support
 
 
 key = open(f"{path_passwords}/password.txt",'r').read().strip().encode()
@@ -499,13 +499,17 @@ def login():
     if support == 0:
         return render_template("System_not_supported.html", canteen_system_name = canteen_system_name)
 
+    message = ""
+    if support == 1:
+        message="Tento system jeste neni plne podporovan, prave je ve vyvoji"
+
     username = ""
     password = ""
     if request.method == "POST":
         if "password" in request.form:
             username = request.form.get("username")
             password = request.form.get("password")
-            if iCanteen_try_login(username, password) != "1\n":
+            if decide_login(username, password).strip() != "1":
                 return render_template("Login.html", message="Špatné přihlašovací údaje", canteen_system_name = canteen_system_name)
 
             session['user'] = username
@@ -513,7 +517,7 @@ def login():
             session['kredit'] = iCanteen_kredit(username, password)
             return redirect("/")
             
-    return render_template("Login.html", message="", logo = get_image_id(canteen_id), canteen_system_name = canteen_system_name)
+    return render_template("Login.html", message=message, logo = get_image_id(canteen_id), canteen_system_name = canteen_system_name)
     
 
 
@@ -937,6 +941,22 @@ def blank():
 
 
 
+def decide_login(username,password):
+    canteen_id = get_canteen_id()
+    canteen_system = canteen_id_to_system(canteen_id)
+    match canteen_system:
+        case 0: #iCanteen
+            return iCanteen_try_login(username,password, canteen_id)
+        case 1: #Strava.cz
+            return Strava_try_login(username,password)
+        case _:
+            return "-1"
+
+
+
+
+
+
 # iCanteen requests functions
 @app.route("/iCanteen/kredit/<username>,<password>,<canteen_id>")
 def iCanteen_kredit(username, password, canteen_id = get_canteen_id()):
@@ -971,7 +991,7 @@ def iCanteen_order_food(username, password, date, food_id,canteen_id = get_cante
 
 #Strava.cz connecting functions:
 @app.route("/strava/login/<username>,<password>")
-def strava_login(username, password):
+def Strava_try_login(username, password):
     canteen_number = canteen_id_to_url(get_canteen_id())
     page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/strava/login/{username},{password},{canteen_number}")
     return page.text
