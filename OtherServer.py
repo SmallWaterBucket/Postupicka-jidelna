@@ -34,18 +34,33 @@ def credit(app, url):
     )
     return result.stdout
 
+
+
 @app.route("/strava/login/<username>,<password>,<canteen_number>")
 def strava_login(username, password, canteen_number):
     try:
-        strava = StravaCZ(
-            username=username,
-            password=password,
-            canteen_number = canteen_number
-        )
+        strava_login_internal(username,password,canteen_number)
     except AuthenticationError as e:
         return "0"
     return "1"
 
+@app.route("/strava/kredit/<username>,<password>,<canteen_number>")
+def strava_kredit(username, password, canteen_number):
+    strava = strava_login_internal(username, password, canteen_number)
+    return str(strava.user.balance)
+
+
+
+
+
+
+def strava_login_internal(username, password, canteen_number):
+    strava = StravaCZ(
+            username=username,
+            password=password,
+            canteen_number = canteen_number
+        )
+    return strava
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)

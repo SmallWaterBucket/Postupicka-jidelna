@@ -82,7 +82,11 @@
             <button type="submit">Přihlášení</button>
         </form>
         {% if message %}<p style="color: red;">{{message}}</p>{% endif %}
-        <p style="color: rgb(1, 129, 33);">Nově je přihlašování plně funkční.</p>
+        {% if support == 2 %}
+            <p style="color: rgb(1, 129, 33);">Přihlašování je plně funkční.</p>
+        {% else %}
+            <p style="color:red">Tento system jeste neni plne podporovan, prave je ve vyvoji.</p>
+        {% endif %}
         <p><a href = "/statement">Ochrana vašich osobních údajů</a></p>
     </div>
 </body>

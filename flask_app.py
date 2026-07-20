@@ -499,10 +499,6 @@ def login():
     if support == 0:
         return render_template("System_not_supported.html", canteen_system_name = canteen_system_name)
 
-    message = ""
-    if support == 1:
-        message="Tento system jeste neni plne podporovan, prave je ve vyvoji"
-
     username = ""
     password = ""
     if request.method == "POST":
@@ -510,14 +506,14 @@ def login():
             username = request.form.get("username")
             password = request.form.get("password")
             if decide_login(username, password).strip() != "1":
-                return render_template("Login.html", message="Špatné přihlašovací údaje", canteen_system_name = canteen_system_name)
+                return render_template("Login.html", message="Špatné přihlašovací údaje", canteen_system_name = canteen_system_name, support = support)
 
             session['user'] = username
             session['password'] = cipher.encrypt(password.encode())
-            session['kredit'] = iCanteen_kredit(username, password)
+            session['kredit'] = decide_kredit(username, password)
             return redirect("/")
             
-    return render_template("Login.html", message=message, logo = get_image_id(canteen_id), canteen_system_name = canteen_system_name)
+    return render_template("Login.html", message="", logo = get_image_id(canteen_id), canteen_system_name = canteen_system_name, support = support)
     
 
 
@@ -538,7 +534,7 @@ def order():
 
     ret = iCanteen_order_food(username, password, date, food)
     print(ret)
-    credit = iCanteen_kredit(username, password)
+    credit = decide_kredit(username, password)
     return {"credit": credit}
 
 def scrape(): #day,day_str,foods,chosen_food
@@ -899,7 +895,7 @@ def canteen(canteen_id):
     if session.get("user") and session.get("password"):
         username = session.get("user")
         password = cipher.decrypt(session.get("password")).decode()
-        credit = iCanteen_kredit(username, password, canteen_id)
+        credit = decide_kredit(username, password, canteen_id)
         session['kredit'] = credit
         data = new_scrape(username, password)
         response = make_response(render_template("NewMain.html", data = data, username=username, kredit = credit, canteen_name = canteen_id_to_name(canteen_id), logo = get_image_id(canteen_id), canteen_id = canteen_id))
@@ -941,16 +937,31 @@ def blank():
 
 
 
+
+#Deciding part
 def decide_login(username,password):
     canteen_id = get_canteen_id()
     canteen_system = canteen_id_to_system(canteen_id)
     match canteen_system:
         case 0: #iCanteen
-            return iCanteen_try_login(username,password, canteen_id)
+            return iCanteen_try_login(username,password)
         case 1: #Strava.cz
             return Strava_try_login(username,password)
         case _:
             return "-1"
+        
+
+def decide_kredit(username,password):
+    canteen_id = get_canteen_id()
+    canteen_system = canteen_id_to_system(canteen_id)
+    match canteen_system:
+        case 0: #iCanteen
+            return iCanteen_kredit(username,password)
+        case 1: #Strava.cz
+            return Strava_kredit(username,password)
+        case _:
+            return "-1"
+
 
 
 
@@ -989,9 +1000,17 @@ def iCanteen_order_food(username, password, date, food_id,canteen_id = get_cante
     page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/order.exe/{username},{password},{date},{food_id},{canteen_id}")
 
 
+
+
 #Strava.cz connecting functions:
 @app.route("/strava/login/<username>,<password>")
 def Strava_try_login(username, password):
     canteen_number = canteen_id_to_url(get_canteen_id())
     page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/strava/login/{username},{password},{canteen_number}")
+    return page.text
+
+@app.route("/strava/kredit/<username>,<password>")
+def Strava_kredit(username, password):
+    canteen_number = canteen_id_to_url(get_canteen_id())
+    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/strava/kredit/{username},{password},{canteen_number}")
     return page.text
