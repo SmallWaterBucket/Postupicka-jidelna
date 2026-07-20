@@ -136,7 +136,12 @@ def add_visit(subpage):
 @app.after_request
 def track_visit(response):
     if request.method == "GET" and not request.path.startswith("/image") and not request.path.startswith("/favicon.ico") and not request.path.startswith("/static"):
-        add_visit(request.path)
+        route = request.url_rule.rule
+        if route.startswith("/canteen"):
+            route = request.path
+        else:
+            route = route.split("/<",1)[0]
+        add_visit(route)
     return response
 
 @app.route("/statistics")
@@ -149,10 +154,15 @@ def statistics():
     monthly_stats = cursor.fetchall()
     cursor.execute("SELECT subpage, COUNT(*) AS visits FROM Visits GROUP BY subpage ORDER BY visits DESC")
     subpage_stats = cursor.fetchall()
+    cursor.execute("SELECT canteen_id, COUNT(*) AS foods FROM Main GROUP BY canteen_id ORDER BY foods DESC")
+    old_food_stats = cursor.fetchall()
+    canteen_stats = []
+    for canteen_id, foods in old_food_stats:
+        canteen_stats.append((canteen_id_to_name(canteen_id), foods))
     commits = subprocess.check_output(
         ["git", "-C", "/home/jidelna/Postupicka-jidelna", "rev-list", "--count", "HEAD"]
     ).decode().strip()
-    return render_template("Statistics.html", total=total_visits, monthly_stats=monthly_stats, subpage_stats = subpage_stats,logo = get_image_id(get_canteen_id()), commits = commits)
+    return render_template("Statistics.html", total=total_visits, monthly_stats=monthly_stats, subpage_stats = subpage_stats,canteen_stats = canteen_stats,logo = get_image_id(get_canteen_id()), commits = commits)
 
 
 @app.route("/message/<message>")

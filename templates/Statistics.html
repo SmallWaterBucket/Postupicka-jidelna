@@ -196,5 +196,51 @@
         </div>
 
 
+
+        <h2>Pridana jidla v jidelnach:</h2>
+        <div class="pair">
+            
+            <table>
+                <tr>
+                    <th>Jidelna</th>
+                    <th>Pridana jidla</th>
+                </tr>
+                {% for canteen,foods in canteen_stats %}
+                    <tr>
+                        <td>{{ canteen }}</td>
+                        <td>{{ foods }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            <div class="canvas-container">
+                <canvas id="subpage_graph"></canvas>
+            </div>
+
+            <script>
+                new Chart(document.getElementById("subpage_graph"), {
+                    type: "pie",
+                    data: {
+                        labels: [
+                            {% for canteen,foods in canteen_stats %}
+                                "{{ canteen }}",
+                            {% endfor %}
+                        ],
+                        datasets: [
+                            {
+                                label: "Foods in ",
+                                data: [
+                                    {% for canteen,foods in canteen_stats %}
+                                        {{ foods }},
+                                    {% endfor %}
+                                ]
+                            }
+                        ]
+                    }
+                });
+            </script>
+        </div>
+
+
     </div>
 </body>
