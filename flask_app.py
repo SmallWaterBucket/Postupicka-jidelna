@@ -972,7 +972,7 @@ def iCanteen_order_food(username, password, date, food_id,canteen_id = get_cante
 #Strava.cz connecting functions:
 @app.route("/strava/login/<username>,<password>")
 def strava_login(username, password):
-    canteen_number = canteen_id_to_url(get_canteen_id)
+    canteen_number = canteen_id_to_url(get_canteen_id())
     try:
         strava = StravaCZ(
             username=username,
