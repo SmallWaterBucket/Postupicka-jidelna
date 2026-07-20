@@ -938,7 +938,7 @@ def blank():
 
 
 # iCanteen requests functions
-@app.route("iCanteen/kredit/<username>,<password>,<canteen_id>")
+@app.route("/iCanteen/kredit/<username>,<password>,<canteen_id>")
 def iCanteen_kredit(username, password, canteen_id = get_canteen_id()):
     canteen_id = canteen_id_to_url(canteen_id)
     page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/kredit.exe/{username},{password},{canteen_id}")
@@ -950,7 +950,7 @@ def iCanteen_try_login(username, password, canteen_id = get_canteen_id()):
     page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/login.exe/{username},{password},{canteen_id}")
     return str(page.text)
 
-@app.route("iCanteen/ordered_foods/<username>,<password>,<dates>,<canteen_id>")
+@app.route("/iCanteen/ordered_foods/<username>,<password>,<dates>,<canteen_id>")
 def iCanteen_get_orderd_food(username, password, dates, canteen_id = get_canteen_id()):
     dates = ".".join(dates)
     canteen_id = canteen_id_to_url(canteen_id)
