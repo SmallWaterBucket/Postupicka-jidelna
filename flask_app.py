@@ -13,15 +13,14 @@ from flask import json
 from werkzeug.exceptions import HTTPException
 from bs4 import BeautifulSoup
 import random
+from strava_cz import StravaCZ, MealType, OrderType
+
 
 #TODO:
 
-#change / and / debug properly with session cookie and stuff; needs testing
 #Fix the chart passing through navbar
 #Change the long db outputs to only what is needed
-#add user counter
 # better design
-# adding full compat for iCanteen (maybe using the library for everything?); kinda done, not really for older systems
 # adding compat with different canteen systems
 #fix the contacts
 
@@ -64,6 +63,12 @@ import random
 #Add colors to the food ratings everywhere
 #add canteen field to /food_edit
 #/suggestions, instead created a custom email and added it to contacts
+#add user counter
+
+#==========================================================
+# NEEDS TESTING:
+# adding full compat for iCanteen (maybe using the library for everything?); kinda done, not really for older systems
+#change / and / debug properly with session cookie and stuff; needs testing
 
 #==========================================================
 
@@ -500,12 +505,12 @@ def login():
         if "password" in request.form:
             username = request.form.get("username")
             password = request.form.get("password")
-            if try_login(username, password) != "1\n":
+            if iCanteen_try_login(username, password) != "1\n":
                 return render_template("Login.html", message="Špatné přihlašovací údaje", canteen_system_name = canteen_system_name)
 
             session['user'] = username
             session['password'] = cipher.encrypt(password.encode())
-            session['kredit'] = kredit(username, password)
+            session['kredit'] = iCanteen_kredit(username, password)
             return redirect("/")
             
     return render_template("Login.html", message="", logo = get_image_id(canteen_id), canteen_system_name = canteen_system_name)
@@ -527,9 +532,9 @@ def order():
     day = data.get("day")
     date = datetime.datetime.strptime(day, "%d.%m.%Y").strftime("%Y-%m-%d")
 
-    ret = order_food(username, password, date, food)
+    ret = iCanteen_order_food(username, password, date, food)
     print(ret)
-    credit = kredit(username, password)
+    credit = iCanteen_kredit(username, password)
     return {"credit": credit}
 
 def scrape(): #day,day_str,foods,chosen_food
@@ -619,7 +624,7 @@ def new_scrape(username, password):
             chosen_food_date = datetime.datetime.strftime(date, "%Y-%m-%d")
             chosen_food_dates.append(chosen_food_date)
         #return str(chosen_food_dates)
-        chosen_foods_str = get_orderd_food(username, password, chosen_food_dates)
+        chosen_foods_str = iCanteen_get_orderd_food(username, password, chosen_food_dates)
         chosen_foods = chosen_foods_str.split(";")
         chosen_foods = chosen_foods[:-1]
         #return str(chosen_foods)
@@ -890,7 +895,7 @@ def canteen(canteen_id):
     if session.get("user") and session.get("password"):
         username = session.get("user")
         password = cipher.decrypt(session.get("password")).decode()
-        credit = kredit(username, password, canteen_id)
+        credit = iCanteen_kredit(username, password, canteen_id)
         session['kredit'] = credit
         data = new_scrape(username, password)
         response = make_response(render_template("NewMain.html", data = data, username=username, kredit = credit, canteen_name = canteen_id_to_name(canteen_id), logo = get_image_id(canteen_id), canteen_id = canteen_id))
@@ -932,36 +937,48 @@ def blank():
 
 
 
-
-@app.route("/kredit/<username>,<password>,<canteen_id>")
-def kredit(username, password, canteen_id = get_canteen_id()):
+# iCanteen requests functions
+@app.route("iCanteen/kredit/<username>,<password>,<canteen_id>")
+def iCanteen_kredit(username, password, canteen_id = get_canteen_id()):
     canteen_id = canteen_id_to_url(canteen_id)
     page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/kredit.exe/{username},{password},{canteen_id}")
     #page = requests.get(f"http://152.70.41.16.nip.io:8080/credit/{username},{password}")
     return page.text
 
-def try_login(username, password, canteen_id = get_canteen_id()):
+def iCanteen_try_login(username, password, canteen_id = get_canteen_id()):
     canteen_id = canteen_id_to_url(canteen_id)
     page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/login.exe/{username},{password},{canteen_id}")
     return str(page.text)
 
-@app.route("/ordered_foods/<username>,<password>,<dates>,<canteen_id>")
-def get_orderd_food(username, password, dates, canteen_id = get_canteen_id()):
+@app.route("iCanteen/ordered_foods/<username>,<password>,<dates>,<canteen_id>")
+def iCanteen_get_orderd_food(username, password, dates, canteen_id = get_canteen_id()):
     dates = ".".join(dates)
     canteen_id = canteen_id_to_url(canteen_id)
     page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/get_ordered_foods.exe/{username},{password},{dates},{canteen_id}")
     return page.text
 
-@app.route("/ordered_foods_debug/<username>,<password>,<dates>,<canteen_id>")
-def get_orderd_food_debug(username, password, dates, canteen_id = get_canteen_id()):
+@app.route("/iCanteen/ordered_foods_debug/<username>,<password>,<dates>,<canteen_id>")
+def iCanteen_get_orderd_food_debug(username, password, dates, canteen_id = get_canteen_id()):
     canteen_id = canteen_id_to_url(canteen_id)
     page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/get_ordered_foods.exe/{username},{password},{dates},{canteen_id}")
     return page.text
 
-@app.route("/order_request/<username>,<password>,<date>,<food_id>,<canteen_id>")
-def order_food(username, password, date, food_id,canteen_id = get_canteen_id()):
+@app.route("/iCanteen/order_request/<username>,<password>,<date>,<food_id>,<canteen_id>")
+def iCanteen_order_food(username, password, date, food_id,canteen_id = get_canteen_id()):
     canteen_id = canteen_id_to_url(canteen_id)
     page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/order.exe/{username},{password},{date},{food_id},{canteen_id}")
 
-#if __name__ == "__main__":
-#    app.run(host="0.0.0.0", port=8080)
+
+#Strava.cz connecting functions:
+@app.route("/strava/login/<username>,<password>")
+def strava_login(username, password):
+    canteen_number = canteen_id_to_url(get_canteen_id)
+    try:
+        strava = StravaCZ(
+            username=username,
+            password=password,
+            canteen_number = canteen_number
+        )
+    except AuthenticationError as e:
+        return 0
+    return 1
