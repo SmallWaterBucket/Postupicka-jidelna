@@ -43,8 +43,8 @@ def strava_login(username, password, canteen_number):
             canteen_number = canteen_number
         )
     except AuthenticationError as e:
-        return 0
-    return 1
+        return "0"
+    return "1"
 
 
 if __name__ == "__main__":
