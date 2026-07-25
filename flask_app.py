@@ -135,7 +135,7 @@ def add_visit(subpage):
 
 @app.after_request
 def track_visit(response):
-    if request.method == "GET" and not request.path.startswith("/image") and not request.path.startswith("/favicon.ico") and not request.path.startswith("/static"):
+    if request.method == "GET" and not request.path.startswith("/image") and not request.path.startswith("/favicon.ico") and not request.path.startswith("/static") and not request.path.startswith("/iCanteen") and not request.path.startswith("/strava"):
         route = request.url_rule.rule
         if route.startswith("/canteen"):
             route = request.path
@@ -327,14 +327,12 @@ def get_image(image):
     image_url = f"/image/{filename}"
     return image_url
 
-@app.route("/test/<id>")
 def get_image_id(id):
     if not id:
         return ""
     db = get_db()
     cursor = db.cursor()
     cursor.execute(f"SELECT * FROM Main WHERE id = %s;", (id,))
-    return str(cursor.fetchone())
     result = cursor.fetchone()
     if not result:
         return "/image/WhatsApp_Image_2026-01-16_at_19.21.37.jpg"
@@ -586,7 +584,7 @@ def scrape(): #day,day_str,foods,chosen_food
                     food = re.sub(r"\s+", " ", food)
                     food = ' '.join(food.split())
                     #}
-                    food_id = -1
+                    food_id = 38
                     db = get_db()
                     mycursor = db.cursor()
                     mycursor.execute("SELECT id FROM Main where name = %s", (food,))
