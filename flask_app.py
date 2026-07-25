@@ -944,7 +944,7 @@ def canteen_id_to_system(canteen_id):
     cursor = db.cursor()
     cursor.execute("SELECT average FROM Main WHERE id = %s;", (canteen_id,))
     ret = cursor.fetchone()
-    return ret[0]
+    return int(ret[0])
 
 @app.route("/blank")
 def blank():
@@ -957,7 +957,7 @@ def blank():
 @app.route("/decide_login/<username>,<password>")
 def decide_login(username,password):
     canteen_id = get_canteen_id()
-    canteen_system = int(canteen_id_to_system(canteen_id))
+    canteen_system = canteen_id_to_system(canteen_id)
     match canteen_system:
         case 0: #iCanteen
             return iCanteen_try_login(username,password,canteen_id)
