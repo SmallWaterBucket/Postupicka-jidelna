@@ -954,6 +954,7 @@ def blank():
 
 
 #Deciding part
+@app.route("/decide_login/<username>,<password>")
 def decide_login(username,password):
     canteen_id = get_canteen_id()
     canteen_system = canteen_id_to_system(canteen_id)
