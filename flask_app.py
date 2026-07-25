@@ -909,7 +909,7 @@ def canteen(canteen_id):
     if session.get("user") and session.get("password"):
         username = session.get("user")
         password = cipher.decrypt(session.get("password")).decode()
-        credit = decide_kredit(username, password, canteen_id)
+        credit = decide_kredit(username, password)
         session['kredit'] = credit
         data = new_scrape(username, password)
         response = make_response(render_template("NewMain.html", data = data, username=username, kredit = credit, canteen_name = canteen_id_to_name(canteen_id), logo = get_image_id(canteen_id), canteen_id = canteen_id))
