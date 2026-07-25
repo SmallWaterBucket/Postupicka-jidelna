@@ -321,7 +321,7 @@ def get_image(image):
     cursor.execute(f"SELECT * FROM Main WHERE NAME = %s;", (image,))
     result = cursor.fetchone()
     if not result:
-        return "/image/WhatsApp_Image_2026-01-16_at_19.21.37.jpeg"
+        return "/image/WhatsApp_Image_2026-01-16_at_19.21.37.jpg"
     id, name, path, average, isFood, canteen_id, author = result
     filename = path.split('/')[-1]
     image_url = f"/image/{filename}"
@@ -336,7 +336,7 @@ def get_image_id(id):
     cursor.execute(f"SELECT * FROM Main WHERE id = %s;", (id,))
     result = cursor.fetchone()
     if not result:
-        return "/image/WhatsApp_Image_2026-01-16_at_19.21.37.jpeg"
+        return "/image/WhatsApp_Image_2026-01-16_at_19.21.37.jpg"
     new_id, name, path, average, isFood, canteen_id, author = result
     filename = path.split('/')[-1]
     image_url = f"/image/{filename}"
