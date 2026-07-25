@@ -970,6 +970,7 @@ def decide_login(username,password):
 def decide_kredit(username,password):
     canteen_id = get_canteen_id()
     canteen_system = canteen_id_to_system(canteen_id)
+    return canteen_system
     match canteen_system:
         case 0: #iCanteen
             return iCanteen_kredit(username,password,canteen_id)
