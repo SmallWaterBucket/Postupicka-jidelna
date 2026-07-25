@@ -606,7 +606,8 @@ def scrape(): #day,day_str,foods,chosen_food
                         rating = rating[0]
                         if rating == '-1':
                             rating = ""
-                    rating = float(rating)
+                        else:
+                            rating = float(rating)
 
                     foods.append((food, food_id, get_image_id(food_id), True, -1, rating, user_rating)) #food,food_id,image,disabled, my_id, rating, user_rating
         data.append((date, date,foods, -2))
@@ -704,7 +705,8 @@ def new_scrape(username, password):
                         rating = rating[0]
                         if rating == '-1':
                             rating = ""
-                    rating = float(rating)
+                        else:
+                            rating = float(rating)
 
                     foods.append((food, food_id, get_image_id(food_id), disabled, my_id, rating, user_rating)) #food,food_id,image,disabled, my_id, rating, user_rating
             my_id+=1
