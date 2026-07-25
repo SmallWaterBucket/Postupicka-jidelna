@@ -135,6 +135,8 @@ def add_visit(subpage):
 
 @app.after_request
 def track_visit(response):
+    if request.url_rule is None:
+        return response
     if request.method == "GET" and not request.path.startswith("/image") and not request.path.startswith("/favicon.ico") and not request.path.startswith("/static") and not request.path.startswith("/iCanteen") and not request.path.startswith("/strava"):
         route = request.url_rule.rule
         if route.startswith("/canteen"):
