@@ -327,7 +327,7 @@ def get_image(image):
     image_url = f"/image/{filename}"
     return image_url
 
-
+@app.route("/test/<id>")
 def get_image_id(id):
     if not id:
         return ""
@@ -929,7 +929,8 @@ def canteen(canteen_id):
 @app.route("/debug", methods = ["GET", "POST"])
 def new_main_page():
     return ""
-    
+
+@app.route("/canteen_id_to_url/<canteen_id>")
 def canteen_id_to_url(canteen_id):
     db = get_db()
     cursor = db.cursor()
