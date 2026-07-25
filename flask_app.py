@@ -959,7 +959,7 @@ def decide_login(username,password):
     canteen_system = canteen_id_to_system(canteen_id)
     match canteen_system:
         case 0: #iCanteen
-            return iCanteen_try_login(username,password)
+            return iCanteen_try_login(username,password,get_canteen_id())
         case 1: #Strava.cz
             return Strava_try_login(username,password)
         case _:
