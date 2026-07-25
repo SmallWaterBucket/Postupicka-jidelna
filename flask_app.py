@@ -598,7 +598,7 @@ def scrape(): #day,day_str,foods,chosen_food
                         mycursor.execute("SELECT rating FROM Ratings WHERE foodid = %s AND username = %s;", (food_id, session.get("user")))
                         user_rating = mycursor.fetchone()
                         if user_rating:
-                            user_rating = user_rating[0]
+                            user_rating = float(user_rating[0])
 
                     mycursor.execute(f"SELECT average FROM Main WHERE id = %s;", (food_id,))
                     rating = mycursor.fetchone()
@@ -606,7 +606,8 @@ def scrape(): #day,day_str,foods,chosen_food
                         rating = rating[0]
                         if rating == '-1':
                             rating = ""
-                    
+                    rating = float(rating)
+
                     foods.append((food, food_id, get_image_id(food_id), True, -1, rating, user_rating)) #food,food_id,image,disabled, my_id, rating, user_rating
         data.append((date, date,foods, -2))
 
@@ -695,7 +696,7 @@ def new_scrape(username, password):
                         mycursor.execute("SELECT rating FROM Ratings WHERE foodid = %s AND username = %s;", (food_id, session.get("user")))
                         user_rating = mycursor.fetchone()
                         if user_rating:
-                            user_rating = user_rating[0]
+                            user_rating = float(user_rating[0])
 
                     mycursor.execute(f"SELECT average FROM Main WHERE id = %s;", (food_id,))
                     rating = mycursor.fetchone()
@@ -703,7 +704,7 @@ def new_scrape(username, password):
                         rating = rating[0]
                         if rating == '-1':
                             rating = ""
-
+                    rating = float(rating)
 
                     foods.append((food, food_id, get_image_id(food_id), disabled, my_id, rating, user_rating)) #food,food_id,image,disabled, my_id, rating, user_rating
             my_id+=1
