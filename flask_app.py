@@ -685,7 +685,7 @@ def new_scrape(username, password):
                     food = re.sub(r"\s+", " ", food)
                     food = ' '.join(food.split())
                     #}
-                    food_id = -1
+                    food_id = 38
                     db = get_db()
                     mycursor = db.cursor()
                     mycursor.execute("SELECT id FROM Main where name = %s", (food,))
@@ -890,6 +890,7 @@ def add_canteen():
 def canteens():
     if request.method == "POST":
         id = request.form.get("canteen_id")
+        session.clear()
         response = make_response(redirect(f"/canteen/{id}"))
         response.set_cookie(
             "id",
