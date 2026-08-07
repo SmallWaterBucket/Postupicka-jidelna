@@ -859,12 +859,6 @@ def canteen(canteen_id):
     )
     return response
 
-
-
-@app.route("/debug", methods = ["GET", "POST"])
-def new_main_page():
-    return ""
-
 @app.route("/canteen_id_to_url/<canteen_id>")
 def canteen_id_to_url(canteen_id):
     db = get_db()
@@ -1070,6 +1064,7 @@ def iCanteen_scrape_old(): #day,day_str,foods,chosen_food
 
     return data
 
+@app.route("/debug")
 def iCanteen_scrape(): #day,day_str,foods,chosen_food
     #page = requests.get("https://api.allorigins.win/raw?url=https://strav.nasejidelna.cz/0254/login")
     page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url={canteen_id_to_url(get_canteen_id())}")
@@ -1110,7 +1105,7 @@ def iCanteen_scrape(): #day,day_str,foods,chosen_food
                     #}
                     foods.append(food)
         data.append((date, foods)) # -2
-
+    return str(data)
     return construct_data_for_main_page(data)
 
 
