@@ -912,7 +912,7 @@ def decide_scrape():
     canteen_system = canteen_id_to_system(canteen_id)
     match canteen_system:
             case 0: #iCanteen
-                return iCanteen_old_scrape()
+                return iCanteen_scrape_old()
             case 1: #Strava.cz
                 return "Not implemented yet"
             case _:
