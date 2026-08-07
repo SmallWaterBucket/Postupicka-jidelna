@@ -924,6 +924,37 @@ def decide_scrape():
             case _:
                 return "-1"
 
+def construct_data_for_main_page(days):
+    data = []
+    for date, food_list in days:
+        foods = []
+        for food in food_list:
+            food_id = 38
+            db = get_db()
+            mycursor = db.cursor()
+            mycursor.execute("SELECT id FROM Main where name = %s", (food,))
+            id = mycursor.fetchone()
+            if id:
+                food_id = id[0]
+            user_rating = ""
+            if session.get("user") and session.get("password"):
+                mycursor.execute("SELECT rating FROM Ratings WHERE foodid = %s AND username = %s;", (food_id, session.get("user")))
+                user_rating = mycursor.fetchone()
+                if user_rating:
+                    user_rating = float(user_rating[0])
+            mycursor.execute(f"SELECT average FROM Main WHERE id = %s;", (food_id,))
+            rating = mycursor.fetchone()
+            if rating:
+                rating = rating[0]
+                if rating == '-1':
+                    rating = ""
+                else:
+                    rating = float(rating)
+            foods.append((food, food_id, get_image_id(food_id), True, -1, rating, user_rating)) #food,food_id,image,disabled, my_id, rating, user_rating
+        data.append((date, date,foods, -2))
+    
+        return data
+
 
 
 
@@ -972,7 +1003,7 @@ def iCanteen_order_food(username, password, date, food_id,canteen_id = None):
     page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/iCanteen/order.exe/{username},{password},{date},{food_id},{canteen_id}")
 
 
-def iCanteen_scrape(): #day,day_str,foods,chosen_food
+def iCanteen_scrape_old(): #day,day_str,foods,chosen_food
     #page = requests.get("https://api.allorigins.win/raw?url=https://strav.nasejidelna.cz/0254/login")
     page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url={canteen_id_to_url(get_canteen_id())}")
     soup = BeautifulSoup(page.text, "html.parser")
@@ -1038,6 +1069,49 @@ def iCanteen_scrape(): #day,day_str,foods,chosen_food
         data.append((date, date,foods, -2))
 
     return data
+
+def iCanteen_scrape(): #day,day_str,foods,chosen_food
+    #page = requests.get("https://api.allorigins.win/raw?url=https://strav.nasejidelna.cz/0254/login")
+    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url={canteen_id_to_url(get_canteen_id())}")
+    soup = BeautifulSoup(page.text, "html.parser")
+
+    days = soup.find_all("div", class_="jidelnicekDen")
+
+    data = [] # foods from Hlavni canteen, not modrany
+
+    today = datetime.datetime.now().strftime("%d.%m.%Y")
+
+
+    #date = datetime.datetime(date.year, date.month, date.day + 2)
+
+    for day in days:
+        date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].text.strip()
+        #date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].get("id").split("-")[1:]
+        #date = ".".join(date)
+        #disabled = date - today <= 2
+        
+        foods = []
+
+        food_containers = day.find_all("div", class_="container")
+        for food in food_containers:
+            if food.find_all("span", style="color:green;")[0].text.strip() == "Hlavní":
+                food = food.text.strip().replace("\n","").strip()
+                food = unicodedata.normalize("NFKC", food).replace("\xa0", " ").strip()
+                if "Polévka" not in food:
+                    if "(" in food:
+                        food = food[16:food.index("(") - 1]
+                    else:
+                        food = food[16:len(food) - 1]
+
+                    # Generovany chatem GPT{
+                    food = re.sub(r"[,\s\xa0]*čaj.*$", "", food, flags=re.IGNORECASE) # odstrani vse po ", caj"
+                    food = re.sub(r"\s+", " ", food)
+                    food = ' '.join(food.split())
+                    #}
+                    foods.append(food)
+        data.append((date, date,foods, -2))
+
+    return construct_data_for_main_page(data)
 
 
 
