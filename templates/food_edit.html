@@ -25,7 +25,7 @@
     <p><label for="canteen">Jídelna:</label></p>
     <p><select id="canteen" name="canteen">
         {% for i in range(canteens|length) %}
-            <option value="{{ canteens[i][1] }}" {% if canteen_id == i %}selected{% endif %}>{{ canteens[i][0] }}</option>
+            <option value="{{ canteens[i][1] }}" {% if canteen_id == canteens[i][1] %}selected{% endif %}>{{ canteens[i][0] }}</option>
         {% endfor %}
     </select></p>
     <input type="checkbox" id="isFood" name="isFood" value="isFood" {% if isFood %}checked{% endif %}>

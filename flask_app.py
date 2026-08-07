@@ -64,11 +64,11 @@ from strava_cz import StravaCZ, MealType, OrderType
 #add canteen field to /food_edit
 #/suggestions, instead created a custom email and added it to contacts
 #add user counter
+# change / and / debug properly with session cookie and stuff; needs testing
 
 #==========================================================
 # NEEDS TESTING:
 # adding full compat for iCanteen (maybe using the library for everything?); kinda done, not really for older systems
-#change / and / debug properly with session cookie and stuff; needs testing
 
 #==========================================================
 
@@ -403,7 +403,7 @@ def add_food():
             return get_message("Food submitted")
         else:
             return "Upload failed, image required!!!"
-    foods = scrape()
+    foods = decide_scrape()
     try:
         foods = foods[0][2]
     except:
@@ -547,73 +547,6 @@ def order():
     print(ret)
     credit = decide_kredit(username, password)
     return {"credit": credit}
-
-def scrape(): #day,day_str,foods,chosen_food
-    #page = requests.get("https://api.allorigins.win/raw?url=https://strav.nasejidelna.cz/0254/login")
-    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url={canteen_id_to_url(get_canteen_id())}")
-    soup = BeautifulSoup(page.text, "html.parser")
-
-    days = soup.find_all("div", class_="jidelnicekDen")
-
-    data = [] # foods from Hlavni canteen, not modrany
-
-    today = datetime.datetime.now().strftime("%d.%m.%Y")
-
-
-    #date = datetime.datetime(date.year, date.month, date.day + 2)
-
-    for day in days:
-        date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].text.strip()
-        #date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].get("id").split("-")[1:]
-        #date = ".".join(date)
-        #disabled = date - today <= 2
-        
-        foods = []
-
-        food_containers = day.find_all("div", class_="container")
-        for food in food_containers:
-            if food.find_all("span", style="color:green;")[0].text.strip() == "Hlavní":
-                food = food.text.strip().replace("\n","").strip()
-                food = unicodedata.normalize("NFKC", food).replace("\xa0", " ").strip()
-                if "Polévka" not in food:
-                    if "(" in food:
-                        food = food[16:food.index("(") - 1]
-                    else:
-                        food = food[16:len(food) - 1]
-
-                    # Generovany chatem GPT{
-                    food = re.sub(r"[,\s\xa0]*čaj.*$", "", food, flags=re.IGNORECASE) # odstrani vse po ", caj"
-                    food = re.sub(r"\s+", " ", food)
-                    food = ' '.join(food.split())
-                    #}
-                    food_id = 38
-                    db = get_db()
-                    mycursor = db.cursor()
-                    mycursor.execute("SELECT id FROM Main where name = %s", (food,))
-                    answer = mycursor.fetchone()
-                    if answer:
-                        food_id = answer[0]
-
-                    user_rating = ""
-                    if session.get("user") and session.get("password"):
-                        mycursor.execute("SELECT rating FROM Ratings WHERE foodid = %s AND username = %s;", (food_id, session.get("user")))
-                        user_rating = mycursor.fetchone()
-                        if user_rating:
-                            user_rating = float(user_rating[0])
-
-                    mycursor.execute(f"SELECT average FROM Main WHERE id = %s;", (food_id,))
-                    rating = mycursor.fetchone()
-                    if rating:
-                        rating = rating[0]
-                        if rating == '-1':
-                            rating = ""
-                        else:
-                            rating = float(rating)
-
-                    foods.append((food, food_id, get_image_id(food_id), True, -1, rating, user_rating)) #food,food_id,image,disabled, my_id, rating, user_rating
-        data.append((date, date,foods, -2))
-
-    return data
 
 
 @app.route("/new_scrape/<username>,<password>")
@@ -915,7 +848,7 @@ def canteen(canteen_id):
         data = new_scrape(username, password)
         response = make_response(render_template("NewMain.html", data = data, username=username, kredit = credit, canteen_name = canteen_id_to_name(canteen_id), logo = get_image_id(canteen_id), canteen_id = canteen_id))
     else:
-        data=scrape()
+        data=decide_scrape()
         response = make_response(render_template("NewMain.html", data=data, canteen_id=canteen_id, canteen_name=canteen_id_to_name(canteen_id), logo = get_image_id(canteen_id)))
 
 
@@ -980,6 +913,18 @@ def decide_kredit(username,password):
             return "-1"
 
 
+def decide_scrape():
+    canteen_id = get_canteen_id()
+    canteen_system = canteen_id_to_system(canteen_id)
+    match canteen_system:
+            case 0: #iCanteen
+                return iCanteen_scrape()
+            case 1: #Strava.cz
+                return "Not implemented yet"
+            case _:
+                return "-1"
+
+
 
 
 
@@ -1025,6 +970,77 @@ def iCanteen_order_food(username, password, date, food_id,canteen_id = None):
         canteen_id = get_canteen_id()
     canteen_id = canteen_id_to_url(canteen_id)
     page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/iCanteen/order.exe/{username},{password},{date},{food_id},{canteen_id}")
+
+
+def iCanteen_scrape(): #day,day_str,foods,chosen_food
+    #page = requests.get("https://api.allorigins.win/raw?url=https://strav.nasejidelna.cz/0254/login")
+    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url={canteen_id_to_url(get_canteen_id())}")
+    soup = BeautifulSoup(page.text, "html.parser")
+
+    days = soup.find_all("div", class_="jidelnicekDen")
+
+    data = [] # foods from Hlavni canteen, not modrany
+
+    today = datetime.datetime.now().strftime("%d.%m.%Y")
+
+
+    #date = datetime.datetime(date.year, date.month, date.day + 2)
+
+    for day in days:
+        date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].text.strip()
+        #date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].get("id").split("-")[1:]
+        #date = ".".join(date)
+        #disabled = date - today <= 2
+        
+        foods = []
+
+        food_containers = day.find_all("div", class_="container")
+        for food in food_containers:
+            if food.find_all("span", style="color:green;")[0].text.strip() == "Hlavní":
+                food = food.text.strip().replace("\n","").strip()
+                food = unicodedata.normalize("NFKC", food).replace("\xa0", " ").strip()
+                if "Polévka" not in food:
+                    if "(" in food:
+                        food = food[16:food.index("(") - 1]
+                    else:
+                        food = food[16:len(food) - 1]
+
+                    # Generovany chatem GPT{
+                    food = re.sub(r"[,\s\xa0]*čaj.*$", "", food, flags=re.IGNORECASE) # odstrani vse po ", caj"
+                    food = re.sub(r"\s+", " ", food)
+                    food = ' '.join(food.split())
+                    #}
+                    food_id = 38
+                    db = get_db()
+                    mycursor = db.cursor()
+                    mycursor.execute("SELECT id FROM Main where name = %s", (food,))
+                    answer = mycursor.fetchone()
+                    if answer:
+                        food_id = answer[0]
+
+                    user_rating = ""
+                    if session.get("user") and session.get("password"):
+                        mycursor.execute("SELECT rating FROM Ratings WHERE foodid = %s AND username = %s;", (food_id, session.get("user")))
+                        user_rating = mycursor.fetchone()
+                        if user_rating:
+                            user_rating = float(user_rating[0])
+
+                    mycursor.execute(f"SELECT average FROM Main WHERE id = %s;", (food_id,))
+                    rating = mycursor.fetchone()
+                    if rating:
+                        rating = rating[0]
+                        if rating == '-1':
+                            rating = ""
+                        else:
+                            rating = float(rating)
+
+                    foods.append((food, food_id, get_image_id(food_id), True, -1, rating, user_rating)) #food,food_id,image,disabled, my_id, rating, user_rating
+        data.append((date, date,foods, -2))
+
+    return data
+
+
+
 
 
 
