@@ -1109,7 +1109,7 @@ def iCanteen_scrape(): #day,day_str,foods,chosen_food
                     food = ' '.join(food.split())
                     #}
                     foods.append(food)
-        data.append((date, date,foods, -2))
+        data.append((date, foods)) # -2
 
     return construct_data_for_main_page(data)
 
