@@ -947,7 +947,7 @@ def construct_data_for_main_page(days):
             foods.append((food, food_id, get_image_id(food_id), True, -1, rating, user_rating)) #food,food_id,image,disabled, my_id, rating, user_rating
         data.append((date, date,foods, -2))
     
-        return data
+    return data
 
 
 
@@ -1105,8 +1105,8 @@ def iCanteen_scrape(): #day,day_str,foods,chosen_food
                     #}
                     foods.append(food)
         data.append((date, foods)) # -2
-    return str(data)
-    return construct_data_for_main_page(data)
+
+    return str(construct_data_for_main_page(data))
 
 
 
