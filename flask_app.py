@@ -917,11 +917,12 @@ def decide_scrape():
     canteen_system = canteen_id_to_system(canteen_id)
     match canteen_system:
             case 0: #iCanteen
-                return iCanteen_scrape()
+                ret = iCanteen_scrape()
             case 1: #Strava.cz
-                return Strava_scrape()
+                ret = Strava_scrape()
             case _:
                 return "-1"
+    return construct_data_for_main_page(ret)
 
 def construct_data_for_main_page(days):
     data = []
@@ -1111,7 +1112,7 @@ def iCanteen_scrape(): #day,day_str,foods,chosen_food
                     foods.append(food)
         data.append((date, foods)) # -2
 
-    return construct_data_for_main_page(data)
+    return data
 
 
 
