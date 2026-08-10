@@ -1142,6 +1142,7 @@ def Strava_scrape():
             "lang": "CZ" 
         }
     )
+    return page.text
     soup = BeautifulSoup(page.text, "html.parser")
 
     days = soup.find_all("div", class_="relative rounded-2xl border border-edge bg-surface-100 px-1.5 py-4 tablet:px-4 tablet:py-5 desktop:px-6")
