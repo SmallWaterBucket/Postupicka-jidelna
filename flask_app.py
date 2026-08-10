@@ -1168,18 +1168,18 @@ def date_to_czech_day_of_the_week(date):
     day_num = date.weekday()
     match day_num:
         case 0:
-            return "Pondělí"
+            return "pondělí"
         case 1:
-            return "Úterý"
+            return "úterý"
         case 2:
-            return "Středa"
+            return "středa"
         case 3:
-            return "Čtvrtek"
+            return "čtvrtek"
         case 4:
-            return "Pátek"
+            return "pátek"
         case 5:
-            return "Sobota"
+            return "sobota"
         case 6:
-            return "Neděle"
+            return "neděle"
         case _:
             return "What?"
