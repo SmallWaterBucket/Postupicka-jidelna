@@ -1143,7 +1143,7 @@ def Strava_scrape():
 
     try:
         response = requests.get(url)
-        #response.raise_for_status()
+        response.raise_for_status()
     except requests.RequestException:
         return []
 
