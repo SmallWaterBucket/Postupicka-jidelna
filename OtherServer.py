@@ -51,47 +51,6 @@ def strava_kredit(username, password, canteen_number):
     strava = strava_login_internal(username, password, canteen_number)
     return str(strava.user.balance)
 
-@app.route("/strava/scrape/<canteen_number>")
-def Strava_scrape(canteen_number):
-
-    #page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=app.strava.cz/jidelnicky?jidelna={canteen_number}")
-
-    url = "https://app.strava.cz/api/jidelnickyPage"
-
-    payload = { 
-        "cislo": canteen_number,
-        "lang": "CZ" 
-    }
-    page = requests.post(
-        url,
-        data=json.dumps(payload),
-        headers={
-            "Content-Type": "text/plain;charset=UTF-8"
-        }
-    )
-    data = page.json()
-    return render_template("JSON_Debug.html", data=data)
-    soup = BeautifulSoup(page.text, "html.parser")
-
-    days = soup.find_all("div", class_="relative rounded-2xl border border-edge bg-surface-100 px-1.5 py-4 tablet:px-4 tablet:py-5 desktop:px-6")
-
-    data = []
-
-    for day in days:
-        date = day.get('id')
-        
-        foods = []
-
-        food_containers = day.find_all("div", class_="space-y-0.5")
-        for food in food_containers:
-            actual_food = food.find("span", class_="mx-auto")
-            food_type = actual_food.find("span", class_="first-letter:uppercase tablet:inline-block")
-            food_name = actual_food.find_all("span")[-1]
-            if food_type!="Doplněk " and food_type!="Polévka ":
-                foods.append(food_name)
-        data.append((date,foods))
-    return data
-
 
 
 

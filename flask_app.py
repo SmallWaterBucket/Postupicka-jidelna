@@ -13,16 +13,18 @@ from flask import json
 from werkzeug.exceptions import HTTPException
 from bs4 import BeautifulSoup
 import random
+import xml.etree.ElementTree as ET
 from strava_cz import StravaCZ, MealType, OrderType
 
 
 #TODO:
 
-#Fix the chart passing through navbar
-#Change the long db outputs to only what is needed
+# Fix the chart passing through navbar
+# Change the long db outputs to only what is needed
 # better design
 # adding compat with different canteen systems
-#fix the contacts
+# fix the contacts
+# add alergens
 
 #=========================================================
 #MAYBE:
@@ -68,6 +70,7 @@ from strava_cz import StravaCZ, MealType, OrderType
 
 #==========================================================
 # NEEDS TESTING:
+
 # adding full compat for iCanteen (maybe using the library for everything?); kinda done, not really for older systems
 
 #==========================================================
@@ -846,10 +849,12 @@ def canteen(canteen_id):
         credit = decide_kredit(username, password)
         session['kredit'] = credit
         data = new_scrape(username, password)
-        response = make_response(render_template("NewMain.html", data = data, username=username, kredit = credit, canteen_name = canteen_id_to_name(canteen_id), logo = get_image_id(canteen_id), canteen_id = canteen_id))
+        response = make_response(render_template("NewMain.html", data = data, supported=True, username=username, kredit = credit, canteen_name = canteen_id_to_name(canteen_id), logo = get_image_id(canteen_id), canteen_id = canteen_id))
     else:
         data=decide_scrape()
-        response = make_response(render_template("NewMain.html", data=data, canteen_id=canteen_id, canteen_name=canteen_id_to_name(canteen_id), logo = get_image_id(canteen_id)))
+        canteen_system_id = canteen_id_to_system(canteen_id)
+        canteen_system_name, support = canteen_systems[int(canteen_system_id)]
+        response = make_response(render_template("NewMain.html", data=data, supported = support == 2,canteen_id=canteen_id, canteen_name=canteen_id_to_name(canteen_id), logo = get_image_id(canteen_id)))
 
 
     response.set_cookie(
@@ -1133,33 +1138,22 @@ def Strava_scrape():
 
     #page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=app.strava.cz/jidelnicky?jidelna={canteen_number}")
 
-    worker = "https://sparkling-sun-0a6e.humanhumanovic.workers.dev/"
-    target = "https://app.strava.cz/api/jidelnickyPage"
-    page = requests.post(
-        worker, 
-        params={"url": target},
-        json={ 
-            "cislo": f"{canteen_number}",
-            "lang": "CZ" 
-        }
-    )
-    soup = BeautifulSoup(page.text, "html.parser")
+    url = f"https://www.strava.cz/strava5/Jidelnicky/XML?zarizeni={canteen_number}}"
 
-    days = soup.find_all("div", class_="relative rounded-2xl border border-edge bg-surface-100 px-1.5 py-4 tablet:px-4 tablet:py-5 desktop:px-6")
+    response = requests.get(url)
+    response.raise_for_status()
 
+    root = ET.fromstring(response.content)
+    
     data = []
 
-    for day in days:
-        date = day.get('id')
-        
+    for day in root.findall("den"):
         foods = []
-
-        food_containers = day.find_all("div", class_="space-y-0.5")
-        for food in food_containers:
-            actual_food = food.find("span", class_="mx-auto")
-            food_type = actual_food.find("span", class_="first-letter:uppercase tablet:inline-block")
-            food_name = actual_food.find_all("span")[-1]
-            if food_type!="Doplněk " and food_type!="Polévka ":
-                foods.append(food_name)
+        date = day.get("datum")
+        for food in day.findall("jidlo"):
+            name = food.get("nazev")
+            type = food.get("druh")
+            if type != "Polévka " and type != "Doplněk ":
+                foods.append(name)
         data.append((date,foods))
     return data

@@ -154,9 +154,14 @@
         <form action="/order" target="_blank" method="post">
             <div class = "jidelnicek">
             {% if data|length == 0 %}
-                <h1>Žádná jídla nenalezena.</h1>
-                <h1 style="color:lime">Nejspíše jsou prázdniny :)</h1>
-                <h1 style="color:red">Pokud ne tak mě prosím <a href="/contacts">kontaktujte pres Teams</a></h1>
+                {% if not supported %}
+                    <h1 style="color:red">Ještě jsme neimplementovali podporu jídelníčku pro vaší jídelnu</h1>
+                    <h1>Mezitím můžete používat jiné funkce této stránky jako je přidávání / hledání / hodnocení jidel.</h1>
+                {% else %}
+                    <h1>Žádná jídla nenalezena.</h1>
+                    <h1 style="color:lime">Nejspíše jsou prázdniny :)</h1>
+                    <h1 style="color:red">Pokud ne tak mě prosím <a href="/contacts">kontaktujte pres Teams</a></h1>
+                {% endif %}
             {% endif %}
             {% for day,day_str,foods,chosen_food in data %}
                 <div class = "day">
