@@ -1153,11 +1153,33 @@ def Strava_scrape():
 
     for day in root.findall("den"):
         foods = []
-        date = day.get("datum")
+        date_str = day.get("datum")
+        date = datetime.datetime.strptime(date_str, "%d-%m-%Y")
+        date_out = date_to_czech_day_of_the_week(date) + datetime.datetime.strftime(date, "%d.%m.%Y")
         for food in day.findall("jidlo"):
             name = food.get("nazev")
             type = food.get("druh")
             if type != "Polévka " and type != "Doplněk ":
                 foods.append(name)
-        data.append((date,foods))
+        data.append((date_out,foods))
     return data
+
+def date_to_czech_day_of_the_week(date):
+    day_num = date.weekday()
+    match day_num:
+        case 0:
+            return "Pondělí"
+        case 1:
+            return "Úterý"
+        case 2:
+            return "Středa"
+        case 3:
+            return "Čtvrtek"
+        case 4:
+            return "Pátek"
+        case 5:
+            return "Sobota"
+        case 6:
+            return "Neděle"
+        case _:
+            return "What?"
