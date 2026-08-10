@@ -1138,7 +1138,7 @@ def Strava_scrape():
 
     #page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=app.strava.cz/jidelnicky?jidelna={canteen_number}")
 
-    url = f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=https://www.strava.cz/strava5/Jidelnicky/XML?zarizeni={canteen_number}}"
+    url = f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=https://www.strava.cz/strava5/Jidelnicky/XML?zarizeni={canteen_number}"
 
     response = requests.get(url)
     response.raise_for_status()
