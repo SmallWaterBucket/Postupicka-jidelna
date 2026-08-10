@@ -1155,7 +1155,7 @@ def Strava_scrape():
         foods = []
         date_str = day.get("datum")
         date = datetime.datetime.strptime(date_str, "%d-%m-%Y")
-        date_out = date_to_czech_day_of_the_week(date) + datetime.datetime.strftime(date, "%d.%m.%Y")
+        date_out = f"{date_to_czech_day_of_the_week(date)} {datetime.datetime.strftime(date, "%d.%m.%Y")}"
         for food in day.findall("jidlo"):
             name = food.get("nazev")
             type = food.get("druh")
