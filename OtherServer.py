@@ -3,7 +3,7 @@
 import json
 import subprocess, requests
 from bs4 import BeautifulSoup
-from flask import Flask, request, redirect
+from flask import Flask, request, redirect, render_template
 from strava_cz import (
     StravaCZ,
     AuthenticationError,
@@ -70,7 +70,7 @@ def Strava_scrape(canteen_number):
         }
     )
     data = page.json()
-    return json.dumps(data, indent = 4, ensure_ascii=False)
+    return render_template("JSON_Debug.html", data=data)
     soup = BeautifulSoup(page.text, "html.parser")
 
     days = soup.find_all("div", class_="relative rounded-2xl border border-edge bg-surface-100 px-1.5 py-4 tablet:px-4 tablet:py-5 desktop:px-6")

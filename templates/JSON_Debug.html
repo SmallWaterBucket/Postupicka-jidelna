@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Jídelníček</title>
+
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                max-width: 1000px;
+                margin: 40px auto;
+                padding: 0 20px;
+            }
+
+            .json {
+                background: #f5f5f5;
+                padding: 20px;
+                border-radius: 10px;
+                white-space: pre-wrap;
+                overflow-x: auto;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="json">
+            {{ data | tojson(indent=2) }}
+        </div>
+    </body>
+</html>
