@@ -1141,8 +1141,11 @@ def Strava_scrape():
 
     url = f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=https://www.strava.cz/strava5/Jidelnicky/XML?zarizeni={canteen_number}"
 
-    response = requests.get(url)
-    response.raise_for_status()
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+    except request.RequestException:
+        return []
 
     root = ET.fromstring(response.content)
     
