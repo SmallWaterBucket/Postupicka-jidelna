@@ -929,7 +929,7 @@ def construct_data_for_main_page(days):
     for date, food_list in days:
         foods = []
         for food in food_list:
-            food_id = 38
+            food_id = -2
             db = get_db()
             mycursor = db.cursor()
             mycursor.execute("SELECT id FROM Main where name = %s", (food,))
