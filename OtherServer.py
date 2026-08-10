@@ -1,5 +1,6 @@
 #This code is executed on a different server due to PythonAnywhere not allowing most URLS to be accessed
 
+import json
 import subprocess, requests
 from bs4 import BeautifulSoup
 from flask import Flask, request, redirect
@@ -56,11 +57,16 @@ def Strava_scrape(canteen_number):
     #page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=app.strava.cz/jidelnicky?jidelna={canteen_number}")
 
     url = "https://app.strava.cz/api/jidelnickyPage"
+
+    payload = { 
+        "cislo": canteen_number,
+        "lang": "CZ" 
+    }
     page = requests.post(
         url,
-        json={ 
-            "cislo": canteen_number,
-            "lang": "CZ" 
+        data=json.dumps(payload),
+        headers={
+            "Content-Type": "text/plain;charset=UTF-8"
         }
     )
     return page.text
