@@ -1126,3 +1126,29 @@ def Strava_kredit(username, password):
     canteen_number = canteen_id_to_url(get_canteen_id())
     page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/strava/kredit/{username},{password},{canteen_number}")
     return page.text
+
+@app.route("/strava/scrape")
+def Strava_scrape():
+    canteen_number = canteen_id_to_url(get_canteen_id())
+
+    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=app.strava.cz/jidelnicky?jidelna={canteen_number}")
+    soup = BeautifulSoup(page.text, "html.parser")
+
+    days = soup.find_all("div", class_="relative rounded-2xl border border-edge bg-surface-100 px-1.5 py-4 tablet:px-4 tablet:py-5 desktop:px-6")
+
+    data = []
+
+    for day in days:
+        date = day.get('id')
+        
+        foods = []
+
+        food_containers = day.find_all("div", class_="space-y-0.5")
+        for food in food_containers:
+            actual_food = food.find("span", class_="mx-auto")
+            food_type = actual_food.find("span", class_="first-letter:uppercase tablet:inline-block")
+            food_name = actual_food.find_all("span")[-1]
+            if food_type!="Doplněk " and food_type!="Polévka ":
+                foods.append(food_name)
+        data.append((date,foods))
+    return data

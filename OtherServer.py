@@ -60,8 +60,6 @@ def strava_login_internal(username, password, canteen_number):
             password=password,
             canteen_number = canteen_number
         )
-    print(username)
-    print(password)
     return strava
 
 if __name__ == "__main__":
