@@ -919,7 +919,7 @@ def decide_scrape():
             case 0: #iCanteen
                 return iCanteen_scrape()
             case 1: #Strava.cz
-                return iCanteen_scrape()
+                return Strava_scrape()
             case _:
                 return "-1"
 
