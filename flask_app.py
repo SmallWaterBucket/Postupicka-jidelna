@@ -1143,8 +1143,8 @@ def Strava_scrape():
 
     try:
         response = requests.get(url)
-        response.raise_for_status()
-    except request.RequestException:
+        #response.raise_for_status()
+    except: #request.RequestException:
         return []
 
     root = ET.fromstring(response.content)
