@@ -975,6 +975,7 @@ def construct_data_for_main_page(days):
     
     return data
 
+@app.route("/test")
 def construct_data_for_main_page_logged_in(username, password, days):
     if not password:
         return [["Error", ["Password not provided"]]]
