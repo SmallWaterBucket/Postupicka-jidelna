@@ -155,7 +155,7 @@ def statistics():
     cursor = db.cursor()
     cursor.execute("SELECT COUNT(*) AS visits FROM Visits;")
     total_visits = cursor.fetchone()[0]
-    cursor.execute("SELECT MONTHNAME(date) AS month, COUNT(*) AS visits FROM Visits WHERE YEAR(date) = YEAR(CURRENT_DATE) GROUP BY MONTH(date) ORDER BY month;")
+    cursor.execute("SELECT MONTHNAME(date) AS month, COUNT(*) AS visits FROM Visits WHERE YEAR(date) = YEAR(CURRENT_DATE) GROUP BY MONTH(date) ORDER BY MONTH(date);")
     monthly_stats = cursor.fetchall()
     cursor.execute("SELECT subpage, COUNT(*) AS visits FROM Visits GROUP BY subpage ORDER BY visits DESC")
     subpage_stats = cursor.fetchall()
