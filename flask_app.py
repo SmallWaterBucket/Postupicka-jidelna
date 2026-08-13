@@ -993,7 +993,7 @@ def construct_data_for_main_page_logged_in(username, password, days):
     
     day_index = 0
     for day,food_list in days:
-        datetime_day = datetime.datetime.strptime(day,"%Y-%m-%d")
+        datetime_day = datetime.datetime.strptime(day,"%d.%m.%Y")
 
         disabled = (datetime_day - today).days < 2
 
