@@ -51,6 +51,27 @@ def strava_kredit(username, password, canteen_number):
     strava = strava_login_internal(username, password, canteen_number)
     return str(strava.user.balance)
 
+@app.route("/strava/get_ordered_foods/<username>,<password>,<dates>,<canteen_number>")
+def strava_get_ordered_foods(username, password, dates, canteen_number):
+    strava = strava_login_internal(username, password, canteen_number)
+    ordered_indexes = []
+    dates = dates.split('.')
+    days = strava.menu.get_days()
+    for i in range(len(dates)):
+        ordered_indexes.append(-1)
+        date_index = -1
+        for index in range(len(days)):
+            if days[index]["date"] == dates[i]:
+                date_index = index
+                break
+
+        if date_index != -1:
+            day = days[date_index]
+            for meal_index in range(len(day["meals"])):
+                meal = day["meals"][meal_index]
+                if meal["ordered"]:
+                    ordered_indexes[-1] = meal_index
+    return ';'.join(ordered_indexes) + ";"
 
 
 
