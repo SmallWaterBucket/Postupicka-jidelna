@@ -985,12 +985,14 @@ def construct_data_for_main_page_logged_in(username, password, days):
     today = datetime.datetime.now().date()
     days = iCanteen_scrape()
     for day,food_list in days:
-        chosen_food_dates.append(day)
-    return str(chosen_food_dates)
+        date = datetime.datetime.strptime(day, "%d.%m.%Y")
+        date = date.strptime("%Y-%m-%d")
+        chosen_food_dates.append(date)
+    #return str(chosen_food_dates)
     chosen_foods_str = decide_get_ordered_foods(username, password, chosen_food_dates)
     chosen_foods = chosen_foods_str.split(";")
     chosen_foods = chosen_foods[:-1]
-    return str(chosen_foods)
+    #return str(chosen_foods)
 
     
     day_index = 0
