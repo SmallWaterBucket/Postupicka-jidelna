@@ -949,7 +949,8 @@ def decide_get_ordered_foods(username,password,dates):
 def construct_data_for_main_page(days):
     data = []
     for date, food_list in days:
-        date_str = f"{date_to_czech_day_of_the_week(date)} {date}"
+        datetime_date = datetime.datetime.strptime(date,"%Y-%m-%d")
+        date_str = f"{date_to_czech_day_of_the_week(datetime_date)} {date}"
         foods = []
         for food in food_list:
             food_id = -2
@@ -996,9 +997,9 @@ def construct_data_for_main_page_logged_in(username, password, days):
 
         disabled = (datetime_day - today).days < 2
 
-        chosen_food_date = datetime.datetime.strftime(date, "%Y-%m-%d")
+        #chosen_food_date = datetime.datetime.strftime(date, "%Y-%m-%d")
 
-        date_str = f"{date_to_czech_day_of_the_week(chosen_food_date)} {chosen_food_date}"
+        date_str = f"{date_to_czech_day_of_the_week(datetime_day)} {day}"
 
         chosen_food = ""
 
