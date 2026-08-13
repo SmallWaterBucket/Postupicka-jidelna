@@ -986,10 +986,11 @@ def construct_data_for_main_page_logged_in(username, password, days):
     days = iCanteen_scrape()
     for day,food_list in days:
         chosen_food_dates.append(day)
+    return str(chosen_food_dates)
     chosen_foods_str = decide_get_ordered_foods(username, password, chosen_food_dates)
     chosen_foods = chosen_foods_str.split(";")
     chosen_foods = chosen_foods[:-1]
-    #return str(chosen_foods)
+    return str(chosen_foods)
 
     
     day_index = 0
@@ -1067,7 +1068,7 @@ def iCanteen_try_login(username, password, canteen_id = None):
     return str(page.text)
 
 @app.route("/iCanteen/ordered_foods/<username>,<password>,<dates>,<canteen_id>")
-def iCanteen_get_orderd_food(username, password, dates, canteen_id):
+def iCanteen_get_orderd_food(username, password, dates, canteen_id = None):
     if canteen_id is None:
         canteen_id = get_canteen_id()
     dates = ".".join(dates)
