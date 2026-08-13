@@ -949,7 +949,7 @@ def decide_get_ordered_foods(username,password,dates):
 def construct_data_for_main_page(days):
     data = []
     for date, food_list in days:
-        datetime_date = datetime.datetime.strptime(date,"%Y-%m-%d")
+        datetime_date = datetime.datetime.strptime(date,"%d.%m.%Y")
         date_str = f"{date_to_czech_day_of_the_week(datetime_date)} {date}"
         foods = []
         for food in food_list:
@@ -1089,8 +1089,6 @@ def iCanteen_scrape(): #day,day_str,foods,chosen_food
     days = soup.find_all("div", class_="jidelnicekDen")
 
     data = [] # foods from Hlavni canteen, not modrany
-
-    today = datetime.datetime.now().strftime("%d.%m.%Y")
 
 
     #date = datetime.datetime(date.year, date.month, date.day + 2)
