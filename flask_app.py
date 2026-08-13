@@ -989,7 +989,7 @@ def construct_data_for_main_page_logged_in(username, password, days):
     chosen_foods_str = decide_get_ordered_foods(username, password, chosen_food_dates)
     chosen_foods = chosen_foods_str.split(";")
     chosen_foods = chosen_foods[:-1]
-    return str(chosen_foods)
+    #return str(chosen_foods)
 
     
     day_index = 0
@@ -1067,10 +1067,18 @@ def iCanteen_try_login(username, password, canteen_id = None):
     return str(page.text)
 
 @app.route("/iCanteen/ordered_foods/<username>,<password>,<dates>,<canteen_id>")
-def iCanteen_get_orderd_food(username, password, dates, canteen_id = None):
+def iCanteen_get_orderd_food(username, password, dates, canteen_id):
     if canteen_id is None:
         canteen_id = get_canteen_id()
     dates = ".".join(dates)
+    canteen_id = canteen_id_to_url(canteen_id)
+    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/iCanteen/get_ordered_foods.exe/{username},{password},{dates},{canteen_id}")
+    return page.text
+
+@app.route("/iCanteen/ordered_foods_debug/<username>,<password>,<dates>,<canteen_id>")
+def iCanteen_get_orderd_food_debug(username, password, dates, canteen_id):
+    if canteen_id is None:
+        canteen_id = get_canteen_id()
     canteen_id = canteen_id_to_url(canteen_id)
     page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/iCanteen/get_ordered_foods.exe/{username},{password},{dates},{canteen_id}")
     return page.text
