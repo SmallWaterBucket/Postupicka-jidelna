@@ -983,7 +983,7 @@ def construct_data_for_main_page_logged_in(username, password, days):
     chosen_food_dates = []
 
     today = datetime.datetime.now().date()
-    days = days.split('.')
+    days = iCanteen_scrape()
     for day,food_list in days:
         chosen_food_dates.append(day)
     chosen_foods_str = decide_get_ordered_foods(username, password, chosen_food_dates)
