@@ -1016,7 +1016,7 @@ def construct_data_for_main_page_logged_in(username, password, days):
 
         foods = []
 
-        my_id = -1
+        my_id = 0
         for food in food_list:
             food_id = -2
             db = get_db()
