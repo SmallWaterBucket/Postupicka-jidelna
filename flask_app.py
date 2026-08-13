@@ -1096,7 +1096,7 @@ def iCanteen_scrape(): #day,day_str,foods,chosen_food
     #date = datetime.datetime(date.year, date.month, date.day + 2)
 
     for day in days:
-        date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].text.strip().split(" ")[-1]
+        date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].text.strip().split("\xa0")[-1]
         
         foods = []
 
