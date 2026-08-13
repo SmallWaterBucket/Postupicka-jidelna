@@ -71,6 +71,8 @@ def strava_get_ordered_foods(username, password, dates, canteen_number):
                 meal = day["meals"][meal_index]
                 if meal["ordered"]:
                     ordered_indexes[-1] = meal_index
+    if len(ordered_indexes) < 1:
+        return ""
     return ';'.join(ordered_indexes) + ";"
 
 

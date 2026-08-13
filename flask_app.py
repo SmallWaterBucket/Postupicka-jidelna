@@ -988,7 +988,7 @@ def construct_data_for_main_page_logged_in(username, password, days):
     chosen_foods_str = decide_get_ordered_foods(username, password, chosen_food_dates)
     chosen_foods = chosen_foods_str.split(";")
     chosen_foods = chosen_foods[:-1]
-    #return str(chosen_foods)
+    return str(chosen_foods)
 
     
     day_index = 0
@@ -1008,7 +1008,7 @@ def construct_data_for_main_page_logged_in(username, password, days):
         else:
             chosen_food = ""
 
-        date = date.strftime("%d.%m.%Y")
+        date = datetime_day.strftime("%d.%m.%Y")
 
         foods = []
 
