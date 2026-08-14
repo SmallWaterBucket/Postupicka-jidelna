@@ -543,7 +543,7 @@ def order():
     day = data.get("day")
     date = datetime.datetime.strptime(day, "%d.%m.%Y").strftime("%Y-%m-%d")
 
-    ret = decide_order(username, password, date, food)
+    ret = decide_order(username, password, date, food).strip()
     print(ret)
     credit = decide_kredit(username, password)
     return {"credit": credit, "return": ret}
