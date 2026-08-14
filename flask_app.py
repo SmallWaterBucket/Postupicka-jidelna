@@ -523,7 +523,7 @@ def test_url(url):
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
-    if not test_url("https://www.jidelna.qzz.io/"):
+    if not test_url("https://www.jidelna.qzz.io/blank"):
         return get_message("Login doesn't work")
 
     canteen_id = get_canteen_id_raw()

@@ -22,6 +22,9 @@ ALLOWED_APPS = ["kredit.exe", "login.exe","get_ordered_foods.exe", "order.exe"]
 def main():
    return redirect('https://jidelna.eu.pythonanywhere.com')
 
+@app.route("/blank")
+def blank():
+    return ""
 
 @app.route("/iCanteen/<app>/<path:url>")
 def credit(app, url):
