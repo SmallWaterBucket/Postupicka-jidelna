@@ -3,7 +3,7 @@ import subprocess
 
 
 from flask import Flask, session, render_template, url_for, request, redirect, flash, send_from_directory, g, make_response
-import PIL
+import PIL, random, urllib.request
 from PIL import Image, ImageOps
 from cryptography.fernet import Fernet
 import os.path, secrets
@@ -12,7 +12,6 @@ from werkzeug.utils import secure_filename
 from flask import json
 from werkzeug.exceptions import HTTPException
 from bs4 import BeautifulSoup
-import random
 import xml.etree.ElementTree as ET
 from strava_cz import StravaCZ, MealType, OrderType
 
@@ -188,6 +187,11 @@ def get_message(message):
             message="Soubor příliš velký"
             submessage = f"Soubor, který jste přidali je větší než náš {int(app.config['MAX_CONTENT_LENGTH']) / (1024*1024)} MB limit."
             img = "/image/File_too_big.jpeg"
+        case "Login doesn't work":
+            message = "Přihlašování v současnosti není funkční. Pokud se tento problém nevřeší do 3 dní prosím kontaktujte mě:"
+            link = "/contacts"
+            link_text = "kontaktovat vývojáře"
+            img =get_image("Jidlo nenalezeno new")
         case _:
             submessage = "How did you even find this?"
             message = "Go get a job."
@@ -501,6 +505,8 @@ def get_new_food(food_id):
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
+    if urllib.request.urlopen("jidelna.qzz.io/").getcode() != 200:
+        return get_message()
     canteen_id = get_canteen_id_raw()
     if not canteen_id:
         return redirect("/canteens")
