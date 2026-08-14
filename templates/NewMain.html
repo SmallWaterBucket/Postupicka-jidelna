@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Hodnocení jídelny</title>
+  <title>{{ canteen_name }}</title>
   <link rel="icon" href="/favicon.ico">
   <style>
     .day{
@@ -166,6 +166,8 @@
                 {% if not supported %}
                     <h1 style="color:red">Ještě jsme neimplementovali podporu jídelníčku pro vaší jídelnu</h1>
                     <h1>Mezitím můžete používat jiné funkce této stránky jako je přidávání / hledání / hodnocení jidel.</h1>
+                {% elif message %}
+                    <h1 style="color:red">{{ message }}</h1>
                 {% else %}
                     <h1>Žádná jídla nenalezena.</h1>
                     <h1 style="color:lime">Nejspíše jsou prázdniny :)</h1>

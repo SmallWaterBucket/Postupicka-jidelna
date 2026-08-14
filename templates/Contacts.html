@@ -1,14 +1,80 @@
 <head>
+    <title>
+        Kontakty
+    </title>
     <style>
         img {object-fit: contain;}
+                @font-face {
+            font-family: 'Aurach';
+            src: url("/static/fonts/AurachHeavy.ttf") format('truetype');
+        }
+
+
+        @font-face {
+            font-family: 'Book-Antiqua';
+            src: url("/static/fonts/Book-Antiqua.ttf.ttf") format('truetype');
+        }
+
+        h1{
+            font-family: 'Aurach';
+            font-size: 3.5vw;
+            text-align: center;
+        }
+        h2{
+            font-family: 'Aurach';
+            font-size: 2.5vw;
+            text-align: center;
+        }
+        h3{
+            font-size: 1.5vw;
+        }
+
+        p{
+            font-family: 'Book-Antiqua';
+            font-size: 1.5vw;
+        }
+
+        li.list{
+            font-size: 1.5vw;
+        }
+
+        .not_navbar{
+            color: rgb(50,61,127);
+            display:flex;
+            flex-direction: column;
+        }
+        img {object-fit: contain;}
+
+        .person{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+        }
+        .center{
+            text-align: center;
+        }
+        .grid-container{
+            margin-left: 20px;
+            display:grid;
+            grid-template-columns: 1fr 1fr;
+
+        }
+        .image{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
     </style>
 </head>
 <body>
     {% include "navbar.html" %}
-    <h1>
-        <u>Kontakty:</u>
-    </h1>
-    <p><a href = "mailto:podpora@jidelna.qzz.io">podpora@jidelna.qzz.io</a>, nebo mi můžete napsat na Teams syzonenko.semen@postupicka.cz</p>
-    <a href = "https://github.com/SmallWaterBucket/Postupicka-jidelna/tree/main"><img width = 50 src = "/image/github_PNG53.png"></a>
-    <p><a href = "https://github.com/SmallWaterBucket/Postupicka-jidelna/tree/main">Chcete něco změnit a máte zkušenosti?</a></p>
+    <div class="not_navbar">
+        <h1>
+            <u>Kontakty:</u>
+        </h1>
+        <p><a href = "mailto:podpora@jidelna.qzz.io">podpora@jidelna.qzz.io</a>, nebo mi můžete napsat na Teams syzonenko.semen@postupicka.cz</p>
+        <a href = "https://github.com/SmallWaterBucket/Postupicka-jidelna/tree/main"><img width = 50 src = "/image/github_PNG53.png"></a>
+        <p><a href = "https://github.com/SmallWaterBucket/Postupicka-jidelna/tree/main">Chcete něco změnit a máte zkušenosti?</a></p>
+    </div>
 </body>

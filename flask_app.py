@@ -22,7 +22,7 @@ from strava_cz import StravaCZ, MealType, OrderType
 # Change the long db outputs to only what is needed
 # better design
 # adding compat with different canteen systems
-# fix the contacts
+
 # add alergens
 # add more images and messages
 
@@ -73,6 +73,7 @@ from strava_cz import StravaCZ, MealType, OrderType
 
 # adding full compat for iCanteen (maybe using the library for everything?); kinda done, not really for older systems
 # Strava get ordered foods
+# fix the contacts
 
 #==========================================================
 
@@ -171,25 +172,30 @@ def statistics():
 def get_message(message):
     submessage = ""
     link = ""
+    title = "Zpráva"
     link_text = ""
     img = "/image/Employment-Job-Application-791x1024-3681536362.png"
 
     match message:
         case "Food not found":
             message="Jídlo nenalezeno."
+            title="Jídlo nenalezeno"
             link="/add_food"
             link_text = "Přidat ho?"
             img=get_image("Jidlo nenalezeno new")
         case "Food submitted":
             message="Děkujeme, že jste přidali jídlo."
+            title = "Děkujeme"
             submessage = " Zkontrolujeme ho do jednoho týdne a přidáme ho."
             img = "/image/Added_food.jpeg"
         case "File too big":
             message="Soubor příliš velký"
+            title = "Chyba :/"
             submessage = f"Soubor, který jste přidali je větší než náš {int(app.config['MAX_CONTENT_LENGTH']) / (1024*1024)} MB limit."
             img = "/image/File_too_big.jpeg"
         case "Login doesn't work":
             message = "Přihlašování v současnosti není funkční. Pokud se tento problém nevřeší do 3 dní prosím kontaktujte mě:"
+            title = "Chyba :/"
             link = "/contacts"
             link_text = "kontaktovat vývojáře"
             img =get_image("Jidlo nenalezeno new")
@@ -200,9 +206,9 @@ def get_message(message):
     if session.get("user") and session.get("password"):
         username = session.get("user")
         kredit = session.get("kredit")
-        return render_template("message.html", username=username, kredit=kredit, message=message, submessage = submessage, link = link, link_text=link_text, img = img, logo = get_image_id(get_canteen_id()))
+        return render_template("message.html", title = title, username=username, kredit=kredit, message=message, submessage = submessage, link = link, link_text=link_text, img = img, logo = get_image_id(get_canteen_id()))
 
-    return render_template("message.html", message=message, submessage = submessage, link = link, link_text=link_text, img = img, logo = get_image_id(get_canteen_id()))
+    return render_template("message.html", title = title, message=message, submessage = submessage, link = link, link_text=link_text, img = img, logo = get_image_id(get_canteen_id()))
 
 @app.route('/search/<food>', methods = ["GET", "POST"])
 def search(food):
@@ -758,18 +764,26 @@ def canteens():
 @app.route("/canteen/<canteen_id>", methods =["GET", "POST"])
 def canteen(canteen_id):
 
+    message = ""
+
     if session.get("user") and session.get("password"):
         username = session.get("user")
         password = cipher.decrypt(session.get("password")).decode()
         credit = decide_kredit(username, password)
         session['kredit'] = credit
         data = decide_scrape_logged_in(username, password)
-        response = make_response(render_template("NewMain.html", data = data, supported=True, username=username, kredit = credit, canteen_name = canteen_id_to_name(canteen_id), logo = get_image_id(canteen_id), canteen_id = canteen_id))
+        if data == -1:
+            data = []
+            message = "Nepodařilo se nám načíst jídelníček."
+        response = make_response(render_template("NewMain.html", data = data, message = message, supported=True, username=username, kredit = credit, canteen_name = canteen_id_to_name(canteen_id), logo = get_image_id(canteen_id), canteen_id = canteen_id))
     else:
         data=decide_scrape()
+        if data == -1:
+            data = []
+            message = "Nepodařilo se nám načíst jídelníček."
         canteen_system_id = canteen_id_to_system(canteen_id)
         canteen_system_name, support = canteen_systems[int(canteen_system_id)]
-        response = make_response(render_template("NewMain.html", data=data, supported = support == 2,canteen_id=canteen_id, canteen_name=canteen_id_to_name(canteen_id), logo = get_image_id(canteen_id)))
+        response = make_response(render_template("NewMain.html", data=data, message = message, supported = support == 2,canteen_id=canteen_id, canteen_name=canteen_id_to_name(canteen_id), logo = get_image_id(canteen_id)))
 
 
     response.set_cookie(
@@ -1030,6 +1044,10 @@ def iCanteen_order_food(username, password, date, food_id,canteen_id = None):
 
 
 def iCanteen_scrape(): #day,day_str,foods,chosen_food
+
+    if not test_url(canteen_id_to_url(get_canteen_id())):
+            return -1
+    
     page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url={canteen_id_to_url(get_canteen_id())}")
     soup = BeautifulSoup(page.text, "html.parser")
 
