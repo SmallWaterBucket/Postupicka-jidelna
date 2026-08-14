@@ -506,7 +506,7 @@ def get_new_food(food_id):
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
-    if urllib.request.urlopen("https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=jidelna/qzz.io").getcode() != 200:
+    if urllib.request.urlopen("https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=https://www.jidelna/qzz.io").getcode() != 200:
         return get_message("Login doesn't work")
     canteen_id = get_canteen_id_raw()
     if not canteen_id:
