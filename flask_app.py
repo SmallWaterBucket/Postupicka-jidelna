@@ -543,110 +543,10 @@ def order():
     day = data.get("day")
     date = datetime.datetime.strptime(day, "%d.%m.%Y").strftime("%Y-%m-%d")
 
-    ret = iCanteen_order_food(username, password, date, food)
+    ret = decide_order(username, password, date, food)
     print(ret)
     credit = decide_kredit(username, password)
-    return {"credit": credit}
-
-
-@app.route("/new_scrape/<username>,<password>")
-def old_new_scrape(username, password):
-    #page = requests.get("https://api.allorigins.win/raw?url=https://strav.nasejidelna.cz/0254/login")
-    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url={canteen_id_to_url(get_canteen_id())}")
-    soup = BeautifulSoup(page.text, "html.parser")
-
-    days = soup.find_all("div", class_="jidelnicekDen")
-
-    data = [] # foods from Hlavni canteen, not modrany
-    chosen_food_dates = []
-
-    today = datetime.datetime.now().date()
-    if password:
-        for day in days:
-            date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].get("id").split("-")[1:]
-            date = ".".join(date)
-            date = datetime.datetime.strptime(date, "%Y.%m.%d").date()
-
-            chosen_food_date = datetime.datetime.strftime(date, "%Y-%m-%d")
-            chosen_food_dates.append(chosen_food_date)
-        #return str(chosen_food_dates)
-        chosen_foods_str = decide_get_ordered_foods(username, password, chosen_food_dates)
-        chosen_foods = chosen_foods_str.split(";")
-        chosen_foods = chosen_foods[:-1]
-        #return str(chosen_foods)
-        
-    
-
-    
-    day_index = 0
-    for day in days:
-        str_date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].text.strip()
-        date = day.find_all("div", class_ = "jidelnicekTop semibold")[0].get("id").split("-")[1:]
-        date = ".".join(date)
-        date = datetime.datetime.strptime(date, "%Y.%m.%d").date()
-        disabled = (date - today).days < 2
-
-
-        chosen_food_date = datetime.datetime.strftime(date, "%Y-%m-%d")
-        chosen_food = ""
-        if password:
-            if chosen_foods[day_index]:
-                chosen_food = int(chosen_foods[day_index])
-            else:
-                chosen_food = ""
-
-        date = date.strftime("%d.%m.%Y")
-
-
-
-        foods = []
-
-        food_containers = day.find_all("div", class_="container")
-        my_id = -1
-        for food in food_containers:
-            if food.find_all("span", style="color:green;")[0].text.strip() == "Hlavní":
-                food = food.text.strip().replace("\n","").strip()
-                food = unicodedata.normalize("NFKC", food).replace("\xa0", " ").strip()
-                if "Polévka" not in food:
-                    if "(" in food:
-                        food = food[16:food.index("(") - 1]
-                    else:
-                        food = food[16:len(food) - 1]
-
-                    # Generovany chatem GPT{
-                    food = re.sub(r"[,\s\xa0]*čaj.*$", "", food, flags=re.IGNORECASE) # odstrani vse po ", caj"
-                    food = re.sub(r"\s+", " ", food)
-                    food = ' '.join(food.split())
-                    #}
-                    food_id = 38
-                    db = get_db()
-                    mycursor = db.cursor()
-                    mycursor.execute("SELECT id FROM Main where name = %s", (food,))
-                    answer = mycursor.fetchone()
-                    if answer:
-                        food_id = answer[0]
-
-                    user_rating = ""
-                    if session.get("user") and session.get("password"):
-                        mycursor.execute("SELECT rating FROM Ratings WHERE foodid = %s AND username = %s;", (food_id, session.get("user")))
-                        user_rating = mycursor.fetchone()
-                        if user_rating:
-                            user_rating = float(user_rating[0])
-
-                    mycursor.execute(f"SELECT average FROM Main WHERE id = %s;", (food_id,))
-                    rating = mycursor.fetchone()
-                    if rating:
-                        rating = rating[0]
-                        if rating == '-1':
-                            rating = ""
-                        else:
-                            rating = float(rating)
-
-                    foods.append((food, food_id, get_image_id(food_id), disabled, my_id, rating, user_rating)) #food,food_id,image,disabled, my_id, rating, user_rating
-            my_id+=1
-        data.append((date,str_date,foods, chosen_food))
-        day_index+=1
-    return data
+    return {"credit": credit, "return": ret}
 
 
 def get_canteen_id():
@@ -940,7 +840,21 @@ def decide_get_ordered_foods(username,password,dates):
             case 0: #iCanteen
                 ret = iCanteen_get_orderd_food(username,password,dates)
             case 1: #Strava.cz
-                ret = Strava_get_orderd_food(username, password, dates)
+                ret = Strava_get_ordered_food(username, password, dates)
+            case _:
+                return "-1"
+    return ret
+
+def decide_order(username, password, date, food): # date format: %d.%m.%Y
+    canteen_id = get_canteen_id()
+    canteen_system = canteen_id_to_system(canteen_id)
+    match canteen_system:
+            case 0: #iCanteen
+                ret = iCanteen_order_food(username, password, date, food)
+            case 1: #Strava.cz
+                datetime_date = datetime.datetime.strptime(date,"%d.%m.%Y")
+                date = datetime_date.strftime("%Y-%m-%d") # strava-cz-python requires this format
+                ret = Strava_order_food(username, password, date, food)
             case _:
                 return "-1"
     return ret
@@ -1053,6 +967,8 @@ def construct_data_for_main_page_logged_in(username, password, days):
 
 
 # iCanteen requests functions
+
+
 @app.route("/iCanteen/kredit/<username>,<password>,<canteen_id>")
 def iCanteen_kredit(username, password, canteen_id = None):
     if canteen_id is None:
@@ -1092,6 +1008,7 @@ def iCanteen_order_food(username, password, date, food_id,canteen_id = None):
         canteen_id = get_canteen_id()
     canteen_id = canteen_id_to_url(canteen_id)
     page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/iCanteen/order.exe/{username},{password},{date},{food_id},{canteen_id}")
+    return page.text
 
 
 def iCanteen_scrape(): #day,day_str,foods,chosen_food
@@ -1138,6 +1055,8 @@ def iCanteen_scrape(): #day,day_str,foods,chosen_food
 
 
 #Strava.cz connecting functions:
+
+
 @app.route("/strava/login/<username>,<password>")
 def Strava_try_login(username, password):
     canteen_number = canteen_id_to_url(get_canteen_id())
@@ -1179,13 +1098,20 @@ def Strava_scrape():
     return data
 
 @app.route("/strava/ordered_foods/<username>,<password>,<dates>,<canteen_id>") # lets hope this works :crying: :hope:
-def Strava_get_orderd_food(username, password, dates, canteen_id = None):
+def Strava_get_ordered_food(username, password, dates, canteen_id = None):
     if canteen_id is None:
         canteen_id = get_canteen_id()
     dates = ".".join(dates)
     canteen_id = canteen_id_to_url(canteen_id)
     page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/strava/get_ordered_foods/{username},{password},{dates},{canteen_id}")
     return page.text
+
+@app.route("/strava/order/<username>,<password>,<date>,<food>")
+def Strava_order_food(username, password, date, food):
+    canteen_number = canteen_id_to_url(get_canteen_id())
+    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/strava/order/{username},{password},{date},{food},{canteen_number}")
+    return page.text
+
 
 
 

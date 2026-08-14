@@ -120,7 +120,7 @@
   </style>
 
   <script>
-    function sendFood(day, food) {
+    function sendFood(day, food, element_id) {
       fetch("/order", {
         method: "POST",
         headers: {
@@ -131,6 +131,10 @@
       .then(response => response.json())
       .then(data => {
         document.getElementById("credit").textContent = "Kredit: " + data.credit;
+        if (data.return != "True") {
+            alert("Nepodařilo se objednat oběd na den: " + day + ".\nError message:\n" + data.return);
+            document.getElementById(element_id).checked = false;
+        }
       });
     }
   </script>
@@ -174,7 +178,7 @@
                     <div class = "foods">
                     {% for food,food_id,image,disabled, my_id, rating, user_rating in foods %}
                         <div class = "food">
-                            <input type="radio" class="foodSelection" value="{{day}},{{food}}" id="{{day}},{{food}}" name="{{day}}" {% if disabled %} disabled {% endif %} onchange="sendFood('{{day}}','{{my_id}}')" {% if chosen_food == my_id %} checked {% endif %}>
+                            <input type="radio" class="foodSelection" value="{{day}},{{food}}" id="{{day}},{{food}}" name="{{day}}" {% if disabled %} disabled {% endif %} onchange="sendFood('{{day}}','{{my_id}}','{{day}},{{food}}')" {% if chosen_food == my_id %} checked {% endif %}>
                             <label for = "{{day}},{{food}}">
                                 {% if not kredit and food_id > -1 %}
                                     <p><a href = /get_food/{{food_id}}>{{food}}</a></p>

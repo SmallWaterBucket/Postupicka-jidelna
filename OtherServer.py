@@ -58,22 +58,33 @@ def strava_get_ordered_foods(username, password, dates, canteen_number):
     dates = dates.split('.')
     days = strava.menu.get_days()
     for i in range(len(dates)):
-        ordered_indexes.append(-1)
+        ordered_indexes.append('')
         date_index = -1
-        for index in range(len(days)):
-            if days[index]["date"] == dates[i]:
-                date_index = index
-                break
 
-        if date_index != -1:
-            day = days[date_index]
-            for meal_index in range(len(day["meals"])):
-                meal = day["meals"][meal_index]
+        menu = strava.menu.get_by_date(dates[i])
+
+        if menu:
+            for meal_index in range(len(menu["meals"])):
+                meal = menu["meals"][meal_index]
                 if meal["ordered"]:
                     ordered_indexes[-1] = meal_index
     if len(ordered_indexes) < 1:
         return ""
     return ';'.join(ordered_indexes) + ";"
+
+@app.route("/strava/order/<username>,<password>,<date>,<food>,<canteen_number>")
+def strava_oder_food(username, password, date, food, canteen_number):
+    strava = strava_login_internal(username, password, canteen_number)
+    days = strava.menu.get_days()
+    food = int(food)
+    menu = strava.menu.get_by_date(date)
+    if not menu:
+        return "Date not found"
+    id = menu['meals'][food]['id']
+    strava.menu.order_meals(id)
+    ordered = strava.menu.is_ordered(id)
+    return str(ordered)
+    
 
 
 
