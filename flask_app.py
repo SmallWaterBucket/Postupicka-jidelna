@@ -504,26 +504,19 @@ def get_new_food(food_id):
 
 def test_url(url):
     try:
-        proxy_url = "https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?" + urllib.parse.urlencode({
-            "url": url
-        })
+        page = requests.get(
+            "https://sparkling-sun-0a6e.humanhumanovic.workers.dev/",
+            params={"url": url},
+            timeout=10
+        )
+        return page.status_code == 200
 
-        response = urllib.request.urlopen(proxy_url)
-
-        print(response.getcode())
-        return response.getcode() == 200
-
-    except urllib.error.HTTPError as e:
-        print("HTTP error:", e.code)
-        return False
-
-    except urllib.error.URLError as e:
-        print("URL error:", e)
+    except requests.RequestException:
         return False
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
-    if not test_url("https://www.jidelna.qzz.io/blank"):
+    if not test_url("https://jidelna.qzz.io/blank"):
         return get_message("Login doesn't work")
 
     canteen_id = get_canteen_id_raw()
