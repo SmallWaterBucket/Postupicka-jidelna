@@ -3,7 +3,7 @@ import subprocess
 
 
 from flask import Flask, session, render_template, url_for, request, redirect, flash, send_from_directory, g, make_response
-import PIL, random, urllib.request
+import PIL, random, urllib.request, urllib.error
 from PIL import Image, ImageOps
 from cryptography.fernet import Fernet
 import os.path, secrets
@@ -502,12 +502,21 @@ def get_new_food(food_id):
             message = "Incorrect password"
     return render_template("accept_deny.html", image=image_url, name=name, rating=average, message=message, food_id=food_id, text=text, isCanteen=isCanteen, logo = get_image_id(canteen_id))
 
-
+def test_url(url):
+    try:
+        if urllib.request.urlopen(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url={url}").getcode() != 200:
+            return False
+    except urllib.error.HTTPError:
+        return False
+    except urllib.error.URLError:
+        return False
+    return True
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
-    if urllib.request.urlopen("https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=https://www.jidelna.qzz.io/").getcode() != 200:
+    if not test_url("https://www.jidelna.qzz.io/"):
         return get_message("Login doesn't work")
+
     canteen_id = get_canteen_id_raw()
     if not canteen_id:
         return redirect("/canteens")
