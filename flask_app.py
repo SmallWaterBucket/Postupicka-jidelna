@@ -3,7 +3,7 @@ import subprocess
 
 
 from flask import Flask, session, render_template, url_for, request, redirect, flash, send_from_directory, g, make_response
-import PIL, random, urllib.request, urllib.error
+import PIL, random, urllib.request, urllib.error, urllib.parse
 from PIL import Image, ImageOps
 from cryptography.fernet import Fernet
 import os.path, secrets
@@ -504,13 +504,22 @@ def get_new_food(food_id):
 
 def test_url(url):
     try:
-        if urllib.request.urlopen(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url={url}").getcode() != 200:
-            return False
-    except urllib.error.HTTPError:
+        proxy_url = "https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?" + urllib.parse.urlencode({
+            "url": url
+        })
+
+        response = urllib.request.urlopen(proxy_url)
+
+        print(response.getcode())
+        return response.getcode() == 200
+
+    except urllib.error.HTTPError as e:
+        print("HTTP error:", e.code)
         return False
-    except urllib.error.URLError:
+
+    except urllib.error.URLError as e:
+        print("URL error:", e)
         return False
-    return True
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
