@@ -24,6 +24,7 @@ from strava_cz import StravaCZ, MealType, OrderType
 # adding compat with different canteen systems
 # fix the contacts
 # add alergens
+# add more images and messages
 
 #=========================================================
 #MAYBE:
@@ -506,7 +507,7 @@ def get_new_food(food_id):
 @app.route('/login', methods=["GET", "POST"])
 def login():
     if urllib.request.urlopen("jidelna.qzz.io/").getcode() != 200:
-        return get_message()
+        return get_message("Login doesn't work")
     canteen_id = get_canteen_id_raw()
     if not canteen_id:
         return redirect("/canteens")
