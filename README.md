@@ -1,5 +1,5 @@
 # Postupicka-jidelna
-(This README is horribly outdated, please check out the Releases as well before I update it, thank very much 👍)
+(This README is horribly outdated, please check out the Releases as well before I update it to feature newer changes, thank very much 👍)
 
 CZ: Webová stránka, kam můžete nahrávat fotky jídel ze školní jídelny Gymnázia Postupická a hodnotit jídla, která jste měli. Nechceme zesměšnit naší jídelnu a nechceme zesměšnit naší školu. Tato stránka byla stvořena jen pro to aby bylo jednodušší pochopit co budete mít k obědu, protože někdy je těžké si představit jídlo jen podle jeho jména.
 
