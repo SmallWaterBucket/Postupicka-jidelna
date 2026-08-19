@@ -1,4 +1,6 @@
 # Postupicka-jidelna
+(This README is horribly outdated, please check out the Releases as well before I update it, thank very much 👍)
+
 CZ: Webová stránka, kam můžete nahrávat fotky jídel ze školní jídelny Gymnázia Postupická a hodnotit jídla, která jste měli. Nechceme zesměšnit naší jídelnu a nechceme zesměšnit naší školu. Tato stránka byla stvořena jen pro to aby bylo jednodušší pochopit co budete mít k obědu, protože někdy je těžké si představit jídlo jen podle jeho jména.
 
 Nově jsme zprovoznili přihlašování do systému iCanteen a objednávání obědů za pomoci projektu canteenlib. Pokud vaše škola používá systém iCanteen na přihlašování obědů a máte nějaké zkušenosti s programováním, můžete využít tento projekt pro stvoření podobné stránky pro vaší školu.
