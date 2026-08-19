@@ -22,7 +22,7 @@ from strava_cz import StravaCZ, MealType, OrderType
 # Change the long db outputs to only what is needed
 # better design
 # adding compat with different canteen systems
-
+# -1 and [] weird inconsistencies in scrapes
 # add alergens
 # add more images and messages
 
@@ -94,7 +94,7 @@ app.config.update(
     SESSION_COOKIE_SAMESITE='Lax',
     PERMANENT_SESSION_LIFETIME=1800
 )
-canteen_systems = [("iCanteen / strav.nasejidelna.cz", 2),("Strava.cz", 1),("Jidelna.cz", 0),("Primirest / Primiapp.cz", 0)] #0 - doesn't work, 1 - testing, 2 - mostly full support
+canteen_systems = [("iCanteen / strav.nasejidelna.cz", 2),("Strava.cz", 1),("Jidelna.cz", 0),("Kuchyňka / iKuch - DATAX", 0),("OELIX - XTG Systems", 0),("Primirest / Primiapp.cz", 0)] #0 - doesn't work, 1 - testing, 2 - mostly full support
 
 
 key = open(f"{path_passwords}/password.txt",'r').read().strip().encode()
