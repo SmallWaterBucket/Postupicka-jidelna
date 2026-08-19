@@ -850,7 +850,7 @@ def decide_scrape():
             case 1: #Strava.cz
                 ret = Strava_scrape()
             case _:
-                return "-1"
+                return -1
     return construct_data_for_main_page(ret)
 
 def decide_scrape_logged_in(username, password):
@@ -862,7 +862,7 @@ def decide_scrape_logged_in(username, password):
             case 1: #Strava.cz
                 ret = Strava_scrape()
             case _:
-                return "-1"
+                return -1
     return construct_data_for_main_page_logged_in(username,password,ret)
 
 def decide_get_ordered_foods(username,password,dates):
@@ -874,7 +874,7 @@ def decide_get_ordered_foods(username,password,dates):
             case 1: #Strava.cz
                 ret = Strava_get_ordered_food(username, password, dates)
             case _:
-                return "-1"
+                return -1
     return ret
 
 def decide_order(username, password, date, food): # date format: %d.%m.%Y
@@ -888,7 +888,7 @@ def decide_order(username, password, date, food): # date format: %d.%m.%Y
                 date = datetime_date.strftime("%Y-%m-%d") # strava-cz-python requires this format
                 ret = Strava_order_food(username, password, date, food)
             case _:
-                return "-1"
+                return -1
     return ret
     
 
@@ -1046,7 +1046,7 @@ def iCanteen_order_food(username, password, date, food_id,canteen_id = None):
 def iCanteen_scrape(): #day,day_str,foods,chosen_food
 
     if not test_url(canteen_id_to_url(get_canteen_id())):
-            return -1
+        return -1
     
     page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url={canteen_id_to_url(get_canteen_id())}")
     soup = BeautifulSoup(page.text, "html.parser")
