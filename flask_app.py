@@ -782,6 +782,7 @@ def canteen(canteen_id):
         if data ==-1:
             data = []
             message = "Nepodařilo se nám načíst jídelníček."
+        return(str(data))
         canteen_system_id = canteen_id_to_system(canteen_id)
         canteen_system_name, support = canteen_systems[int(canteen_system_id)]
         response = make_response(render_template("NewMain.html", data=data, message = message, supported = support == 2,canteen_id=canteen_id, canteen_name=canteen_id_to_name(canteen_id), logo = get_image_id(canteen_id)))
