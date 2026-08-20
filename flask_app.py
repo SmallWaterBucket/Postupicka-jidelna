@@ -509,6 +509,7 @@ def get_new_food(food_id):
             message = "Incorrect password"
     return render_template("accept_deny.html", image=image_url, name=name, rating=average, message=message, food_id=food_id, text=text, isCanteen=isCanteen, logo = get_image_id(canteen_id))
 
+@app.route("/test_url/<url>")
 def test_url(url):
     try:
         page = requests.get(
