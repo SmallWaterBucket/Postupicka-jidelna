@@ -773,13 +773,14 @@ def canteen(canteen_id):
         credit = decide_kredit(username, password)
         session['kredit'] = credit
         data = decide_scrape_logged_in(username, password)
-        if data ==-1:
+        if data == -1:
             data = []
             message = "Nepodařilo se nám načíst jídelníček."
         response = make_response(render_template("NewMain.html", data = data, message = message, supported=True, username=username, kredit = credit, canteen_name = canteen_id_to_name(canteen_id), logo = get_image_id(canteen_id), canteen_id = canteen_id))
     else:
         data=decide_scrape()
-        if data ==-1:
+        return str(data)
+        if data == -1:
             data = []
             message = "Nepodařilo se nám načíst jídelníček."
         canteen_system_id = canteen_id_to_system(canteen_id)
