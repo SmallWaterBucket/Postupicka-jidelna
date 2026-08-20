@@ -25,6 +25,7 @@ from strava_cz import StravaCZ, MealType, OrderType
 # -1 and [] weird inconsistencies in scrapes
 # add alergens
 # add more images and messages
+# Add an option to see foods from other canteens in the search menu
 
 #=========================================================
 #MAYBE:
@@ -1046,7 +1047,7 @@ def iCanteen_order_food(username, password, date, food_id,canteen_id = None):
 def iCanteen_scrape(): #day,day_str,foods,chosen_food
 
     if not test_url(canteen_id_to_url(get_canteen_id())):
-        return -1
+        return []
     
     page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url={canteen_id_to_url(get_canteen_id())}")
     soup = BeautifulSoup(page.text, "html.parser")
