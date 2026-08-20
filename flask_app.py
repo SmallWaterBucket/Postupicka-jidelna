@@ -511,16 +511,17 @@ def get_new_food(food_id):
 
 @app.route("/test_url/<url>")
 def test_url(url):
+    url = "https://" + url
     try:
         page = requests.get(
             "https://sparkling-sun-0a6e.humanhumanovic.workers.dev/",
             params={"url": url},
             timeout=10
         )
-        return page.status_code == 200
+        return str(page.status_code == 200)
 
     except requests.RequestException:
-        return False
+        return str(False)
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
