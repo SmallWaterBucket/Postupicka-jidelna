@@ -509,19 +509,18 @@ def get_new_food(food_id):
             message = "Incorrect password"
     return render_template("accept_deny.html", image=image_url, name=name, rating=average, message=message, food_id=food_id, text=text, isCanteen=isCanteen, logo = get_image_id(canteen_id))
 
-@app.route("/test_url/<url>")
 def test_url(url):
-    url = "https://" + url
     try:
         page = requests.get(
             "https://sparkling-sun-0a6e.humanhumanovic.workers.dev/",
             params={"url": url},
             timeout=10
         )
-        return str(page.status_code == 200)
+        return page.status_code == 200
 
     except requests.RequestException:
-        return str(False)
+        return False
+    return False
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
@@ -781,7 +780,6 @@ def canteen(canteen_id):
         response = make_response(render_template("NewMain.html", data = data, message = message, supported=True, username=username, kredit = credit, canteen_name = canteen_id_to_name(canteen_id), logo = get_image_id(canteen_id), canteen_id = canteen_id))
     else:
         data=decide_scrape()
-        return str(data)
         if data == -1:
             data = []
             message = "Nepodařilo se nám načíst jídelníček."
@@ -898,7 +896,7 @@ def decide_order(username, password, date, food): # date format: %d.%m.%Y
 
 def construct_data_for_main_page(days):
     data = []
-    if data == [] or data == -1:
+    if days == [] or days == -1:
         return data
     for date, food_list in days:
         datetime_date = datetime.datetime.strptime(date,"%d.%m.%Y")
@@ -929,6 +927,8 @@ def construct_data_for_main_page(days):
 
 @app.route("/test/<username>,<password>,<days>")
 def construct_data_for_main_page_logged_in(username, password, days):
+    if days == [] or days == -1:
+        return data
     if not password:
         return [["Error", ["Password not provided"]]]
     data = [] 
