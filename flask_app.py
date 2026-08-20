@@ -897,7 +897,7 @@ def decide_order(username, password, date, food): # date format: %d.%m.%Y
 def construct_data_for_main_page(days):
     data = []
     if days == [] or days == -1:
-        return data
+        return days
     for date, food_list in days:
         datetime_date = datetime.datetime.strptime(date,"%d.%m.%Y")
         date_str = f"{date_to_czech_day_of_the_week(datetime_date)} {date}"
@@ -928,7 +928,7 @@ def construct_data_for_main_page(days):
 @app.route("/test/<username>,<password>,<days>")
 def construct_data_for_main_page_logged_in(username, password, days):
     if days == [] or days == -1:
-        return data
+        return days
     if not password:
         return [["Error", ["Password not provided"]]]
     data = [] 
