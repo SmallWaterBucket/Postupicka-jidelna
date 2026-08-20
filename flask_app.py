@@ -773,13 +773,13 @@ def canteen(canteen_id):
         credit = decide_kredit(username, password)
         session['kredit'] = credit
         data = decide_scrape_logged_in(username, password)
-        if data == -1:
+        if data ==-1:
             data = []
             message = "Nepodařilo se nám načíst jídelníček."
         response = make_response(render_template("NewMain.html", data = data, message = message, supported=True, username=username, kredit = credit, canteen_name = canteen_id_to_name(canteen_id), logo = get_image_id(canteen_id), canteen_id = canteen_id))
     else:
         data=decide_scrape()
-        if data == -1:
+        if data ==-1:
             data = []
             message = "Nepodařilo se nám načíst jídelníček."
         canteen_system_id = canteen_id_to_system(canteen_id)
@@ -1047,7 +1047,7 @@ def iCanteen_order_food(username, password, date, food_id,canteen_id = None):
 def iCanteen_scrape(): #day,day_str,foods,chosen_food
 
     if not test_url(canteen_id_to_url(get_canteen_id())):
-        return []
+        return -1
     
     page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url={canteen_id_to_url(get_canteen_id())}")
     soup = BeautifulSoup(page.text, "html.parser")
@@ -1115,7 +1115,7 @@ def Strava_scrape():
         response = requests.get(url)
         response.raise_for_status()
     except requests.RequestException:
-        return []
+        return -1
 
     root = ET.fromstring(response.content)
     
