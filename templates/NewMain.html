@@ -179,7 +179,7 @@
                 <div class = "day">
                     <h2>{{day_str}}</h2>
                     <div class = "foods">
-                    {% if foods|lenth == 0 %}
+                    {% if foods|length == 0 %}
                         <p style="color:grey">Žádná jídla tento den.</p>
                     {% endif %}
                     {% for food,food_id,image,disabled, my_id, rating, user_rating in foods %}
