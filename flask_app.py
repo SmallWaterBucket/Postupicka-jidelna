@@ -1209,8 +1209,8 @@ def Remove_prefixes_and_suffixes(meals):
             break
 
     return [
-        " ".join(words[i][common_count:])
-        for i in range(len(meals))
+        " ".join(meal_words[common_count:])
+        for meal_words in words
     ]
         
 
