@@ -80,13 +80,13 @@ from strava_cz import StravaCZ, MealType, OrderType
 
 app = Flask(__name__)
 
-UPLOAD_FOLDER = '/home/jidelna/photos'
+UPLOAD_FOLDER = '/home/ubuntu/photos'
 app.config['ALLOWED_EXTENSIONS'] = ['.jpg', '.jpeg', '.png']
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 4*1024 * 1024 #4MB
 compress_limit = 0.5 # This is the number of MB above which an image will be compressed
 
-path_passwords = "/home/jidelna/"
+path_passwords = "/home/ubuntu/"
 
 app.secret_key = open(f"{path_passwords}/secret.txt",'r').read().strip()
 app.config.update(
@@ -1105,6 +1105,11 @@ def Strava_kredit(username, password):
     canteen_number = canteen_id_to_url(get_canteen_id())
     page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/strava/kredit/{username},{password},{canteen_number}")
     return page.text
+
+@app.route("/strava/fixed_scrape")
+def Strava_fixed_scrape():
+    canteen_number = canteen_id_to_url(get_canteen_id())
+    url = f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=jidelna.qzz.io/strava/scrape/{canteen_number}"
 
 @app.route("/strava/scrape")
 def Strava_scrape():

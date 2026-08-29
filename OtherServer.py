@@ -90,21 +90,53 @@ def strava_oder_food(username, password, date, food, canteen_number):
 
 @app.route("/strava/scrape/<canteen_number>")
 def strava_scrape(canteen_number):
-    API_URL = "https://app.strava.cz/api/jidelnickyPage"
+    url = "https://app.strava.cz/api/jidelnickyPage"
+    
+    headers = {
+        "Accept": "*/*",
+        "Accept-Language": "en-GB,en-US;q=0.9,en;q=0.8",
+        "Content-Type": "text/plain;charset=UTF-8",
+        "Origin": "https://app.strava.cz",
+        "Referer": f"https://app.strava.cz/jidelnicky?jidelna={canteen_number}",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    }
+    
+    payload = {
+        "cislo": str(canteen_number),
+        "lang": "CZ"
+    }
+    
     response = requests.post(
-        API_URL,
-        json={
-            "cislo": str(canteen_number),
-            "lang": "CZ"
-        },
+        url,
+        headers=headers,
+        data=json.dumps(payload),
         timeout=15
     )
-
+    
     response.raise_for_status()
-
+    
     data = response.json()
-
-    return data
+    
+    days = []
+    
+    for key, meals in data["meals"].items():
+        if not key.startswith("table"):
+            continue
+        
+        if not meals:
+            continue
+        
+        date = meals[0]["datum"]
+    
+        mymeals = []
+        print(date)
+        for meal in meals:
+            if meal["druh"] != 'P':
+                print(f"meal name: {meal['nazev']}")
+                mymeals.append(meal["nazev"])
+    
+        days.append((date,mymeals))
+    return days
 
 
 
