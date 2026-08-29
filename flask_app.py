@@ -1010,10 +1010,10 @@ def iCanteen_kredit(username, password, canteen_id = None):
     if canteen_id is None:
         canteen_id = get_canteen_id()
     canteen_id = canteen_id_to_url(canteen_id)
-    response = iCanteen("kredit.exe",username,password,canteen_id)
     #page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/iCanteen/kredit.exe/{username},{password},{canteen_id}")
     #page = requests.get(f"http://152.70.41.16.nip.io:8080/credit/{username},{password}")
     #return page.text
+    response = iCanteen("kredit.exe",f"{username},{password},{canteen_id}")
     return response
 
 def iCanteen_try_login(username, password, canteen_id = None):
@@ -1022,7 +1022,7 @@ def iCanteen_try_login(username, password, canteen_id = None):
     canteen_id = canteen_id_to_url(canteen_id)
     #page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/iCanteen/login.exe/{username},{password},{canteen_id}")
     #return str(page.text)
-    response = iCanteen("login.exe",username,password,canteen_id)
+    response = iCanteen("login.exe",f"{username},{password},{canteen_id}")
     return str(response)
 
 @app.route("/iCanteen/ordered_foods/<username>,<password>,<dates>,<canteen_id>")
@@ -1033,7 +1033,7 @@ def iCanteen_get_orderd_food(username, password, dates, canteen_id = None):
     canteen_id = canteen_id_to_url(canteen_id)
     #page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/iCanteen/get_ordered_foods.exe/{username},{password},{dates},{canteen_id}")
     #return page.text
-    response = iCanteen("get_ordered_foods.exe",username,password,dates,canteen_id)
+    response = iCanteen("get_ordered_foods.exe",f"{username},{password},{dates},{canteen_id}")
     return response
 
 @app.route("/iCanteen/ordered_foods_debug/<username>,<password>,<dates>,<canteen_id>")
@@ -1043,7 +1043,7 @@ def iCanteen_get_orderd_food_debug(username, password, dates, canteen_id):
     canteen_id = canteen_id_to_url(canteen_id)
     #page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/iCanteen/get_ordered_foods.exe/{username},{password},{dates},{canteen_id}")
     #return page.text
-    response = iCanteen("get_ordered_foods.exe",username,password,dates,canteen_id)
+    response = iCanteen("get_ordered_foods.exe",f"{username},{password},{dates},{canteen_id}")
     return response
 
 @app.route("/iCanteen/order_request/<username>,<password>,<date>,<food_id>,<canteen_id>")
@@ -1053,7 +1053,7 @@ def iCanteen_order_food(username, password, date, food_id,canteen_id = None):
     canteen_id = canteen_id_to_url(canteen_id)
     #page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/iCanteen/order.exe/{username},{password},{date},{food_id},{canteen_id}")
     #return page.text
-    response = iCanteen("order.exe",username,password,date,food_id,canteen_id)
+    response = iCanteen("order.exe",f"{username},{password},{date},{food_id},{canteen_id}")
     return response
 
 @app.route("/iCanteen/<app>/<path:url>")
