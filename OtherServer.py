@@ -87,7 +87,24 @@ def strava_oder_food(username, password, date, food, canteen_number):
     strava.menu.order_meals(id)
     ordered = strava.menu.is_ordered(id)
     return str(ordered)
-    
+
+@app.route("/strava/scrape/<canteen_number>")
+def strava_scrape(canteen_number):
+    API_URL = "https://app.strava.cz/api/jidelnickyPage"
+    response = requests.post(
+        API_URL,
+        json={
+            "cislo": str(canteen_number),
+            "lang": "CZ"
+        },
+        timeout=15
+    )
+
+    response.raise_for_status()
+
+    data = response.json()
+
+    return data
 
 
 
