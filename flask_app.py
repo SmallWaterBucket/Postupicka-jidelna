@@ -326,6 +326,8 @@ def get_image_page(filename):
     return send_from_directory(UPLOAD_FOLDER, filename)
 
 def get_image(image):
+    if not image:
+        return ""
     db = get_db()
     cursor = db.cursor()
     cursor.execute(f"SELECT path FROM Main WHERE NAME = %s;", (image,))
@@ -597,6 +599,7 @@ def all_foods():
     ret = []
     for item in answer:
         id,name,average = item
+        average = float(average)
         image_url = get_image_id(id)
         ret.append((name,id,image_url,average))
 
