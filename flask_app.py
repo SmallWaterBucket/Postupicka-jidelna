@@ -1177,3 +1177,7 @@ def date_to_czech_day_of_the_week(date):
             return "neděle"
         case _:
             return "What?"
+
+
+if __name__ == '__main__':
+    app.run()
