@@ -1197,7 +1197,7 @@ def Strava_scrape():
         days.append((date,mymeals))
     return days
 
-def Remove_common_first_words(meals):
+def Remove_prefixes_and_suffixes(meals):
     words = [meal.split() for meal in meals]
 
     common_count = 0
