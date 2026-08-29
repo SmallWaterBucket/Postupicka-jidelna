@@ -18,6 +18,8 @@ from strava_cz import StravaCZ, MealType, OrderType
 
 #TODO:
 
+# change blank to ""
+# make images on /foods not pass through navbar
 # Fix the chart passing through navbar
 # Change the long db outputs to only what is needed
 # better design
@@ -807,7 +809,7 @@ def canteen_id_to_system(canteen_id):
 
 @app.route("/blank")
 def blank():
-    return ""
+    return "blank"
 
 
 
@@ -1179,5 +1181,5 @@ def date_to_czech_day_of_the_week(date):
             return "What?"
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(host="127.0.0.1", port=8080)
