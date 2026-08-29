@@ -86,7 +86,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 4*1024 * 1024 #4MB
 compress_limit = 0.5 # This is the number of MB above which an image will be compressed
 
-path_passwords = "/home/ubuntu/"
+path_passwords = "/home/ubuntu/passwords"
 
 app.secret_key = open(f"{path_passwords}/secret.txt",'r').read().strip()
 app.config.update(
