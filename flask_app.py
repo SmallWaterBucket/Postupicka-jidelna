@@ -224,22 +224,18 @@ def search(food):
     if answer:
         return redirect(f"/get_food/{answer[0]}")
 
-    mycursor.execute("SELECT * FROM Main WHERE (name LIKE %s OR SOUNDEX(name) = SOUNDEX(%s)) AND canteen_id = %s;", (f"%{food}%", food, canteen_id))
+    mycursor.execute("SELECT id,name FROM Main WHERE (name LIKE %s OR SOUNDEX(name) = SOUNDEX(%s)) AND canteen_id = %s;", (f"%{food}%", food, canteen_id))
 
     answer = mycursor.fetchall()
     ret = []
-    for item in answer:
-        food_item = item[1]  # name column
-        food_id = item[0]   # id column
-        ret.append((food_item, food_id))
+    for food_id, food_name in answer:
+        ret.append((food_name, food_id))
 
     if session.get("user") and session.get("password"):
         username = session.get("user")
         kredit = session.get("kredit")
         return render_template("search.html", username=username, kredit=kredit, food=food, answers=ret, logo = get_image_id(canteen_id))
-
-
-
+    
     return render_template("search.html", food=food, answers=ret, logo = get_image_id(canteen_id))
 
 def get_db():
@@ -293,7 +289,7 @@ def get_food(food_id):
 
                 cursor.execute("insert into Ratings (foodid,rating,username) values (%s,%s,%s)", (id,new_rating,username))
                 db.commit()
-            cursor.execute("SELECT AVG(rating) AS AveragePrice FROM Ratings where foodid = %s;",(id,))
+            cursor.execute("SELECT AVG(rating) AS AverageRating FROM Ratings where foodid = %s;",(id,))
             ret = cursor.fetchall()
 
             cursor.execute("update Main SET average = %s where id = %s",(str(ret[0][0]),id,))
@@ -332,11 +328,10 @@ def get_image_page(filename):
 def get_image(image):
     db = get_db()
     cursor = db.cursor()
-    cursor.execute(f"SELECT * FROM Main WHERE NAME = %s;", (image,))
-    result = cursor.fetchone()
-    if not result:
+    cursor.execute(f"SELECT path FROM Main WHERE NAME = %s;", (image,))
+    path = cursor.fetchone()
+    if not path:
         return "/image/WhatsApp_Image_2026-01-16_at_19.21.37.jpg"
-    id, name, path, average, isFood, canteen_id, author = result
     filename = path.split('/')[-1]
     image_url = f"/image/{filename}"
     return image_url
@@ -346,11 +341,10 @@ def get_image_id(id):
         return ""
     db = get_db()
     cursor = db.cursor()
-    cursor.execute(f"SELECT * FROM Main WHERE id = %s;", (id,))
-    result = cursor.fetchone()
-    if not result:
+    cursor.execute(f"SELECT path FROM Main WHERE id = %s;", (id,))
+    path = cursor.fetchone()
+    if not path:
         return "/image/WhatsApp_Image_2026-01-16_at_19.21.37.jpg"
-    new_id, name, path, average, isFood, canteen_id, author = result
     filename = path.split('/')[-1]
     image_url = f"/image/{filename}"
     return image_url
@@ -449,15 +443,10 @@ def favicon_route():
 def list_new_foods():
     db = get_db()
     cursor = db.cursor()
-    cursor.execute("SELECT * FROM New")
+    cursor.execute("SELECT name,id FROM New")
     result = cursor.fetchall()
 
-    ret = []
-    for item in result:
-        food = item[1]
-        id = item[0]
-        ret.append((food, id))
-    return render_template("NewFoods.html", foods=ret, logo = get_image_id(get_canteen_id()))
+    return render_template("NewFoods.html", foods= result, logo = get_image_id(get_canteen_id()))
 
 @app.route('/new_food/<food_id>', methods=["GET", "POST"])
 def get_new_food(food_id):
@@ -602,15 +591,14 @@ def all_foods():
     if not canteen_id:
         return redirect("/canteens")
 
-    mycursor.execute("SELECT * FROM Main where canteen_id = %s;",(canteen_id,))
+    mycursor.execute("SELECT id,name,average FROM Main where canteen_id = %s;",(canteen_id,))
 
     answer = mycursor.fetchall()
     ret = []
     for item in answer:
-        filename = os.path.split(item[2])[-1]
-        image_url = f"/image/{filename}"
-        food_item = item[1], item[0], image_url, float(item[3])  # food, food_id,image,rating
-        ret.append(food_item)
+        id,name,average = item
+        image_url = get_image_id(id)
+        ret.append((name,id,image_url,average))
 
     if session.get("user") and session.get("password"):
         username = session.get("user")
