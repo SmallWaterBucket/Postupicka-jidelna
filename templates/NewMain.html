@@ -179,6 +179,9 @@
                 <div class = "day">
                     <h2>{{day_str}}</h2>
                     <div class = "foods">
+                    {% if foods|lenth == 0 %}
+                        <p style="color:grey">Žádná jídla tento den.</p>
+                    {% endif %}
                     {% for food,food_id,image,disabled, my_id, rating, user_rating in foods %}
                         <div class = "food">
                             <input type="radio" class="foodSelection" value="{{day}},{{food}}" id="{{day}},{{food}}" name="{{day}}" {% if disabled %} disabled {% endif %} onchange="sendFood('{{day}}','{{my_id}}','{{day}},{{food}}')" {% if chosen_food == my_id %} checked {% endif %}>

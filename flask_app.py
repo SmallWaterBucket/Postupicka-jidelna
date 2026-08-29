@@ -1188,7 +1188,7 @@ def Strava_scrape():
         mymeals = []
         print(date)
         for meal in meals:
-            if meal["druh"] != 'P' and meal["druh"] != 'PO' and meal["druh"] != 'DO' and meal["nazev"] and "Oběd" not in meal["nazev"] and "Obed" not in meal["nazev"] and meal["polevka"] != "A" and meal["druh_popis"] != "Polevka" and meal["druh_popis"] != "Polévka" and meal["druh_popis"] != "Doplnek" and meal["druh_popis"] != "Doplněk": # The great filter
+            if meal["druh"] != 'P' and meal["druh"] != 'PO' and meal["druh"] != 'DO' and meal["nazev"] and "Oběd" in meal["nazev"] and "Obed" in meal["nazev"] and meal["polevka"] != "A" and meal["druh_popis"] != "Polevka" and meal["druh_popis"] != "Polévka" and meal["druh_popis"] != "Doplnek" and meal["druh_popis"] != "Doplněk": # The great filter
                 print(f"meal name: {meal['nazev']}")
                 mymeals.append(meal["nazev"])
 
@@ -1204,6 +1204,13 @@ def Remove_prefixes_and_suffixes(meals):
         while not meal.startswith(prefix):
             prefix = prefix[:-1]
 
+    if prefix:
+        last_separator = max(prefix.rfind(" "), prefix.rfind(","))
+        if last_separator != -1:
+            prefix = prefix[:last_separator + 1]
+        else:
+            prefix = ""
+
     no_soup_meals = [meal[len(prefix):] for meal in meals]
 
     suffix = no_soup_meals[0]
@@ -1212,7 +1219,19 @@ def Remove_prefixes_and_suffixes(meals):
         while not meal.endswith(suffix):
             suffix = suffix[1:]
 
-    no_suffix_meals = [meal[:-len(suffix)] if suffix else meal for meal in no_soup_meals]
+    if suffix:
+        first_separator = len(suffix)
+        for separator in (" ", ","):
+            pos = suffix.find(separator)
+            if pos != -1:
+                first_separator = min(first_separator, pos)
+
+        suffix = suffix[first_separator:]
+
+    no_suffix_meals = [
+        meal[:-len(suffix)] if suffix else meal
+        for meal in no_soup_meals
+    ]
 
     return no_suffix_meals
         
