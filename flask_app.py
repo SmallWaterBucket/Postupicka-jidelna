@@ -1188,12 +1188,34 @@ def Strava_scrape():
         mymeals = []
         print(date)
         for meal in meals:
-            if meal["druh"] != 'P':
+            if meal["druh"] != 'P' and meal["nazev"]:
                 print(f"meal name: {meal['nazev']}")
                 mymeals.append(meal["nazev"])
+
+        mymeals = Remove_prefixes_and_suffixes(mymeals)
     
         days.append((date,mymeals))
     return days
+
+def Remove_prefixes_and_suffixes(meals):
+    prefix = meals[0]
+
+    for meal in meals[1:]:
+        while not meal.startswith(prefix):
+            prefix = prefix[:-1]
+
+    no_soup_meals = [meal[len(prefix):] for meal in meals]
+
+    suffix = no_soup_meals[0]
+
+    for meal in no_soup_meals[1:]:
+        while not meal.endswith(suffix):
+            suffix = suffix[1:]
+
+    no_suffix_meals = [meal[:-len(suffix)] if suffix else meal for meal in no_soup_meals]
+
+    return no_suffix_meals
+        
 
 @app.route("/strava/get_ordered_food/<username>,<password>,<dates>") # lets hope this works :crying: :hope:
 def Strava_get_ordered_food(username, password, dates):
