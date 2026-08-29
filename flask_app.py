@@ -1180,4 +1180,4 @@ def date_to_czech_day_of_the_week(date):
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host="127.0.0.1", port=8080)
