@@ -242,12 +242,12 @@ def search(food):
 
 def get_db():
     if 'db' not in g:
-        password = open(f"{path_passwords}/password_db.txt",'r').read()
+        password = open(f"{path_passwords}/password_db.txt",'r').read().strip()
         g.db = MySQLdb.connect(
-            host="jidelna.mysql.eu.pythonanywhere-services.com",
+            host="127.0.0.1",
             user="jidelna",
             passwd=password,
-            database="jidelna$default"
+            database="jidelna"
         )
     return g.db
 
