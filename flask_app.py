@@ -1188,7 +1188,7 @@ def Strava_scrape():
         mymeals = []
         print(date)
         for meal in meals:
-            if meal["druh"] != 'P' and meal["nazev"]:
+            if meal["druh"] != 'P' and meal["druh"] != 'PO' and meal["druh"] != 'DO' and meal["nazev"] and "Oběd" not in meal["nazev"] and "Obed" not in meal["nazev"] and meal["polevka"] != "A" and meal["druh_popis"] != "Polevka" and meal["druh_popis"] != "Polévka" and meal["druh_popis"] != "Doplnek" and meal["druh_popis"] != "Doplněk": # The great filter
                 print(f"meal name: {meal['nazev']}")
                 mymeals.append(meal["nazev"])
 
