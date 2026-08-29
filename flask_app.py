@@ -1197,43 +1197,21 @@ def Strava_scrape():
         days.append((date,mymeals))
     return days
 
-def Remove_prefixes_and_suffixes(meals):
-    prefix = meals[0]
+def Remove_common_first_words(meals):
+    words = [meal.split() for meal in meals]
 
-    for meal in meals[1:]:
-        while not meal.startswith(prefix):
-            prefix = prefix[:-1]
+    common_count = 0
 
-    if prefix:
-        last_separator = max(prefix.rfind(" "), prefix.rfind(","))
-        if last_separator != -1:
-            prefix = prefix[:last_separator + 1]
+    for word_group in zip(*words):
+        if len(set(word_group)) == 1:
+            common_count += 1
         else:
-            prefix = ""
+            break
 
-    no_soup_meals = [meal[len(prefix):] for meal in meals]
-
-    suffix = no_soup_meals[0]
-
-    for meal in no_soup_meals[1:]:
-        while not meal.endswith(suffix):
-            suffix = suffix[1:]
-
-    if suffix:
-        first_separator = len(suffix)
-        for separator in (" ", ","):
-            pos = suffix.find(separator)
-            if pos != -1:
-                first_separator = min(first_separator, pos)
-
-        suffix = suffix[first_separator:]
-
-    no_suffix_meals = [
-        meal[:-len(suffix)] if suffix else meal
-        for meal in no_soup_meals
+    return [
+        " ".join(words[i][common_count:])
+        for i in range(len(meals))
     ]
-
-    return no_suffix_meals
         
 
 @app.route("/strava/get_ordered_food/<username>,<password>,<dates>") # lets hope this works :crying: :hope:
