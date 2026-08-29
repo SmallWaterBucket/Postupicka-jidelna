@@ -86,6 +86,7 @@ UPLOAD_FOLDER = '/home/ubuntu/photos'
 app.config['ALLOWED_EXTENSIONS'] = ['.jpg', '.jpeg', '.png']
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 4*1024 * 1024 #4MB
+ALLOWED_APPS = ["kredit.exe", "login.exe","get_ordered_foods.exe", "order.exe"]
 compress_limit = 0.5 # This is the number of MB above which an image will be compressed
 
 path_passwords = "/home/ubuntu/passwords"
@@ -1009,16 +1010,20 @@ def iCanteen_kredit(username, password, canteen_id = None):
     if canteen_id is None:
         canteen_id = get_canteen_id()
     canteen_id = canteen_id_to_url(canteen_id)
-    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/iCanteen/kredit.exe/{username},{password},{canteen_id}")
+    response = iCanteen("kredit.exe",username,password,canteen_id)
+    #page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/iCanteen/kredit.exe/{username},{password},{canteen_id}")
     #page = requests.get(f"http://152.70.41.16.nip.io:8080/credit/{username},{password}")
-    return page.text
+    #return page.text
+    return response
 
 def iCanteen_try_login(username, password, canteen_id = None):
     if canteen_id is None:
         canteen_id = get_canteen_id()
     canteen_id = canteen_id_to_url(canteen_id)
-    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/iCanteen/login.exe/{username},{password},{canteen_id}")
-    return str(page.text)
+    #page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/iCanteen/login.exe/{username},{password},{canteen_id}")
+    #return str(page.text)
+    response = iCanteen("login.exe",username,password,canteen_id)
+    return str(response)
 
 @app.route("/iCanteen/ordered_foods/<username>,<password>,<dates>,<canteen_id>")
 def iCanteen_get_orderd_food(username, password, dates, canteen_id = None):
@@ -1026,24 +1031,43 @@ def iCanteen_get_orderd_food(username, password, dates, canteen_id = None):
         canteen_id = get_canteen_id()
     dates = ".".join(dates)
     canteen_id = canteen_id_to_url(canteen_id)
-    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/iCanteen/get_ordered_foods.exe/{username},{password},{dates},{canteen_id}")
-    return page.text
+    #page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/iCanteen/get_ordered_foods.exe/{username},{password},{dates},{canteen_id}")
+    #return page.text
+    response = iCanteen("get_ordered_foods.exe",username,password,dates,canteen_id)
+    return response
 
 @app.route("/iCanteen/ordered_foods_debug/<username>,<password>,<dates>,<canteen_id>")
 def iCanteen_get_orderd_food_debug(username, password, dates, canteen_id):
     if canteen_id is None:
         canteen_id = get_canteen_id()
     canteen_id = canteen_id_to_url(canteen_id)
-    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/iCanteen/get_ordered_foods.exe/{username},{password},{dates},{canteen_id}")
-    return page.text
+    #page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/iCanteen/get_ordered_foods.exe/{username},{password},{dates},{canteen_id}")
+    #return page.text
+    response = iCanteen("get_ordered_foods.exe",username,password,dates,canteen_id)
+    return response
 
 @app.route("/iCanteen/order_request/<username>,<password>,<date>,<food_id>,<canteen_id>")
 def iCanteen_order_food(username, password, date, food_id,canteen_id = None):
     if canteen_id is None:
         canteen_id = get_canteen_id()
     canteen_id = canteen_id_to_url(canteen_id)
-    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/iCanteen/order.exe/{username},{password},{date},{food_id},{canteen_id}")
-    return page.text
+    #page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url=http://jidelna.qzz.io/iCanteen/order.exe/{username},{password},{date},{food_id},{canteen_id}")
+    #return page.text
+    response = iCanteen("order.exe",username,password,date,food_id,canteen_id)
+    return response
+
+@app.route("/iCanteen/<app>/<path:url>")
+def iCanteen(app, url):
+    if app not in ALLOWED_APPS:
+       return "App not allowed"
+    args = url.split(',')
+
+    result = subprocess.run(
+        [f"/home/ubuntu/{app}", *args],
+        capture_output=True,
+        text=True
+    )
+    return result.stdout
 
 
 def iCanteen_scrape(): #day,day_str,foods,chosen_food
@@ -1051,7 +1075,7 @@ def iCanteen_scrape(): #day,day_str,foods,chosen_food
     if not test_url(canteen_id_to_url(get_canteen_id())):
         return -1
     
-    page = requests.get(f"https://sparkling-sun-0a6e.humanhumanovic.workers.dev/?url={canteen_id_to_url(get_canteen_id())}")
+    page = requests.get(canteen_id_to_url(get_canteen_id()))
     soup = BeautifulSoup(page.text, "html.parser")
 
     days = soup.find_all("div", class_="jidelnicekDen")

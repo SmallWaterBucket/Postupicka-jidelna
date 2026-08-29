@@ -27,7 +27,7 @@ def blank():
     return ""
 
 @app.route("/iCanteen/<app>/<path:url>")
-def credit(app, url):
+def iCanteen(app, url):
     if app not in ALLOWED_APPS:
        return "App not allowed"
     args = url.split(',')
