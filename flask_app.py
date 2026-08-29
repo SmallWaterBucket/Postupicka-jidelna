@@ -329,7 +329,7 @@ def get_image(image):
     db = get_db()
     cursor = db.cursor()
     cursor.execute(f"SELECT path FROM Main WHERE NAME = %s;", (image,))
-    path = cursor.fetchone()
+    path = cursor.fetchone()[0]
     if not path:
         return "/image/WhatsApp_Image_2026-01-16_at_19.21.37.jpg"
     filename = path.split('/')[-1]
@@ -342,7 +342,7 @@ def get_image_id(id):
     db = get_db()
     cursor = db.cursor()
     cursor.execute(f"SELECT path FROM Main WHERE id = %s;", (id,))
-    path = cursor.fetchone()
+    path = cursor.fetchone()[0]
     if not path:
         return "/image/WhatsApp_Image_2026-01-16_at_19.21.37.jpg"
     filename = path.split('/')[-1]
