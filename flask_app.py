@@ -176,7 +176,7 @@ def statistics():
     for canteen_id, foods in old_food_stats:
         canteen_stats.append((f"{canteen_id_to_name(canteen_id)} (id: {canteen_id})", foods))
     commits = subprocess.check_output(
-        ["git", "-C", "/home/jidelna/Postupicka-jidelna", "rev-list", "--count", "HEAD"]
+        ["git", "-C", "/home/ubuntu/Postupicka-jidelna", "rev-list", "--count", "HEAD"]
     ).decode().strip()
     return render_template("Statistics.html", total=total_visits, monthly_stats=monthly_stats, subpage_stats = subpage_stats,canteen_stats = canteen_stats,logo = get_image_id(get_canteen_id()), commits = commits)
 
