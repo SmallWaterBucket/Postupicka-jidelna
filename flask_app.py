@@ -26,16 +26,12 @@ from strava_cz import (
 
 #TODO:
 
-# change blank to ""
-# make images on /foods not pass through navbar
 # Fix the chart passing through navbar
-# Change the long db outputs to only what is needed
 # better design
 # adding compat with different canteen systems
 # -1 and [] weird inconsistencies in scrapes
 # add alergens
 # add more images and messages
-# Add an option to see foods from other canteens in the search menu
 
 #=========================================================
 #MAYBE:
@@ -78,6 +74,10 @@ from strava_cz import (
 #/suggestions, instead created a custom email and added it to contacts
 #add user counter
 # change / and / debug properly with session cookie and stuff; needs testing
+# make images on /foods not pass through navbar
+# Change the long db outputs to only what is needed
+# Add an option to see foods from other canteens in the search menu
+# change blank to ""
 
 #==========================================================
 # NEEDS TESTING:
@@ -166,7 +166,7 @@ def statistics():
     cursor = db.cursor()
     cursor.execute("SELECT COUNT(*) AS visits FROM Visits;")
     total_visits = cursor.fetchone()[0]
-    cursor.execute("SELECT MONTHNAME(date) AS month, COUNT(*) AS visits FROM Visits WHERE YEAR(date) = YEAR(CURRENT_DATE) GROUP BY MONTH(date) ORDER BY MONTH(date);")
+    cursor.execute("SELECT MONTHNAME(date) AS month, COUNT(*) AS visits FROM Visits WHERE YEAR(date) = YEAR(CURRENT_DATE) GROUP BY MONTH(date), MONTHNAME(date) ORDER BY MONTH(date);")
     monthly_stats = cursor.fetchall()
     cursor.execute("SELECT subpage, COUNT(*) AS visits FROM Visits GROUP BY subpage ORDER BY visits DESC")
     subpage_stats = cursor.fetchall()
@@ -534,8 +534,6 @@ def test_url(url):
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
-    if not test_url("https://jidelna.qzz.io/blank"):
-        return get_message("Login doesn't work")
 
     canteen_id = get_canteen_id_raw()
     if not canteen_id:
@@ -822,7 +820,7 @@ def canteen_id_to_system(canteen_id):
 
 @app.route("/blank")
 def blank():
-    return "blank"
+    return ""
 
 
 
