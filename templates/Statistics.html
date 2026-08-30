@@ -43,6 +43,11 @@
             flex-direction: column;
             width: 100%;
         }
+
+        .navbar{
+            z-index: 1;
+        }
+
         img {object-fit: contain;}
 
         .person{
@@ -80,6 +85,7 @@
             align-items: center;
             gap: 40px;
             width: 100%;
+            z-index: 0;
         }
         .pair table {
             flex: 0 0 auto;
@@ -104,17 +110,17 @@
     <div class="not_navbar">
         <h1>Statistiky:</h1>
 
-        <h3>Navstevy celkem: {{ total }}</h3>
+        <h3>Návštěvy celkem: {{ total }}</h3>
         <h3>Git commits: {{ commits }} &#128557;</h3>
 
 
-        <h2>Navstevy podle mesicu:</h2>
+        <h2>Návštěvy podle měsíců:</h2>
         <div class="pair">
             
             <table>
                 <tr>
-                    <th>Mesic</th>
-                    <th>Navstevy</th>
+                    <th>Měsic</th>
+                    <th>Návštěvy</th>
                 </tr>
                 {% for month,visits in monthly_stats %}
                     <tr>
@@ -138,7 +144,7 @@
                             {% endfor %}
                         ],
                         datasets: [{
-                            label: "Visits per month",
+                            label: "Návštěvy tento měsíc",
                             data: [
                                 {% for month, visits in monthly_stats %}
                                     {{ visits }},
@@ -151,13 +157,13 @@
         </div>
 
 
-        <h2>Navstevy podle podstranek:</h2>
+        <h2>Návštevy podle podstránek:</h2>
         <div class="pair">
             
             <table>
                 <tr>
-                    <th>Podstranka</th>
-                    <th>Navstevy</th>
+                    <th>Podstránka</th>
+                    <th>Návštěvy</th>
                 </tr>
                 {% for subpage,visits in subpage_stats %}
                     <tr>
@@ -182,7 +188,7 @@
                         ],
                         datasets: [
                             {
-                                label: "Subpage visits",
+                                label: "Návštěvy této podstránky",
                                 data: [
                                     {% for subpage,visits in subpage_stats %}
                                         {{ visits }},
@@ -197,13 +203,13 @@
 
 
 
-        <h2>Pridana jidla v jidelnach:</h2>
+        <h2>Přidaná jídla v jídelnách:</h2>
         <div class="pair">
             
             <table>
                 <tr>
-                    <th>Jidelna</th>
-                    <th>Pridana jidla</th>
+                    <th>Jídelna</th>
+                    <th>Přidaná jídla</th>
                 </tr>
                 {% for canteen,foods in canteen_stats %}
                     <tr>
@@ -228,7 +234,7 @@
                         ],
                         datasets: [
                             {
-                                label: "Foods in this canteen",
+                                label: "Jídla v této jídelně",
                                 data: [
                                     {% for canteen,foods in canteen_stats %}
                                         {{ foods }},
