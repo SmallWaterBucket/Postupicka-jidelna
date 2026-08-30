@@ -243,7 +243,7 @@ def search(food):
     for food_id, food_name in answer:
         ret.append((food_name, food_id))
 
-    mycursor.execute("SELECT name,id FROM Main WHERE (name LIKE %s OR SOUNDEX(name) = SOUNDEX(%s)) AND canteen_id != %s;", (f"%{food}%", food, canteen_id))
+    mycursor.execute("SELECT name,id FROM Main WHERE (name LIKE %s OR SOUNDEX(name) = SOUNDEX(%s)) AND canteen_id != %s AND canteen_id != -1;", (f"%{food}%", food, canteen_id))
     other_canteen_foods = mycursor.fetchall()
 
     if session.get("user") and session.get("password"):
