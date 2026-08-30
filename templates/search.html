@@ -1,8 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Hledat jídlo</title>
-  <link rel="icon" href="/favicon.ico">
+    <title>Hledat jídlo</title>
+    <link rel="icon" href="/favicon.ico">
+    <script>
+        function showOtherResults(){
+            var div = document.getElementById("other_results");
+            div.removeAttribute("hidden");
+            var show_button = document.getElementById("show_button");
+            show_button.style.display = "none";
+        }
+    </script>
 </head>
 <body>
     {% include "navbar.html" %}
@@ -17,6 +25,15 @@
             <p>{{answer}}</p>
         </a>
     {% endfor %}
+    <button type="button" id = "show_button" onclick="showOtherResults()">Ukázat výsledky z jiných jídelen</button>
+    <div class="other_results" id="other_results" hidden>
+        <h1><u>Výsledky z jiných jídelen:</u></h1>
+        {% for answer, id in other_canteen_foods %}
+            <a href="/get_food/{{id}}">
+                <p>{{answer}}</p>
+            </a>
+        {% endfor %}
+    </div>
     <p>Není tady to co hledáte? <a href="/add_food">Přidejte ho</a></p>
 </body>
 </html>

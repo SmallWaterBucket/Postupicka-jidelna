@@ -95,6 +95,7 @@ app.config['ALLOWED_EXTENSIONS'] = ['.jpg', '.jpeg', '.png']
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 4*1024 * 1024 #4MB
 ALLOWED_APPS = ["kredit.exe", "login.exe","get_ordered_foods.exe", "order.exe"]
+SoupStrings = ["polevka", "polévka", "zeleňačka", "zelenacka", "česnečka", "cesnecka", "vývar", "vyvar", "kapání", "kapani", "boršč", "borsc", "šči", "sci","pórková","porkova"]
 compress_limit = 0.5 # This is the number of MB above which an image will be compressed
 
 path_passwords = "/home/ubuntu/passwords"
@@ -242,12 +243,15 @@ def search(food):
     for food_id, food_name in answer:
         ret.append((food_name, food_id))
 
+    mycursor.execute("SELECT id,name FROM Main WHERE (name LIKE %s OR SOUNDEX(name) = SOUNDEX(%s)) AND canteen_id != %s;", (f"%{food}%", food))
+    other_canteen_foods = mycursor.fetchall()
+
     if session.get("user") and session.get("password"):
         username = session.get("user")
         kredit = session.get("kredit")
         return render_template("search.html", username=username, kredit=kredit, food=food, answers=ret, logo = get_image_id(canteen_id))
     
-    return render_template("search.html", food=food, answers=ret, logo = get_image_id(canteen_id))
+    return render_template("search.html", food=food, answers=ret, other_canteen_foods = other_canteen_foods, logo = get_image_id(canteen_id))
 
 def get_db():
     if 'db' not in g:
@@ -1192,13 +1196,13 @@ def Strava_scrape():
                 print(f"meal name: {meal['nazev']}")
                 mymeals.append(meal["nazev"])
 
-        mymeals = Remove_prefixes_and_suffixes(mymeals)
+        #mymeals = Remove_prefixes_and_suffixes(mymeals)
     
         days.append((date,mymeals))
     return days
 
 def Remove_prefixes_and_suffixes(meals):
-    words = [meal.split() for meal in meals]
+    words = [meal.split(',') for meal in meals]
 
     common_count = 0
 
@@ -1212,6 +1216,28 @@ def Remove_prefixes_and_suffixes(meals):
         " ".join(meal_words[common_count:])
         for meal_words in words
     ]
+
+#def unsoup(meals):
+#    split_meals = []
+#    for meal in meals:
+#        meal_list = meal.replace(',',' ').split()
+#        split_meals.append(meal_list)
+
+#    longest_index = 0
+#    for i in range(len(meals)):
+#        if len(meal[i]) > meal[longest_index]:
+#            longest_index = i
+
+#    end = False
+#    for i in range(len(meals[longest_index])):
+#        for meal_idx in range(len(meals)):
+#            if i >= len(meal):
+#                end = True
+#            else:
+#                if meals[meal_idx][i] == meals[meal_idx - 1][i] and 
+
+
+
         
 
 @app.route("/strava/get_ordered_food/<username>,<password>,<dates>") # lets hope this works :crying: :hope:
