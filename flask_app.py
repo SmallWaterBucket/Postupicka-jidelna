@@ -95,7 +95,46 @@ app.config['ALLOWED_EXTENSIONS'] = ['.jpg', '.jpeg', '.png']
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 4*1024 * 1024 #4MB
 ALLOWED_APPS = ["kredit.exe", "login.exe","get_ordered_foods.exe", "order.exe"]
-SoupStrings = ["polevka", "polévka", "zeleňačka", "zelenacka", "česnečka", "cesnecka", "vývar", "vyvar", "kapání", "kapani", "boršč", "borsc", "šči", "sci","pórková","porkova"]
+SoupStrings = [ # usde to detect and remove soups in food names
+    "polevka",
+    "polévka",
+    "zeleňačka",
+    "zelenacka",
+    "česnečka",
+    "cesnecka",
+    "vývar",
+    "vyvar",
+    "kapání",
+    "kapani",
+    "boršč",
+    "borsc",
+    "šči",
+    "sci",
+    "pórková",
+    "porkova",
+    "kulajda",
+    "p.",
+    "nevari",
+    "nevaří",
+    "neni",
+    "není",
+    "játr. kned",
+    "jatr. kned",
+    "játrový kned",
+    "játrové kned"
+]
+
+SuffixStrings = [
+    "ovoce",
+    "voda",
+    "čaj",
+    "caj",
+    "nápoj",
+    "napoj",
+    "sirup",
+    "mléko",
+    "mleko",
+]
 compress_limit = 0.5 # This is the number of MB above which an image will be compressed
 
 path_passwords = "/home/ubuntu/passwords"
@@ -1145,9 +1184,191 @@ def Strava_kredit(username, password):
     strava = strava_login_internal(username, password, canteen_number)
     return str(strava.user.balance)
 
-@app.route("/strava/scrape/")
-def Strava_scrape():
-    canteen_number = canteen_id_to_url(get_canteen_id())
+# I didn't have the patience to try and debug unsoup and function used by it so I made ChatGPT fix it. I provided it with the criteria and the general algorithm.
+# I acquired said criteria by seeing paterns myself in canteens that have incorrect soup placement
+def is_soup_string(text):
+    text = text.lower()
+
+    for soup_str in SoupStrings:
+        soup_str = soup_str.lower()
+
+        if soup_str == "p.":
+            if re.search(r"\bp\.", text):
+                return True
+
+        elif re.search(rf"\b{re.escape(soup_str)}\b", text):
+            return True
+
+    return False
+
+
+def first_letter(text):
+    return next(
+        (c for c in text if c.isalpha()),
+        None
+    )
+
+
+def split_meal(meal):
+    return [
+        part.strip()
+        for part in (
+            meal
+            .replace(";", ",")
+            .replace("/", ",")
+            .split(",")
+        )
+        if part.strip()
+    ]
+
+
+def unsoup(meals):
+    if not meals:
+        return []
+
+    split_meals = [
+        split_meal(meal)
+        for meal in meals
+    ]
+
+    handled = [False] * len(split_meals)
+
+    # =================================================
+    # 1. SOUP STRINGS
+    # =================================================
+
+    for meal_idx, parts in enumerate(split_meals):
+
+        soup_start = None
+
+        for i, part in enumerate(parts):
+            if is_soup_string(part):
+                soup_start = i
+                break
+
+        if soup_start is None:
+            continue
+
+        # At minimum, remove the component containing
+        # the soup identifier.
+        soup_end = soup_start + 1
+
+        # Look for a LOWERCASE -> UPPERCASE boundary.
+        #
+        # Example:
+        #
+        # Hovězí vývar, játrové knedlíčky, Filé
+        #                                  ^
+        #
+        # In this case the first two components are soup.
+        #
+        # IMPORTANT:
+        # If there is NO uppercase boundary, we do NOT
+        # consume the entire rest of the meal.
+
+        for i in range(soup_start + 1, len(parts)):
+
+            letter = first_letter(parts[i])
+
+            if letter and letter.isupper():
+                soup_end = i
+                break
+
+        split_meals[meal_idx] = parts[soup_end:]
+        handled[meal_idx] = True
+
+    # =================================================
+    # 2. LOWERCASE -> UPPERCASE BOUNDARY
+    # =================================================
+
+    for meal_idx, parts in enumerate(split_meals):
+
+        if handled[meal_idx]:
+            continue
+
+        for i in range(len(parts) - 1):
+
+            a = first_letter(parts[i])
+            b = first_letter(parts[i + 1])
+
+            if (
+                a
+                and b
+                and a.islower()
+                and b.isupper()
+            ):
+                split_meals[meal_idx] = parts[i + 1:]
+                handled[meal_idx] = True
+                break
+
+    # =================================================
+    # 3. REPEATED START
+    # =================================================
+
+    # Only use this rule if there are at least two
+    # UNHANDLED meals.
+
+    unhandled_indices = [
+        i for i in range(len(split_meals))
+        if not handled[i]
+    ]
+
+    if len(unhandled_indices) >= 2:
+
+        common_prefix = 0
+
+        max_prefix = min(
+            len(split_meals[i])
+            for i in unhandled_indices
+        )
+
+        for pos in range(max_prefix):
+
+            values = [
+                split_meals[i][pos].lower()
+                for i in unhandled_indices
+            ]
+
+            if len(set(values)) == 1:
+                common_prefix = pos + 1
+            else:
+                break
+
+        # Don't remove the entire meal.
+        if common_prefix:
+
+            can_remove = all(
+                len(split_meals[i]) > common_prefix
+                for i in unhandled_indices
+            )
+
+            if can_remove:
+                for i in unhandled_indices:
+                    split_meals[i] = split_meals[i][common_prefix:]
+
+    # =================================================
+    # 4. COMMON SUFFIXES
+    # =================================================
+
+    if len(split_meals) >= 2:
+
+        while all(
+            len(meal) > 1
+            and meal[-1].lower() in SuffixStrings
+            for meal in split_meals
+        ):
+            split_meals = [
+                meal[:-1]
+                for meal in split_meals
+            ]
+
+    return [
+        ", ".join(parts)
+        for parts in split_meals
+    ]
+
+
+def Strava_scrape(canteen_number): 
 
     url = "https://app.strava.cz/api/jidelnickyPage"
     
@@ -1186,7 +1407,9 @@ def Strava_scrape():
             continue
         
         date = meals[0]["datum"]
-    
+
+        soup = False
+
         mymeals = []
         print(date)
         for meal in meals:
@@ -1194,52 +1417,18 @@ def Strava_scrape():
             nazev = meal["nazev"].lower()
             polevka = meal["polevka"].lower()
             druh_popis = meal["druh_popis"].lower()
-            if druh != 'p' and druh != 'po' and druh != 'do' and nazev and "oběd" not in nazev and "obed" not in nazev and polevka != "a" and druh_popis != "polevka" and druh_popis != "polévka" and druh_popis != "doplnek" and druh_popis != "doplněk": # The great filter
-                print(f"meal name: {meal['nazev']}")
+            druh_chod = meal["druh_chod"].lower()
+            if druh != 'p' and druh != 'po' and druh != 'do' and nazev and "oběd" not in nazev and "obed" not in nazev and polevka != "a" and "polevka" not in druh_popis and "polévka" not in druh_popis and "doplnek" not in druh_popis and "doplněk" not in druh_popis and "přesníd" not in druh_popis and "presnid" not in druh_popis and "presnid" not in druh_chod and "přesníd" not in druh_chod and "svačin" not in druh_popis and "svacin" not in druh_popis and "xx" not in nazev: # The great filter
+                #print(f"meal name: {meal['nazev']}")
                 mymeals.append(meal["nazev"])
 
-        #mymeals = Remove_prefixes_and_suffixes(mymeals)
+        mymeals = unsoup(mymeals)
+
+        for meal in mymeals:
+            print(meal)
     
         days.append((date,mymeals))
     return days
-
-def Remove_prefixes_and_suffixes(meals):
-    words = [meal.split(',') for meal in meals]
-
-    common_count = 0
-
-    for word_group in zip(*words):
-        if len(set(word_group)) == 1:
-            common_count += 1
-        else:
-            break
-
-    return [
-        " ".join(meal_words[common_count:])
-        for meal_words in words
-    ]
-
-#def unsoup(meals):
-#    split_meals = []
-#    for meal in meals:
-#        meal_list = meal.replace(',',' ').split()
-#        split_meals.append(meal_list)
-
-#    longest_index = 0
-#    for i in range(len(meals)):
-#        if len(meal[i]) > meal[longest_index]:
-#            longest_index = i
-
-#    end = False
-#    for i in range(len(meals[longest_index])):
-#        for meal_idx in range(len(meals)):
-#            if i >= len(meal):
-#                end = True
-#            else:
-#                if meals[meal_idx][i] == meals[meal_idx - 1][i] and 
-
-
-
         
 
 @app.route("/strava/get_ordered_food/<username>,<password>,<dates>") # lets hope this works :crying: :hope:
