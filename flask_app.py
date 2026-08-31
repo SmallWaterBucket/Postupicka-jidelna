@@ -1368,7 +1368,8 @@ def unsoup(meals):
     ]
 
 
-def Strava_scrape(canteen_number): 
+def Strava_scrape(): 
+    canteen_number = canteen_id_to_url(get_canteen_id())
 
     url = "https://app.strava.cz/api/jidelnickyPage"
     
