@@ -1,44 +1,52 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:500');
+
 * {
     box-sizing: border-box;
 }
+
+html,
 body {
     margin: 0;
-    font-family: 'Montserrat', sans-serif;
     width: 100%;
-    max-width: 100%;
-    overflow-x: hidden;
 }
-.navbar{
+
+body {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.navbar {
     position: sticky;
     top: 0;
+    z-index: 1000;
     width: 100%;
-    max-width: 100vw;
-    overflow: hidden;
 }
+
 main {
     margin: 0 20px;
 }
-/* Logo */
-    .logo {
+
+
+
+.logo {
     width: 100px;
     height: auto;
     object-fit: contain;
     transition: transform 0.3s ease;
 }
-/* Navbar container */
+
+
 .navbar ul {
     display: flex;
     align-items: stretch;
-    background-color: rgb(50,61,127);
-    list-style: none;
+
+    width: 100%;
     margin: 0;
     padding: 0;
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
+
+    background-color: rgb(50, 61, 127);
+    list-style: none;
 }
-/* Navbar items */
+
 .navbar li {
     flex: 1 1 0;
     min-width: 0;
@@ -50,9 +58,8 @@ main {
     color: white;
     text-align: center;
 }
-/* Navbar links */
+
 .navbar a {
-    .navbar a {
     width: 100%;
     min-width: 0;
 
@@ -65,66 +72,132 @@ main {
     color: white;
     text-decoration: none;
     text-align: center;
-}
+
+    white-space: nowrap;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.login{
+.navbar a:hover {
+    background-color: rgb(63, 78, 158);
+}
+
+
+.navbar .logo-link {
+    flex: 0 0 120px;
+}
+
+.logo-link:hover {
+    background-color: transparent !important;
+}
+
+.logo-link:hover .logo {
+    transform: scale(1.15);
+}
+
+
+
+.login {
     flex: 1;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgb(50,61,127);
-    color: white;
-    border: none;
-    padding: 15px;
+
     width: 100%;
     height: 100%;
+
+    padding: 15px;
+
+    background-color: rgb(50, 61, 127);
+    color: white;
+    border: none;
+
     font-family: inherit;
     font-size: inherit;
+
     cursor: pointer;
 }
+
 .login:hover {
-    background-color: rgb(63,78,158);
+    background-color: rgb(63, 78, 158);
 }
-/* Hover state */
-.navbar a:hover {
-    background-color: rgb(63,78,158);
-}
-a li {
-    transition: all 0.3s ease 0s;
-}
-.navbar ul > a:first-child:hover {
-    background-color: transparent;
-}
-.navbar ul > a:first-child:hover .logo{
-    transform: scale(1.15);
-}
+
+
 .user_info {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    min-width: 0;
+
+    color: white;
+    text-align: center;
+
+    white-space: nowrap;
 }
 
-@media (max-width: 600px) {
-    .navbar ul {
-        width: 100%;
-        max-width: 100vw;
-    }
 
-    .navbar li {
-        flex: 1 1 0;
-        min-width: 0;
-    }
+@media (max-width: 800px) {
 
     .navbar a {
-        padding: 10px 4px;
+        padding: 10px 5px;
         font-size: 0.75rem;
-        min-width: 0;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+    }
+
+    .navbar .logo-link {
+        flex: 0 0 70px;
     }
 
     .logo {
-        width: 50px;
+        width: 55px;
+    }
+
+    .user_info {
+        font-size: 0.7rem;
+    }
+}
+
+
+@media (max-width: 500px) {
+
+    .navbar a {
+        padding: 7px 2px;
+        font-size: 0.6rem;
+    }
+
+    .navbar .logo-link {
+        flex: 0 0 50px;
+    }
+
+    .logo {
+        width: 40px;
+    }
+
+    .user_info {
+        font-size: 0.55rem;
+    }
+}
+
+
+@media (max-width: 350px) {
+
+    .navbar a {
+        padding: 5px 1px;
+        font-size: 0.5rem;
+    }
+
+    .navbar .logo-link {
+        flex: 0 0 35px;
+    }
+
+    .logo {
+        width: 28px;
+    }
+
+    .user_info {
+        font-size: 0.45rem;
     }
 }
