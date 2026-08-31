@@ -1437,6 +1437,9 @@ def Strava_scrape():
 def Strava_get_ordered_food(username, password, dates):
     canteen_number = canteen_id_to_url(get_canteen_id())
     strava = strava_login_internal(username, password, canteen_number)
+
+    strava.menu.fetch()
+
     ordered_indexes = []
     for i in range(len(dates)):
         ordered_indexes.append('')
@@ -1455,9 +1458,16 @@ def Strava_get_ordered_food(username, password, dates):
 @app.route("/strava/order/<username>,<password>,<date>,<food>")
 def Strava_order_food(username, password, date, food):
     canteen_number = canteen_id_to_url(get_canteen_id())
-    strava = strava_login_internal(username, password, canteen_number)
+    strava = StravaCZ(
+            username=username,
+            password=password,
+            canteen_number = canteen_number
+        )
+    #strava = strava_login_internal(username, password, canteen_number)
     food = int(food)
     date_time = datetime.datetime.strptime(date, "%Y-%m-%d")
+    strava.menu.fetch()
+
     menu = strava.menu.get_by_date(date_time)
     if not menu:
         return f"Date \"{str(date)}\" not found"
