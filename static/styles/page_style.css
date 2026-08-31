@@ -2,77 +2,121 @@
     font-family: 'AurachHeavy';
     src: url("/static/fonts/AurachHeavy-Regular.ttf") format('truetype');
 }
+
 @font-face {
     font-family: 'Book-Antiqua';
     src: url("/static/fonts/Book-Antiqua.ttf") format('truetype');
 }
-h1{
+
+* {
+    box-sizing: border-box;
+}
+
+h1 {
     font-family: 'AurachHeavy';
-    font-size: 3.5vw;
+    font-size: clamp(2rem, 3.5vw, 3.5rem);
     text-align: center;
     text-decoration-line: underline;
 }
-h2{
+
+h2 {
     font-family: 'AurachHeavy';
-    font-size: 2.5vw;
+    font-size: clamp(1.6rem, 2.5vw, 2.5rem);
     text-align: center;
     text-decoration-line: underline;
 }
-h3{
-    font-size: 1.5vw;
+
+h3 {
+    font-size: clamp(1.1rem, 1.5vw, 1.5rem);
 }
-p{
+
+p {
     font-family: 'Book-Antiqua';
-    font-size: 1.5vw;
+    font-size: clamp(1rem, 1.5vw, 1.5rem);
+    line-height: 1.5;
 }
-li.list{
-    font-size: 1.5vw;
+
+li.list {
+    font-size: clamp(1rem, 1.5vw, 1.5rem);
 }
-.not_navbar{
-    color: rgb(50,61,127);
-    display:flex;
+
+.not_navbar {
+    color: rgb(50, 61, 127);
+    display: flex;
     flex-direction: column;
     padding: 0 8vw;
 }
+
 img {
     object-fit: contain;
+    max-width: 100%;
+    height: auto;
     border-radius: 15px;
 }
-.person{
+
+.person {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
+    gap: 30px;
 }
-.center{
+
+.center {
     text-align: center;
 }
-.grid-container{
+
+.grid-container {
     margin-left: 20px;
-    display:grid;
+    display: grid;
     grid-template-columns: 1fr 1fr;
+    gap: 20px;
 }
-.image{
+
+.image {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-@media (max-width: 600px){
-    h1{
-        font-size: 7vw
-    }
-    h2{
-        font-size: 5vw;
-    }
-    h3{
-        font-size: 3vw;
+@media (max-width: 600px) {
+
+    h1 {
+        font-size: 2rem;
+        margin: 0.7em 0;
     }
 
-    p{
-        font-size: 1.5vw;
+    h2 {
+        font-size: 1.6rem;
+        margin: 0.6em 0;
     }
 
-    li.list{
-        font-size: 1.5vw;
+    h3 {
+        font-size: 1.2rem;
+    }
+
+    p,
+    li.list {
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+
+    .not_navbar {
+        padding: 0 5vw;
+    }
+
+    .person {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .grid-container {
+        margin-left: 0;
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    img {
+        max-width: 100%;
     }
 }
