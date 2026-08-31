@@ -56,3 +56,23 @@ img {
     justify-content: center;
     align-items: center;
 }
+
+@media (max-width: 600px){
+    h1{
+        font-size: 7vw
+    }
+    h2{
+        font-size: 5vw;
+    }
+    h3{
+        font-size: 3vw;
+    }
+
+    p{
+        font-size: 1.5vw;
+    }
+
+    li.list{
+        font-size: 1.5vw;
+    }
+}

@@ -26,7 +26,6 @@ from strava_cz import (
 
 #TODO:
 
-# Fix the chart passing through navbar
 # better design
 # adding compat with different canteen systems
 # -1 and [] weird inconsistencies in scrapes
@@ -78,6 +77,8 @@ from strava_cz import (
 # Change the long db outputs to only what is needed
 # Add an option to see foods from other canteens in the search menu
 # change blank to ""
+# desoupification
+# Fix the chart passing through navbar
 
 #==========================================================
 # NEEDS TESTING:
@@ -1412,7 +1413,7 @@ def Strava_scrape():
         soup = False
 
         mymeals = []
-        print(date)
+        #print(date)
         for meal in meals:
             druh = meal["druh"].lower()
             nazev = meal["nazev"].lower()
@@ -1425,8 +1426,8 @@ def Strava_scrape():
 
         mymeals = unsoup(mymeals)
 
-        for meal in mymeals:
-            print(meal)
+        #for meal in mymeals:
+        #    print(meal)
     
         days.append((date,mymeals))
     return days
