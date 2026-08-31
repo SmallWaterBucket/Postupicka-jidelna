@@ -934,8 +934,8 @@ def decide_order(username, password, date, food): # date format: %d.%m.%Y
             case 0: #iCanteen
                 ret = iCanteen_order_food(username, password, date, food)
             case 1: #Strava.cz
-                datetime_date = datetime.datetime.strptime(date,"%d.%m.%Y")
-                date = datetime_date.strftime("%Y-%m-%d") # strava-cz-python requires this format
+                #datetime_date = datetime.datetime.strptime(date,"%d.%m.%Y")
+                #date = datetime_date.strftime("%Y-%m-%d") # strava-cz-python requires this format
                 ret = Strava_order_food(username, password, date, food)
             case _:
                 return -1
