@@ -1465,10 +1465,9 @@ def Strava_order_food(username, password, date, food):
         )
     #strava = strava_login_internal(username, password, canteen_number)
     food = int(food)
-    date_time = datetime.datetime.strptime(date, "%Y-%m-%d")
     strava.menu.fetch()
 
-    menu = strava.menu.get_by_date(date_time)
+    menu = strava.menu.get_by_date(date)
     if not menu:
         return f"Date \"{str(date)}\" not found"
     id = menu['meals'][food]['id']
