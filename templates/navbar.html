@@ -108,26 +108,24 @@
     </head>
     
     <body>
-        <form action = "/login" method="post">
-            <nav class = "navbar">
-                <ul>
-                    <a href="/"><li><img class="logo" src="{% if logo %}{{logo}}{% else %}/image/3rd_logo.jpeg{% endif %}"></li></a>
-                    <a href="/about"><li>O nás</li></a>
-                    <a href="/foods"><li>Seznam jídel</li></a>
-                    <a href="/add_food"><li>Přidat jídlo</li></a>
-                    <a href="/contacts"><li>Kontakty</li></a>
-                    <a href="/canteens"><li>Výběr jídelny</li></a>
-                    {% if not username %}
-                        <a href="/login"><li>Přihlášení</li></a>
-                    {% else %}
-                        <a href="/logout"><li>Odhlásit se</li></a>
-                        <div class = "user_info">
-                            <li>Uživatel: {{ username }}</li>
-                            <li id="credit">Kredit: {{ kredit }}</li>
-                        </div>
-                    {% endif %}
-                </ul>
-            </nav>
-        </form>
+        <nav class = "navbar">
+            <ul>
+                <a href="/"><li><img class="logo" src="{% if logo %}{{logo}}{% else %}/image/3rd_logo.jpeg{% endif %}"></li></a>
+                <a href="/about"><li>O nás</li></a>
+                <a href="/foods"><li>Seznam jídel</li></a>
+                <a href="/add_food"><li>Přidat jídlo</li></a>
+                <a href="/contacts"><li>Kontakty</li></a>
+                <a href="/canteens"><li>Výběr jídelny</li></a>
+                {% if not username %}
+                    <a href="/login"><li>Přihlášení</li></a>
+                {% else %}
+                    <a href="/logout"><li>Odhlásit se</li></a>
+                    <div class = "user_info">
+                        <li>Uživatel: {{ username }}</li>
+                        <li id="credit">Kredit: {{ kredit }}</li>
+                    </div>
+                {% endif %}
+            </ul>
+        </nav>
     </body>
 </html>
