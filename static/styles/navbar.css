@@ -137,6 +137,20 @@ main {
     display: none;
 }
 
+.user_info {
+    flex: 1 1 0 !important;
+    min-width: 0;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+    color: white;
+    text-align: center;
+    white-space: nowrap;
+}
+
 @media (max-width: 800px) {
 
     .disable-on-mobile {
