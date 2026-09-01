@@ -96,6 +96,11 @@ main {
     background-color: rgb(63, 78, 158);
 }
 
+
+.navbar .logo {
+    flex: 0 0 120px;
+}
+
 .logo:hover {
     background-color: transparent !important;
     transform: scale(1.15);
@@ -147,52 +152,25 @@ main {
         display: flex !important;
     }
 
-    .navbar > ul > li {
-        flex: 1 1 0 !important;
-        width: 0;
-        min-width: 0;
-    }
-
-    .user_info {
-        flex: 1 1 0 !important;
-        width: 0;
-        min-width: 0;
-
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-
-        overflow: hidden;
-        white-space: nowrap;
-    }
-
-    .user_info span {
-        max-width: 100%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .logo {
-        width: 40px;
-    }
-
-    /* Your dropdown */
     .dropdown-content {
+        
         display: block;
         position: absolute;
         top: 100%;
+
         left: 5%;
+
         width: 90%;
 
         background-color: rgb(50, 61, 127);
+
         z-index: 999;
 
         opacity: 0;
         transform: translateY(-10px);
         visibility: hidden;
         pointer-events: none;
-
+        
         transition:
             opacity 0.2s ease,
             transform 0.2s ease,
@@ -204,5 +182,40 @@ main {
         transform: translateY(0);
         visibility: visible;
         pointer-events: auto;
+    }
+
+    .dropdown-content a {
+        display: block;
+
+        width: 100%;
+
+        padding: 12px 16px;
+
+        color: white;
+        text-decoration: none;
+
+        border-bottom: 1px solid rgba(0,0,0,0.2);
+    }
+
+    .dropdown-content a:last-child {
+        border-bottom: none;
+    }
+
+    .dropdown-content a:hover {
+        background-color: rgb(63, 78, 158);
+    }
+
+    .user_info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        min-width: 0;
+
+        color: white;
+        text-align: center;
+
+        white-space: nowrap;
     }
 }
