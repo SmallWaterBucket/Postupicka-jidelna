@@ -204,4 +204,17 @@ main {
     .dropdown-content a:hover {
         background-color: rgb(63, 78, 158);
     }
+
+    .user_info {
+        flex: 1 1 0 !important;
+        min-width: 0;
+        width: auto;
+        font-size: 0.7rem;
+    }
+
+    .user_info span {
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 }
