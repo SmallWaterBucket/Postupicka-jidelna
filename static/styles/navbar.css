@@ -139,8 +139,18 @@ main {
     white-space: nowrap;
 }
 
+.drop_down-content{
+    position: absolute;
+    display: none;
+    max-width: 100%;
+}
+
 
 @media (max-width: 800px) {
+
+    .enable-on-mobile{
+        display: none;
+    }
 
     .navbar a {
         padding: 10px 5px;
@@ -162,6 +172,9 @@ main {
 
 
 @media (max-width: 500px) {
+    .enable-on-mobile{
+        display: none;
+    }
 
     .navbar a {
         padding: 7px 2px;
@@ -199,5 +212,8 @@ main {
 
     .user_info {
         font-size: 0.45rem;
+    }
+    .disable-on-mobile{
+        display: none;
     }
 }

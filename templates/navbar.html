@@ -1,15 +1,31 @@
 <nav class = "navbar">
     <ul>
-        <a href="/"><li><img class="logo" src="{% if logo %}{{logo}}{% else %}/image/3rd_logo.jpeg{% endif %}"></li></a>
-        <a href="/about"><li>O nás</li></a>
-        <a href="/foods"><li>Seznam jídel</li></a>
-        <a href="/add_food"><li>Přidat jídlo</li></a>
-        <a href="/contacts"><li>Kontakty</li></a>
-        <a href="/canteens"><li>Výběr jídelny</li></a>
+        <li><a href="/"><img class="logo" src="{% if logo %}{{logo}}{% else %}/image/3rd_logo.jpeg{% endif %}"></a></li>
+        <div class="disable-on-mobile">
+            <li><a href="/about">O nás</a></li>
+            <li><a href="/foods">Seznam jídel</a></li>
+            <li><a href="/add_food">Přidat jídlo</a></li>
+            <li><a href="/contacts">Kontakty</a></li>
+            <li><a href="/canteens">Výběr jídelny</a></li>
+        </div>
+        <div class="enable-on-mobile">
+            <li>
+                <div class="dropdown">
+                    <button onclick="expandDropdown()" class="dropbtn">☰</button>
+                    <div id="myDropdown" class="dropdown-content">
+                        <li><a href="/about">O nás</a></li>
+                        <li><a href="/foods">Seznam jídel</a></li>
+                        <li><a href="/add_food">Přidat jídlo</a></li>
+                        <li><a href="/contacts">Kontakty</a></li>
+                        <li><a href="/canteens">Výběr jídelny</a></li>
+                    </div>
+                </div>
+            </li>
+        </div>
         {% if not username %}
-            <a href="/login"><li>Přihlášení</li></a>
+            <li><a href="/login">Přihlášení</a></li>
         {% else %}
-            <a href="/logout"><li>Odhlásit se</li></a>
+            <li><a href="/logout">Odhlásit se</a></li>
             <div class = "user_info">
                 <li>Uživatel: {{ username }}</li>
                 <li id="credit">Kredit: {{ kredit }}</li>

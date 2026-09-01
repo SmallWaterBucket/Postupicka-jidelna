@@ -22,6 +22,7 @@ from strava_cz import (
     MealType,
     OrderType
 )
+from strava_cz_api import Auth, Api, Filter
 
 
 #TODO:
@@ -1458,34 +1459,33 @@ def Strava_get_ordered_food(username, password, dates):
 @app.route("/strava/order/<username>,<password>,<date>,<food>")
 def Strava_order_food(username, password, date, food):
     canteen_number = canteen_id_to_url(get_canteen_id())
-    strava = StravaCZ(
-            username=username,
-            password=password,
-            canteen_number = canteen_number
-        )
+    data, cookie, api = strava_login_internal(username,password,canteen_number)
+    data, cooke = api.getJidelnicekAll()
     #strava = strava_login_internal(username, password, canteen_number)
     food = int(food)
-    menu = strava.menu.fetch()
-    print("ALL:", len(menu._all_meals))
-    print("DAYS:", menu._all_meals)
+    #menu = strava.menu.fetch()
+    #print("ALL:", len(menu._all_meals))
+    #print("DAYS:", menu._all_meals)
 
-    menu = strava.menu.get_by_date(date)
-    if not menu:
-        return f"Date \"{str(date)}\" not found"
-    id = menu['meals'][food]['id']
-    strava.menu.order_meals(id)
-    ordered = strava.menu.is_ordered(id)
-    return str(ordered)
+    #menu = strava.menu.get_by_date(date)
+    #if not menu:
+    #    return f"Date \"{str(date)}\" not found"
+    #id = menu['meals'][food]['id']
+    #strava.menu.order_meals(id)
+    #ordered = strava.menu.is_ordered(id)
+    #return str(ordered)
 
 
 
 def strava_login_internal(username, password, canteen_number):
-    strava = StravaCZ(
-            username=username,
-            password=password,
-            canteen_number = canteen_number
-        )
-    return strava
+    data, cookie = Auth.login(username, password, canteen_number)
+    sid, s5url = Auth.getCredentials(data)
+    api = Api(
+        sid=sid,
+        s5url=s5url,
+        cislo_jidelny=canteen_number
+    )
+    return data, cookie, api
 
 
 
