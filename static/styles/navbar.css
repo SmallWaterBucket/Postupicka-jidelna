@@ -162,9 +162,8 @@ main {
     }
 
     .dropdown-content {
-        display: none;
 
-        position: relative;
+        position: absolute;
         top: 0px;
 
         left: 0;
