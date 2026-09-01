@@ -8,7 +8,6 @@
             <li class="disable-on-mobile"><a href="/add_food">Přidat jídlo</a></li>
             <li class="disable-on-mobile"><a href="/contacts">Kontakty</a></li>
             <li class="disable-on-mobile"><a href="/canteens">Výběr jídelny</a></li>
-            <li class="mobile-menu"><a id="menu" href="#" onclick="expandDropdown();return false;" class="dropbtn">☰</a></li>
 
             {% if not username %}
                 <li><a href="/login">Přihlášení</a></li>
@@ -19,6 +18,8 @@
                     <span id="credit"><u>Kredit:</u> {{ kredit }}</span>
                 </li>
             {% endif %}
+
+            <li class="mobile-menu"><a id="menu" href="#" onclick="expandDropdown();return false;" class="dropbtn">☰</a></li>
         </ul>
     </nav>
     <div class="dropdown-content" id="myDropdown">
