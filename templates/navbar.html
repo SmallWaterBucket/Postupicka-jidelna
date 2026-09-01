@@ -14,11 +14,9 @@
                 <li><a href="/login">Přihlášení</a></li>
             {% else %}
                 <li class = "user_info">
-                    <div class="user_info-content">
-                        <span><u>Uživatel:</u></span>
-                        <span>{{ username }}</span>
-                        <span id="credit"><u>Kredit:</u> {{ kredit }}</span>
-                    </div>
+                    <span><u>Uživatel:</u></span>
+                    <span>{{ username }}</span>
+                    <span id="credit"><u>Kredit:</u> {{ kredit }}</span>
                 </li>
             {% endif %}
         </ul>
