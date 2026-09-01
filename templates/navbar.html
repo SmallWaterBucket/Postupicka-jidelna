@@ -1,13 +1,12 @@
 <nav class = "navbar">
     <ul>
         <li><a href="/"><img class="logo" src="{% if logo %}{{logo}}{% else %}/image/3rd_logo.jpeg{% endif %}"></a></li>
-        <div class="disable-on-mobile">
-            <li><a href="/about">O nás</a></li>
-            <li><a href="/foods">Seznam jídel</a></li>
-            <li><a href="/add_food">Přidat jídlo</a></li>
-            <li><a href="/contacts">Kontakty</a></li>
-            <li><a href="/canteens">Výběr jídelny</a></li>
-        </div>
+        
+        <li class="disable-on-mobile"><a href="/about">O nás</a></li>
+        <li class="disable-on-mobile"><a href="/foods">Seznam jídel</a></li>
+        <li class="disable-on-mobile"><a href="/add_food">Přidat jídlo</a></li>
+        <li class="disable-on-mobile"><a href="/contacts">Kontakty</a></li>
+        <li class="disable-on-mobile"><a href="/canteens">Výběr jídelny</a></li>
 
         <li class="enable-on-mobile">
             <div class="dropdown">
@@ -21,7 +20,7 @@
                 </div>
             </div>
         </li>
-        
+
         {% if not username %}
             <li><a href="/login">Přihlášení</a></li>
         {% else %}
