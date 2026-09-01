@@ -145,10 +145,11 @@ main {
     max-width: 100%;
 }
 
-.enable-on-mobile{
+.enable-on-mobile {
     display: none;
 }
-.disable-on-mobile{
+
+.disable-on-mobile {
     display: flex;
 }
 
@@ -216,8 +217,28 @@ main {
 
     .enable-on-mobile{
         display: flex;
+        flex: 1;
     }
     .disable-on-mobile{
         display: none;
+    }
+
+    .dropdown{
+        position: relative;
+        width: 100%;
+        height: 100%;
+
+    }
+
+    .dropdown-content{
+        display: none;
+
+        position:absolute;
+        top: 100%;
+        left: 0;
+    }
+
+    .dropdown-content a{
+        display: block;
     }
 }
