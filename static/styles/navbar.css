@@ -206,15 +206,16 @@ main {
     }
 
     .user_info {
-        flex: 1 1 0 !important;
-        min-width: 0;
-        width: auto;
-        font-size: 0.7rem;
-    }
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
 
-    .user_info span {
-        max-width: 100%;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        min-width: 0;
+
+        color: white;
+        text-align: center;
+
+        white-space: nowrap;
     }
 }
