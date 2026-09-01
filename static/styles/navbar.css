@@ -145,13 +145,13 @@ main {
     white-space: nowrap;
 }
 
-.dropdown-content{
+.dropdown{
     position: absolute;
     display: none;
     max-width: 100%;
 }
 
-.enable-on-mobile {
+.dropdown {
     display: none !important;
 }
 
@@ -179,35 +179,25 @@ main {
         font-size: 0.45rem;
     }
 
-    .enable-on-mobile{
-        display: flex !important;
-        flex: 1;
-    }
     .disable-on-mobile{
         display: none !important;
     }
 
     .dropdown{
-        position: relative;
-        display: inline-block;
-        width: 100%;
-        height: 100%;
-
-    }
-
-    .dropdown-content{
         display: none;
         background-color: rgb(50, 61, 127);
-        position:absolute;
         top: 100%;
         left: 0;
+        width: 100%;
+        display: flex !important;
+        flex: 1;
     }
 
-    .dropdown-content a:hover{
+    .dropdown a:hover{
         background-color: rgb(63, 78, 158);
     }
 
-    .dropdown-content a{
+    .dropdown a{
         display: block;
         color: white;
         padding: 12px 16px;
@@ -215,8 +205,4 @@ main {
     }
 
     .show {display:block;}
-
-    .myDropdown{
-        width: 100%;
-    }
 }
