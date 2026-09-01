@@ -168,7 +168,8 @@ main {
         display: none;
 
         position: absolute;
-        top: 0;
+        top: 45px;
+
         left: 0;
 
         width: 100%;
@@ -195,5 +196,11 @@ main {
 
     .dropdown-content a:hover {
         background-color: rgb(63, 78, 158);
+    }
+}
+
+@media (max-width: 500px) {
+    .dropdown-content {
+        top: 38px;
     }
 }
