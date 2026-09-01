@@ -4,7 +4,7 @@
   <title>Přihlášení</title>
   <link rel="icon" href="/favicon.ico">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/static/styles/navbar.css">
+  <link rel="stylesheet" href="/static/styles/navbar.css?v=12">
   <style>
     .day{
         display:flex;
@@ -72,9 +72,9 @@
 
 </head>
 <body>
-    <div class="navbar">
-        {% include "navbar.html" %}
-    </div>
+        
+    {% include "navbar.html" %}
+
     <div class = "not_navbar">
         <h1>Přihlášení</h1>
         <p>Použijte vaše přihlašovací údaje do systému {{ canteen_system_name }}.</p>

@@ -3,7 +3,7 @@
 <head>
   <title>Seznam jídel</title></title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/static/styles/navbar.css">
+  <link rel="stylesheet" href="/static/styles/navbar.css?v=12">
   <link rel="icon" href="/favicon.ico">
   <style>
         @font-face {
@@ -46,9 +46,8 @@
   </style>
 </head>
 <body>
-    <div class="navbar">
-        {% include "navbar.html" %}
-    </div>
+    {% include "navbar.html" %}
+    
     <h1><u>Všechna jídla, která byla nahrána na tuto stránku: ({{foods|length}})</u></h1>
     <div class="foods">
         {% for food, food_id,image,rating in foods %}
