@@ -164,7 +164,7 @@ main {
     .dropdown-content {
 
         position: absolute;
-        top: 0px;
+        top: 100%;
 
         left: 0;
 
