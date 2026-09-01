@@ -21,7 +21,7 @@ body {
     width: 100%;
 }
 .navbar-container{
-    position: sticky;
+    position: relative;
 }
 
 main {
