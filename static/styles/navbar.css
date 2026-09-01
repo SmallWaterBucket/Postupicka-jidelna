@@ -20,6 +20,9 @@ body {
     z-index: 1000;
     width: 100%;
 }
+.navbar-container{
+    position: sticky;
+}
 
 main {
     margin: 0 20px;
@@ -167,8 +170,8 @@ main {
     .dropdown-content {
         display: none;
 
-        position: absolute;
-        top: 45px;
+        position: relative;
+        top: 0px;
 
         left: 0;
 
@@ -196,11 +199,5 @@ main {
 
     .dropdown-content a:hover {
         background-color: rgb(63, 78, 158);
-    }
-}
-
-@media (max-width: 500px) {
-    .dropdown-content {
-        top: 38px;
     }
 }
