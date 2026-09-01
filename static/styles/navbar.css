@@ -215,4 +215,8 @@ main {
     }
 
     .show {display:block;}
+
+    .myDropdown{
+        width: 100%;
+    }
 }

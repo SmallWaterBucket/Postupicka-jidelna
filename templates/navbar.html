@@ -8,19 +8,6 @@
         <li class="disable-on-mobile"><a href="/contacts">Kontakty</a></li>
         <li class="disable-on-mobile"><a href="/canteens">Výběr jídelny</a></li>
 
-        <li class="enable-on-mobile">
-            <div class="dropdown">
-                <a id="menu" href="#" onclick="expandDropdown();return false;" class="dropbtn">☰</a>
-                <div id="myDropdown" class="dropdown-content">
-                    <a href="/about">O nás</a>
-                    <a href="/foods">Seznam jídel</a>
-                    <a href="/add_food">Přidat jídlo</a>
-                    <a href="/contacts">Kontakty</a>
-                    <a href="/canteens">Výběr jídelny</a>
-                </div>
-            </div>
-        </li>
-
         {% if not username %}
             <li><a href="/login">Přihlášení</a></li>
         {% else %}
@@ -32,6 +19,18 @@
         {% endif %}
     </ul>
 </nav>
+<div class="enable-on-mobile">
+    <div class="dropdown">
+        <a id="menu" href="#" onclick="expandDropdown();return false;" class="dropbtn">☰</a>
+        <div id="myDropdown" class="dropdown-content">
+            <a href="/about">O nás</a>
+            <a href="/foods">Seznam jídel</a>
+            <a href="/add_food">Přidat jídlo</a>
+            <a href="/contacts">Kontakty</a>
+            <a href="/canteens">Výběr jídelny</a>
+        </div>
+    </div>
+</div>
 
 <script>
     function expandDropdown(){
