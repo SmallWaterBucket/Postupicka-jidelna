@@ -139,23 +139,21 @@ main {
     white-space: nowrap;
 }
 
-.drop_down-content{
+.dropdown-content{
     position: absolute;
     display: none;
     max-width: 100%;
 }
 
+.enable-on-mobile{
+    display: none;
+}
+.disable-on-mobile{
+    display: flex;
+}
+
 
 @media (max-width: 800px) {
-
-    
-
-    .disable-on-mobile{
-        display: none;
-    }
-    .enable-on-mobile{
-        display: flex;
-    }
 
     .navbar a {
         padding: 10px 5px;
@@ -177,12 +175,6 @@ main {
 
 
 @media (max-width: 500px) {
-    .disable-on-mobile{
-        display: none;
-    }
-    .enable-on-mobile{
-        display: flex;
-    }
 
     .navbar a {
         padding: 7px 2px;
@@ -223,6 +215,9 @@ main {
     }
 
     .enable-on-mobile{
+        display: flex;
+    }
+    .disable-on-mobile{
         display: none;
     }
 }
