@@ -48,15 +48,21 @@ main {
 }
 
 .navbar li {
-    flex: 1 1 0;
-    min-width: 0;
-
-    display: flex;
     align-items: center;
     justify-content: center;
 
     color: white;
     text-align: center;
+}
+
+.navbar > ul {
+    display: flex;
+}
+
+.navbar > ul > li {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
 }
 
 .navbar a {
@@ -155,48 +161,6 @@ main {
 
 
 @media (max-width: 800px) {
-
-    .navbar a {
-        padding: 10px 5px;
-        font-size: 0.75rem;
-    }
-
-    .navbar .logo-link {
-        flex: 0 0 70px;
-    }
-
-    .logo {
-        width: 55px;
-    }
-
-    .user_info {
-        font-size: 0.7rem;
-    }
-}
-
-
-@media (max-width: 500px) {
-
-    .navbar a {
-        padding: 7px 2px;
-        font-size: 0.6rem;
-    }
-
-    .navbar .logo-link {
-        flex: 0 0 50px;
-    }
-
-    .logo {
-        width: 40px;
-    }
-
-    .user_info {
-        font-size: 0.55rem;
-    }
-}
-
-
-@media (max-width: 350px) {
 
     .navbar a {
         padding: 5px 1px;
