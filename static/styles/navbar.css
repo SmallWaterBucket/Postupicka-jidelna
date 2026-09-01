@@ -148,8 +148,13 @@ main {
 
 @media (max-width: 800px) {
 
-    .enable-on-mobile{
+    
+
+    .disable-on-mobile{
         display: none;
+    }
+    .enable-on-mobile{
+        display: flex;
     }
 
     .navbar a {
@@ -172,8 +177,11 @@ main {
 
 
 @media (max-width: 500px) {
-    .enable-on-mobile{
+    .disable-on-mobile{
         display: none;
+    }
+    .enable-on-mobile{
+        display: flex;
     }
 
     .navbar a {
@@ -213,7 +221,8 @@ main {
     .user_info {
         font-size: 0.45rem;
     }
-    .disable-on-mobile{
+
+    .enable-on-mobile{
         display: none;
     }
 }
