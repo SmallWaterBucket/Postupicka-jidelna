@@ -136,21 +136,24 @@ main {
 
 
 .user_info {
+    flex: 0 0 150px !important;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 
-    min-width: 0;
-
     color: white;
     text-align: center;
-
     white-space: nowrap;
 }
 
 .mobile-menu {
     display: none !important;
+}
+
+.dropdown-content{
+    display: none;
 }
 
 @media (max-width: 800px) {
@@ -164,13 +167,14 @@ main {
     }
 
     .dropdown-content {
-
+        
+        display: block;
         position: absolute;
         top: 100%;
 
         left: 0;
 
-        width: 100%;
+        width: 90%;
 
         background-color: rgb(50, 61, 127);
 
@@ -203,6 +207,12 @@ main {
 
         color: white;
         text-decoration: none;
+
+        border-bottom: 1px solid rgba(0,0,0,0.2);
+    }
+
+    .dropdown-content a:last-child {
+        border-bottom: none;
     }
 
     .dropdown-content a:hover {
