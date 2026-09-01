@@ -25,10 +25,10 @@
             <li><a href="/login">Přihlášení</a></li>
         {% else %}
             <li><a href="/logout">Odhlásit se</a></li>
-            <div class = "user_info">
-                <li>Uživatel: {{ username }}</li>
-                <li id="credit">Kredit: {{ kredit }}</li>
-            </div>
+            <li class = "user_info">
+                <span>Uživatel: {{ username }}</span>
+                <span id="credit">Kredit: {{ kredit }}</span>
+            </li>
         {% endif %}
     </ul>
 </nav>

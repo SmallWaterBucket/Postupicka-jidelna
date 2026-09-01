@@ -146,11 +146,11 @@ main {
 }
 
 .enable-on-mobile {
-    display: none;
+    display: none !important;
 }
 
 .disable-on-mobile {
-    display: flex;
+    display: flex !important;
 }
 
 
@@ -216,11 +216,11 @@ main {
     }
 
     .enable-on-mobile{
-        display: flex;
+        display: flex !important;
         flex: 1;
     }
     .disable-on-mobile{
-        display: none;
+        display: none !important;
     }
 
     .dropdown{
