@@ -1,7 +1,7 @@
 <nav class = "navbar">
     <ul>
         <li><a href="/"><img class="logo" src="{% if logo %}{{logo}}{% else %}/image/3rd_logo.jpeg{% endif %}"></a></li>
-        
+
         <li class="disable-on-mobile"><a href="/about">O nás</a></li>
         <li class="disable-on-mobile"><a href="/foods">Seznam jídel</a></li>
         <li class="disable-on-mobile"><a href="/add_food">Přidat jídlo</a></li>
@@ -12,11 +12,11 @@
             <div class="dropdown">
                 <button onclick="expandDropdown()" class="dropbtn">☰</button>
                 <div id="myDropdown" class="dropdown-content">
-                    <li><a href="/about">O nás</a></li>
-                    <li><a href="/foods">Seznam jídel</a></li>
-                    <li><a href="/add_food">Přidat jídlo</a></li>
-                    <li><a href="/contacts">Kontakty</a></li>
-                    <li><a href="/canteens">Výběr jídelny</a></li>
+                    <a href="/about">O nás</a>
+                    <a href="/foods">Seznam jídel</a>
+                    <a href="/add_food">Přidat jídlo</a>
+                    <a href="/contacts">Kontakty</a>
+                    <a href="/canteens">Výběr jídelny</a>
                 </div>
             </div>
         </li>
