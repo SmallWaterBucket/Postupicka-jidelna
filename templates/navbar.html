@@ -2,18 +2,17 @@
     <nav class = "navbar">
         <ul>
             <li><a href="/"><img class="logo" src="{% if logo %}{{logo}}{% else %}/image/3rd_logo.jpeg{% endif %}"></a></li>
-        
+
             <li class="disable-on-mobile"><a href="/about">O nás</a></li>
             <li class="disable-on-mobile"><a href="/foods">Seznam jídel</a></li>
             <li class="disable-on-mobile"><a href="/add_food">Přidat jídlo</a></li>
             <li class="disable-on-mobile"><a href="/contacts">Kontakty</a></li>
             <li class="disable-on-mobile"><a href="/canteens">Výběr jídelny</a></li>
             <li class="mobile-menu"><a id="menu" href="#" onclick="expandDropdown();return false;" class="dropbtn">☰</a></li>
-        
+
             {% if not username %}
                 <li><a href="/login">Přihlášení</a></li>
             {% else %}
-                <li><a href="/logout">Odhlásit se</a></li>
                 <li class = "user_info">
                     <span>Uživatel: {{ username }}</span>
                     <span id="credit">Kredit: {{ kredit }}</span>
@@ -27,6 +26,9 @@
         <a href="/add_food">Přidat jídlo</a>
         <a href="/contacts">Kontakty</a>
         <a href="/canteens">Výběr jídelny</a>
+        {% if username %}
+            <a href="/logout">Odhlásit se</a>
+        {% endif %}
     </div>
 </div>
 
