@@ -96,11 +96,6 @@ main {
     background-color: rgb(63, 78, 158);
 }
 
-
-.navbar .logo {
-    flex: 0 0 120px;
-}
-
 .logo:hover {
     background-color: transparent !important;
     transform: scale(1.15);
@@ -217,5 +212,13 @@ main {
         text-align: center;
 
         white-space: nowrap;
+    }
+
+    .navbar > ul > li:first-child {
+        flex: 1 1 0;
+    }
+
+    .user_info {
+        flex: 1 1 0 !important;
     }
 }
