@@ -7,7 +7,7 @@
         <li class="disable-on-mobile"><a href="/add_food">Přidat jídlo</a></li>
         <li class="disable-on-mobile"><a href="/contacts">Kontakty</a></li>
         <li class="disable-on-mobile"><a href="/canteens">Výběr jídelny</a></li>
-        <li class="dropdown"><a id="menu" href="#" onclick="expandDropdown();return false;" class="dropbtn">☰</a></li>
+        <li class="mobile-menu"><a id="menu" href="#" onclick="expandDropdown();return false;" class="dropbtn">☰</a></li>
 
         {% if not username %}
             <li><a href="/login">Přihlášení</a></li>
@@ -20,7 +20,7 @@
         {% endif %}
     </ul>
 </nav>
-<div class="dropdown" id="myDropdown">
+<div class="dropdown-content" id="myDropdown">
     <a href="/about">O nás</a>
     <a href="/foods">Seznam jídel</a>
     <a href="/add_food">Přidat jídlo</a>
@@ -29,20 +29,14 @@
 </div>
 
 <script>
-    function expandDropdown(){
-        document.getElementById("myDropdown").classList.toggle("show");
-    }
+function expandDropdown() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}
 
-    window.onclick = function(event){
-        if (!event.target.matches('.dropbtn')) {
-            var dropdowns = document.getElementsByClassName("dropdown-content");
-            var i;
-            for (i = 0; i < dropdowns.length; i++) {
-                var openDropdown = dropdowns[i];
-                if (openDropdown.classList.contains('show')) {
-                    openDropdown.classList.remove('show');
-                }
-            }
-        }
+window.onclick = function(event) {
+    if (!event.target.closest('.dropbtn')) {
+        const dropdown = document.getElementById("myDropdown");
+        dropdown.classList.remove("show");
     }
+}
 </script>

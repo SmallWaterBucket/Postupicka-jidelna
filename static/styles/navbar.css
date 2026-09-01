@@ -145,64 +145,55 @@ main {
     white-space: nowrap;
 }
 
-.dropdown{
-    position: absolute;
-    display: none;
-    max-width: 100%;
-}
-
-.dropdown {
+.mobile-menu {
     display: none !important;
 }
 
-.disable-on-mobile {
-    display: flex !important;
+.dropdown-content {
+    display: none;
 }
 
 
 @media (max-width: 800px) {
 
-    .navbar a {
-        padding: 5px 1px;
-        font-size: 0.5rem;
-    }
-
-    .navbar .logo-link {
-        flex: 0 0 35px;
-    }
-
-    .logo {
-        width: 28px;
-    }
-
-    .user_info {
-        font-size: 0.45rem;
-    }
-
-    .disable-on-mobile{
+    .disable-on-mobile {
         display: none !important;
     }
 
-    .dropdown{
+    .mobile-menu {
+        display: flex !important;
+    }
+
+    .dropdown-content {
         display: none;
-        background-color: rgb(50, 61, 127);
+
+        position: absolute;
         top: 100%;
         left: 0;
+
         width: 100%;
-        display: flex !important;
-        flex: 1;
+
+        background-color: rgb(50, 61, 127);
+
+        z-index: 1001;
     }
 
-    .dropdown a:hover{
-        background-color: rgb(63, 78, 158);
-    }
-
-    .dropdown a{
+    .dropdown-content.show {
         display: block;
-        color: white;
+    }
+
+    .dropdown-content a {
+        display: block;
+
+        width: 100%;
+
         padding: 12px 16px;
+
+        color: white;
         text-decoration: none;
     }
 
-    .show {display:block;}
+    .dropdown-content a:hover {
+        background-color: rgb(63, 78, 158);
+    }
 }
