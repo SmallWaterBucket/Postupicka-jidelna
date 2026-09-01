@@ -10,7 +10,7 @@
 
         <li class="enable-on-mobile">
             <div class="dropdown">
-                <button onclick="expandDropdown()" class="dropbtn">☰</button>
+                <a id="menu" href="#" onclick="expandDropdown();return false;" class="dropbtn">☰</a>
                 <div id="myDropdown" class="dropdown-content">
                     <a href="/about">O nás</a>
                     <a href="/foods">Seznam jídel</a>
@@ -32,3 +32,22 @@
         {% endif %}
     </ul>
 </nav>
+
+<script>
+    function expandDropdown(){
+        document.getElementById("myDropdown").classList.toggle("show");
+    }
+
+    window.onclick = function(event){
+        if (!event.target.matches('.dropbtn')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+</script>
