@@ -5,12 +5,18 @@
 
             <li class="disable-on-mobile"><a href="/about">O nás</a></li>
             <li class="disable-on-mobile"><a href="/foods">Seznam jídel</a></li>
-            <li class="disable-on-mobile"><a href="/add_food">Přidat jídlo</a></li>
+            
+            {% if not username %}
+                <li class="important-item"><a href="/add_food">Přidat jídlo</a></li>
+            {% else %}
+                <li class="disable-on-mobile"><a href="/add_food">Přidat jídlo</a></li>
+            {% endif %}           
+
             <li class="disable-on-mobile"><a href="/contacts">Kontakty</a></li>
             <li class="disable-on-mobile"><a href="/canteens">Výběr jídelny</a></li>
 
             {% if not username %}
-                <li class="login"><a href="/login">Přihlášení</a></li>
+                <li class="disable-on-mobile"><a href="/login">Přihlášení</a></li>
             {% else %}
                 <li class = "user_info">
                     <span><u>Uživatel:</u></span>
@@ -30,6 +36,8 @@
         <a href="/canteens">Výběr jídelny</a>
         {% if username %}
             <a href="/logout">Odhlásit se</a>
+        {% else %}
+            <a href="/login">Přihlášení</a>
         {% endif %}
     </div>
 </div>
