@@ -32,6 +32,9 @@ from strava_cz_api import Auth, Api, Filter
 # -1 and [] weird inconsistencies in scrapes
 # add alergens
 # add more images and messages
+# Make empty search work
+# Fix logout button
+# Always show selected food
 
 #=========================================================
 #MAYBE:
@@ -80,13 +83,14 @@ from strava_cz_api import Auth, Api, Filter
 # change blank to ""
 # desoupification
 # Fix the chart passing through navbar
+# fix the contacts
 
 #==========================================================
 # NEEDS TESTING:
 
 # adding full compat for iCanteen (maybe using the library for everything?); kinda done, not really for older systems
 # Strava get ordered foods
-# fix the contacts
+
 
 #==========================================================
 
@@ -153,7 +157,6 @@ canteen_systems = [("iCanteen / strav.nasejidelna.cz", 2),("Strava.cz", 1),("Jid
 
 key = open(f"{path_passwords}/password.txt",'r').read().strip().encode()
 cipher = Fernet(key)
-
 
 
 
