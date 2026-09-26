@@ -129,6 +129,10 @@ main {
     background-color: rgb(63, 78, 158);
 }
 
+.important-item:hover{
+    background-color: rgb(63, 78, 158);
+}
+
 .mobile-menu {
     display: none !important;
 }
