@@ -35,6 +35,9 @@ from strava_cz_api import Auth, Api, Filter
 # Make empty search work
 # Fix logout button
 # Always show selected food
+# Partial loading on /foods
+# Move canteens to their own table
+# Make food rating be an integer
 
 #=========================================================
 #MAYBE:

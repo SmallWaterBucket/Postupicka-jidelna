@@ -190,7 +190,7 @@
                     {% endif %}
                     {% for food,food_id,image,disabled, my_id, rating, user_rating in foods %}
                         <div class = "food">
-                            <input type="radio" class="foodSelection" value="{{day}},{{food}}" id="{{day}},{{food}}" name="{{day}}" {% if disabled %} disabled {% endif %} onchange="sendFood('{{day}}','{{my_id}}','{{day}},{{food}}')" {% if chosen_food == my_id %} checked {% endif %}>
+                            <input type="radio" class="foodSelection" value="{{day}},{{food}}" id="{{day}},{{food}}" name="{{day}}" onchange="sendFood('{{day}}','{{my_id}}','{{day}},{{food}}')" {% if chosen_food == my_id %} checked {% elif disabled %} disabled {% endif %}>
                             <label for = "{{day}},{{food}}">
                                 {% if not kredit and food_id > -1 %}
                                     <p><a href = /get_food/{{food_id}}>{{food}}</a></p>
