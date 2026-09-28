@@ -427,6 +427,10 @@ def request_entity_too_large(error):
 def add_food():
     db = get_db()
     canteen_id = get_canteen_id_raw()
+
+    if canteen_id == -1:
+        return redirect('/')
+
     if not canteen_id:
         return redirect("/canteens")
     logo = ""
